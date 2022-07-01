@@ -87,7 +87,7 @@ If the proxy root CA certificate isn't installed the bot will copy it to the dev
 
 This certificate is only used to decrypt traffic to URLs used by FFRK to run, all other traffic is tunneled through the proxy with no inspection.
 
-### Japanese Text
+### <a name="japanesetext"></a>Japanese Text
 *(**Note**: This section is optional.)*
 
 The bot now supports Japanese text; however, the default font will not display them correctly. If you want to see Japanese characters, you will need to use a font called MS Mincho. You can do this by clicking the treasure chest icon in the top-left corner of the window (next to the bot's name), clicking `Properties`, and going to the `Font` tab. Once there, select MS Mincho from the list and click OK.
