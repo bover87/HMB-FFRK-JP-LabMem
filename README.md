@@ -5,7 +5,7 @@ Full automation for labyrinth dungeons on Android FFRK and Windows using a proxy
 
 ![App Screenshot](/docs/img/screenshot_01.png?v=3)
 
-Built using Visual Studio 2019 Community, Installer using Inno Setup 6, pre-compiled binaries provided on the [releases page](https://github.com/bover87/HMB-FFRK-JP-LabMem/releases/)
+Built using Visual Studio 2022 Community, Installer using Inno Setup 6, pre-compiled binaries provided on the [releases page](https://github.com/bover87/HMB-FFRK-JP-LabMem/releases/)
 
 **Note: button tap locations were calculated as a percentage of a 720 x 1280 screen, this may not work on other screen sizes, more testing needed**
 
