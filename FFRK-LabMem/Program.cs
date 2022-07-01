@@ -22,7 +22,6 @@ namespace FFRK_LabMem
 
             // Enable visual styles and Japanese in forms
             System.Windows.Forms.Application.EnableVisualStyles();
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             // Get Configuration
             var configFile = (args.Length > 0) ? args[0] : null;
@@ -50,8 +49,6 @@ namespace FFRK_LabMem
             Console.Title = versionTitle;
             if (config.GetBool("updates.checkForUpdates", false))
                 _ = Updates.Check(config.GetBool("updates.includePrerelease", false));
-
-            ColorConsole.WriteLine(ConsoleColor.DarkYellow, "Japanese output: please click treasure chest in top left -> Properties and change Font to MS Mincho");
 
             LabController controller = null;
             try
