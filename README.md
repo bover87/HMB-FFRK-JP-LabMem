@@ -36,9 +36,10 @@ _All compatible versions using FFRK 8.0.0+ must install a certificate_
 11. Restart the bot when prompted
 12. Restart your device/emulator when prompted
 13. Follow any on-screen instructions to install the certificate
-14. Launch FFRK
-15. On the home screen (not title screen) auto-detect screen offsets `Alt+O` ('o' for offsets)
-16. Start a lab or enter one in-progress
+14. (Optional) If you want to see Japanese characters, change the font to MS Mincho. More information about displaying Japanese characters is give [here](#japanesetext)
+15. Launch FFRK
+16. On the home screen (not title screen) auto-detect screen offsets `Alt+O` ('o' for offsets)
+17. Start a lab or enter one in-progress
 
 ## Basic Usage
 Extract all files from the .zip file to a folder
@@ -84,7 +85,16 @@ Connecting to an emulator works over TCP.  You can set up TCP with a physical de
 ### Install trusted CA certificate
 If the proxy root CA certificate isn't installed the bot will copy it to the device and switch to the settings screen and offer guidance on installing it.  The root CA certificate is auto-generated on startup in a file called `rootCert.pfx` with a 10-year lifetime (so you only have to install it once).  Addtionally, the .pfx file contains the private key corresponding to the root CA public key contained in the certificate that is installed on the device.
 
-This certificate is only used to decrypt traffic to the `ffrk.denagames.com`, all other traffic is tunneled through the proxy with no inspection.
+This certificate is only used to decrypt traffic to URLs used by FFRK to run, all other traffic is tunneled through the proxy with no inspection.
+
+### Japanese Text
+*(**Note**: This section is optional.)*
+
+The bot now supports Japanese text; however, the default font will not display them correctly. If you want to see Japanese characters, you will need to use a font called MS Mincho. You can do this by clicking the treasure chest icon in the top-left corner of the window (next to the bot's name), clicking `Properties`, and going to the `Font` tab. Once there, select MS Mincho from the list and click OK.
+
+![Menu Screenshot](/docs/img/properties_01.png?v=3)
+
+If MS Mincho does not appear, you'll need to install it. On Windows 10/11, click `Start`, then `Settings`, then `Personalization`, then `Fonts`. Here, on the right side of the screen, click `Download Fonts for All Languages` and it will be installed. Once installed (this may take a minute or two), MS Mincho will show up in the font list.
 
 ### Screen offsets
 From version 0.9.10 and higher, screen offsets can be automatically detected using `Alt+O` when on FFRK title screen.
