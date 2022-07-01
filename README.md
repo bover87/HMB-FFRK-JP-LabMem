@@ -20,7 +20,7 @@ Built using Visual Studio 2022 Community, Installer using Inno Setup 6, pre-comp
 | Android 9 (Nougat)              | 7.0.0+          | Yes (root) |
 | Android 10 +                    | 7.0.0+          | No ([maybe?](https://docs.mitmproxy.org/stable/howto-install-system-trusted-ca-android/#instructions-for-api-level--28))|        |
 
-_All compatible versions using FFRK 8.0.0+ must install a certificate_
+_All compatible versions using FFRK 7.0.0+ must install a certificate_
 
 ## (Somewhat) Quick Start
 1. Go to the [releases page](https://github.com/bover87/HMB-FFRK-JP-LabMem/releases) and find the lastest release
