@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0EE6C01A-C8DD-4210-A630-8D083D998C9C}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FFRK_LabMem</RootNamespace>
     <AssemblyName>FFRK-LabMem</AssemblyName>
@@ -41,6 +41,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\drop.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
