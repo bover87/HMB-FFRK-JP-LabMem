@@ -54,7 +54,7 @@ For this to work correctly, the following must be set up:
 2. ADB connection
 3. Install trusted CA certificate
 4. Screen top and bottom offsets
-5. Team 1 must be able to beat anything, even at 10 fatigue.  Holy mind mage party recommended!
+5. Team 1 must be able to beat anything, even at 10 fatigue
 
 ### <a name="proxysetting"></a>Network proxy settings
 This varies by device and every network is different.  Typically with android devices you would go into the wifi settings, change proxy to manual then enter the IP address of the windows system running the app for the hostname, 8081 for the proxy port, and the following for the proxy bypass:
