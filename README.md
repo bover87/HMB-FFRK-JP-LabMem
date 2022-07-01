@@ -5,7 +5,7 @@ Full automation for labyrinth dungeons on Android FFRK and Windows using a proxy
 
 ![App Screenshot](/docs/img/screenshot_01.png?v=3)
 
-Built using Visual Studio 2019 Community, Installer using Inno Setup 6, pre-compiled binaries provided on the [releases page](https://github.com/HughJeffner/FFRK-LabMem/releases)
+Built using Visual Studio 2019 Community, Installer using Inno Setup 6, pre-compiled binaries provided on the [releases page](https://github.com/bover87/HMB-FFRK-JP-LabMem/releases/)
 
 **Note: button tap locations were calculated as a percentage of a 720 x 1280 screen, this may not work on other screen sizes, more testing needed**
 
@@ -23,7 +23,7 @@ Built using Visual Studio 2019 Community, Installer using Inno Setup 6, pre-comp
 _All compatible versions using FFRK 8.0.0+ must install a certificate_
 
 ## (Somewhat) Quick Start
-1. Go to the [releases page](https://github.com/HughJeffner/FFRK-LabMem/releases) and find the lastest release
+1. Go to the [releases page](https://github.com/bover87/HMB-FFRK-JP-LabMem/releases) and find the lastest release
 2. Under 'Assets' dropdown download `FFRK-LabMem-x.x.x-Beta-Installer.exe` file and download, run, and follow the steps. (Or you can manually install by downloading and extracting the .zip file instead)
 3. Start Emulator / Connect device to USB
 4. Turn on 'Developer Mode' in android settings [see here](https://developer.android.com/studio/debug/dev-options)
