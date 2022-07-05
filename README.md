@@ -42,7 +42,7 @@ _All compatible versions using FFRK 7.0.0+ must install a certificate_
 17. Start a lab or enter one in-progress
 
 ## Basic Usage
-Extract all files from the .zip file to a folder
+Use the installer or extract all files from the .zip file to a folder
 
 Double-click `FFRK-LabMem.exe` it and it will run in the window.  At any time as it is running you can press `D` to disable, `E` to enable, `Ctrl+X` to exit, and `H` to minimize to system tray.
 
