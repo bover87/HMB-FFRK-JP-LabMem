@@ -90,7 +90,7 @@ This certificate is only used to decrypt traffic to URLs used by FFRK to run, al
 ### <a name="japanesetext"></a>Japanese text
 *(**Note**: This section is optional.)*
 
-The bot now supports Japanese text; however, the default font will not display them correctly. If you want to see Japanese characters, you will need to use a font called MS Mincho. You can do this by clicking the treasure chest icon in the top-left corner of the window (next to the bot's name), clicking `Properties`, and going to the `Font` tab. Once there, select MS Mincho from the list and click `OK`. (If you get an error saying the shortcut cannot be modified, close LabMem, then right-click the shortcut and select `Run as Administrator`, then change the font and it will remember it for future launches.)
+The bot now supports Japanese text; however, the default font will not display it correctly. If you want to see Japanese characters, you will need to use a font called MS Mincho. You can do this by clicking the treasure chest icon in the top-left corner of the window (next to the bot's name), clicking `Properties`, and going to the `Font` tab. Once there, select MS Mincho from the list and click `OK`. (If you get an error saying the shortcut cannot be modified, close LabMem, then right-click the shortcut and select `Run as Administrator`, then change the font and it will remember it for future launches.)
 
 ![Menu Screenshot](/docs/img/properties_01.png?v=3)
 
