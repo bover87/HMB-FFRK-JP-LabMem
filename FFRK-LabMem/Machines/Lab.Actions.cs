@@ -883,12 +883,12 @@ namespace FFRK_LabMem.Machines
             // Mission Complete
             Watchdog.Kick(true);
             ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Checking for mission complete dialog");
-            await DelayedTapButton("Inter-RestartLab", BUTTON_BROWN, 2000, 39, 61, 82, 5);
+            await DelayedTapButton("Inter-RestartLab", BUTTON_BROWN, 2000, 39, 51, 86, 30);
             
             // Enter button 1
             Watchdog.Kick(true);
             ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Checking for enter button 1");
-            if (await DelayedTapButton("Inter-RestartLab", BUTTON_BLUE, 2000, 43, 80, 94, 20))
+            if (await DelayedTapButton("Inter-RestartLab", BUTTON_BLUE, 2000, 39, 80, 94, 20))
             {
 
                 // Enter button 2

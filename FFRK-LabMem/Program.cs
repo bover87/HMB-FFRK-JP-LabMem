@@ -51,7 +51,8 @@ namespace FFRK_LabMem
             if (config.GetBool("updates.checkForUpdates", false))
                 _ = Updates.Check(config.GetBool("updates.includePrerelease", false));
 
-            ColorConsole.WriteLine(ConsoleColor.DarkYellow, "Japanese output: please click treasure chest in top left -> Properties and change Font to MS Mincho");
+            ColorConsole.WriteLine(ConsoleColor.DarkYellow, "Japanese output: click treasure chest in top left then Properties and change Font to MS Mincho");
+            ColorConsole.WriteLine(ConsoleColor.DarkYellow, "See Readme.md on GitHub for more information");
 
             LabController controller = null;
             try
