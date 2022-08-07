@@ -5,25 +5,25 @@ Full automation for labyrinth dungeons on Android FFRK and Windows using a proxy
 
 ![App Screenshot](/docs/img/screenshot_01.png?v=3)
 
-Built using Visual Studio 2019 Community, Installer using Inno Setup 6, pre-compiled binaries provided on the [releases page](https://github.com/HughJeffner/FFRK-LabMem/releases)
+Built using Visual Studio 2022 Community, Installer using Inno Setup 6, pre-compiled binaries provided on the [releases page](https://github.com/bover87/HMB-FFRK-JP-LabMem/releases/)
 
 **Note: button tap locations were calculated as a percentage of a 720 x 1280 screen, this may not work on other screen sizes, more testing needed**
 
 ## Compatibility
-| Android Version                 | GL FFRK Version | Compatible |
+| Android Version                 | JP FFRK Version | Compatible |
 | ------------------------------- | --------------- | ---------- |
-| Android (Any)                   | 7.7.0 and lower | Not Supported|
-| Android 5 (Lollipop)            | 8.0.0+          | Yes        |
-| Android 6 (Marshmallow)         | 8.0.0+          | Yes        |
-| Android 7 (Nougat)              | 8.0.0+          | Yes (root) |
-| Android 8 (Oreo)                | 8.0.0+          | Yes (root) |
-| Android 9 (Nougat)              | 8.0.0+          | Yes (root) |
-| Android 10 +                    | 8.0.0+          | No ([maybe?](https://docs.mitmproxy.org/stable/howto-install-system-trusted-ca-android/#instructions-for-api-level--28))|        |
+| Android (Any)                   | 6.x and lower | Not Supported|
+| Android 5 (Lollipop)            | 7.0.0+          | Yes        |
+| Android 6 (Marshmallow)         | 7.0.0+          | Yes        |
+| Android 7 (Nougat)              | 7.0.0+          | Yes (root) |
+| Android 8 (Oreo)                | 7.0.0+          | Yes (root) |
+| Android 9 (Nougat)              | 7.0.0+          | Yes (root) |
+| Android 10 +                    | 7.0.0+          | No ([maybe?](https://docs.mitmproxy.org/stable/howto-install-system-trusted-ca-android/#instructions-for-api-level--28))|        |
 
-_All compatible versions using FFRK 8.0.0+ must install a certificate_
+_All compatible versions using FFRK 7.0.0+ must install a certificate_
 
 ## (Somewhat) Quick Start
-1. Go to the [releases page](https://github.com/HughJeffner/FFRK-LabMem/releases) and find the lastest release
+1. Go to the [releases page](https://github.com/bover87/HMB-FFRK-JP-LabMem/releases) and find the lastest release
 2. Under 'Assets' dropdown download `FFRK-LabMem-x.x.x-Beta-Installer.exe` file and download, run, and follow the steps. (Or you can manually install by downloading and extracting the .zip file instead)
 3. Start Emulator / Connect device to USB
 4. Turn on 'Developer Mode' in android settings [see here](https://developer.android.com/studio/debug/dev-options)
@@ -36,12 +36,13 @@ _All compatible versions using FFRK 8.0.0+ must install a certificate_
 11. Restart the bot when prompted
 12. Restart your device/emulator when prompted
 13. Follow any on-screen instructions to install the certificate
-14. Launch FFRK
-15. On the home screen (not title screen) auto-detect screen offsets `Alt+O` ('o' for offsets)
-16. Start a lab or enter one in-progress
+14. (Optional) If you want to see Japanese characters, change the font to MS Mincho. More information about displaying Japanese characters is give [here](#japanesetext)
+15. Launch FFRK
+16. On the home screen (not title screen) auto-detect screen offsets `Alt+O` ('o' for offsets)
+17. Start a lab or enter one in-progress
 
 ## Basic Usage
-Extract all files from the .zip file to a folder
+Use the installer or extract all files from the .zip file to a folder
 
 Double-click `FFRK-LabMem.exe` it and it will run in the window.  At any time as it is running you can press `D` to disable, `E` to enable, `Ctrl+X` to exit, and `H` to minimize to system tray.
 
@@ -53,7 +54,7 @@ For this to work correctly, the following must be set up:
 2. ADB connection
 3. Install trusted CA certificate
 4. Screen top and bottom offsets
-5. Team 1 must be able to beat anything, even at 10 fatigue.  Holy mind mage party recommended!
+5. Team 1 must be able to beat anything, even at 10 fatigue
 
 ### <a name="proxysetting"></a>Network proxy settings
 This varies by device and every network is different.  Typically with android devices you would go into the wifi settings, change proxy to manual then enter the IP address of the windows system running the app for the hostname, 8081 for the proxy port, and the following for the proxy bypass:
@@ -84,7 +85,16 @@ Connecting to an emulator works over TCP.  You can set up TCP with a physical de
 ### Install trusted CA certificate
 If the proxy root CA certificate isn't installed the bot will copy it to the device and switch to the settings screen and offer guidance on installing it.  The root CA certificate is auto-generated on startup in a file called `rootCert.pfx` with a 10-year lifetime (so you only have to install it once).  Addtionally, the .pfx file contains the private key corresponding to the root CA public key contained in the certificate that is installed on the device.
 
-This certificate is only used to decrypt traffic to the `ffrk.denagames.com`, all other traffic is tunneled through the proxy with no inspection.
+This certificate is only used to decrypt traffic to URLs used by FFRK to run, all other traffic is tunneled through the proxy with no inspection.
+
+### <a name="japanesetext"></a>Japanese text
+*(**Note**: This section is optional.)*
+
+The bot now supports Japanese text; however, the default font will not display it correctly. If you want to see Japanese characters, you will need to use a font called MS Mincho. You can do this by clicking the treasure chest icon in the top-left corner of the window (next to the bot's name), clicking `Properties`, and going to the `Font` tab. Once there, select MS Mincho from the list and click `OK`. (If you get an error saying the shortcut cannot be modified, close LabMem, then right-click the shortcut and select `Run as Administrator`, then change the font and it will remember it for future launches.)
+
+![Menu Screenshot](/docs/img/properties_01.png?v=3)
+
+If MS Mincho does not appear, you'll need to install it. On Windows 10/11, click `Start`, then `Settings`, then `Personalization`, then `Fonts`. Here, on the right side of the screen, click `Download Fonts for All Languages` and it will be installed. Once installed (this may take a minute or two), MS Mincho will show up in the font list.
 
 ### Screen offsets
 From version 0.9.10 and higher, screen offsets can be automatically detected using `Alt+O` when on FFRK title screen.
