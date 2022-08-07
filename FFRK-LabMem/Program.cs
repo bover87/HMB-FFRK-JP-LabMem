@@ -22,7 +22,6 @@ namespace FFRK_LabMem
 
             // Enable visual styles and Japanese in forms
             System.Windows.Forms.Application.EnableVisualStyles();
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             // Get Configuration
             var configFile = (args.Length > 0) ? args[0] : null;
