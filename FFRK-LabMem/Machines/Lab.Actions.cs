@@ -80,6 +80,7 @@ namespace FFRK_LabMem.Machines
                 List<Adb.ImageDef> items = new List<Adb.ImageDef>();
                 items.Add(new Adb.ImageDef() { Image = Properties.Resources.button_inventory, Simalarity = 0.90f });
                 items.Add(new Adb.ImageDef() { Image = Properties.Resources.button_blue_ok, Simalarity = 0.95f });
+                items.Add(new Adb.ImageDef() { Image = Properties.Resources.button_brown_ok, Simalarity = 0.95f });
                 items.Add(new Adb.ImageDef() { Image = Properties.Resources.button_skip, Simalarity = 0.90f });
                 items.Add(new Adb.ImageDef() { Image = Properties.Resources.lab_segment, Simalarity = 0.85f });
                 if (Data == null) items.Add(new Adb.ImageDef() { Image = Properties.Resources.button_blue_enter, Simalarity = 0.95f });
