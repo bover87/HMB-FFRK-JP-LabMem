@@ -21,7 +21,9 @@ namespace FFRK_LabMem
             Console.TreatControlCAsInput = true;
 
             // Enable visual styles and Japanese in forms
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             System.Windows.Forms.Application.EnableVisualStyles();
+            
 
             // Get Configuration
             var configFile = (args.Length > 0) ? args[0] : null;
