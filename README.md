@@ -37,7 +37,7 @@ _All compatible versions using FFRK 7.0.0+ must install a certificate_
 12. Restart the bot when prompted
 13. Restart your device/emulator when prompted
 14. Follow any on-screen instructions to install the certificate
-15. (Optional) If you want to see Japanese characters, change the font to MS Mincho. More information about displaying Japanese characters is give [here](#japanesetext)
+15. (Optional) If you want to see Japanese characters, change the font to MS Gothic. More information about displaying Japanese characters is give [here](#japanesetext)
 16. Launch FFRK
 17. On the home screen (not title screen) auto-detect screen offsets `Alt+O` ('o' for offsets)
 18. Start a lab or enter one in-progress
