@@ -26,21 +26,22 @@ _All compatible versions using FFRK 7.0.0+ must install a certificate_
 1. Go to the [releases page](https://github.com/bover87/HMB-FFRK-JP-LabMem/releases) and find the lastest release
 2. Under 'Assets' dropdown download `FFRK-LabMem-x.x.x-Beta-Installer.exe` file and download, run, and follow the steps. (Or you can manually install by downloading and extracting the .zip file instead)
 3. Start Emulator / Connect device to USB
-4. (Optional) If playing using an emulator, lower the frame rate to 30 unless you use it to play other games or stream/record, to improve performance.
-5. Turn on 'Developer Mode' in android settings [see here](https://developer.android.com/studio/debug/dev-options)
-6. Activate USB debugging in developer settings
-7. Start application FFRK-LabMem.exe (it has a treasure-chest icon)
-8. Press `C` to open the configuration
-9. [Update ADB host](#adbconnection) if using emulator
-10. Restart the bot when prompted
-11. Go back into the configuration, Under proxy settings, enable Auto-configure
-12. Restart the bot when prompted
-13. Restart your device/emulator when prompted
-14. Follow any on-screen instructions to install the certificate
-15. (Optional) If you want to see Japanese characters, change the font to MS Gothic. More information about displaying Japanese characters is give [here](#japanesetext)
-16. Launch FFRK
-17. On the home screen (not title screen) auto-detect screen offsets `Alt+O` ('o' for offsets)
-18. Start a lab or enter one in-progress
+4. Set emulator resolution to 720 (width) × 1280 (height).
+5. (Optional) If playing using an emulator, lower the frame rate to 30 unless you use it to play other games or stream/record, to improve performance.
+6. Turn on 'Developer Mode' in android settings [see here](https://developer.android.com/studio/debug/dev-options)
+7. Activate USB debugging in developer settings
+8. Start application FFRK-LabMem.exe (it has a treasure-chest icon)
+9. Press `C` to open the configuration
+10. [Update ADB host](#adbconnection) if using emulator
+11. Restart the bot when prompted
+12. Go back into the configuration, Under proxy settings, enable Auto-configure
+13. Restart the bot when prompted
+14. Restart your device/emulator when prompted
+15. Follow any on-screen instructions to install the certificate
+16. (Optional) If you want to see Japanese characters, change the font to MS Gothic. More information about displaying Japanese characters is give [here](#japanesetext)
+17. Launch FFRK
+18. On the home screen (not title screen) auto-detect screen offsets `Alt+O` ('o' for offsets)
+19. Start a lab or enter one in-progress
 
 ## Basic Usage
 Use the installer or extract all files from the .zip file to a folder
