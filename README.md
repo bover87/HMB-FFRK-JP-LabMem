@@ -23,7 +23,7 @@ Built using Visual Studio 2022 Community, Installer using Inno Setup 6, pre-comp
 _All compatible versions using FFRK 7.0.0+ must install a certificate_
 
 ## (Somewhat) Quick Start
-*(**Note**: Mumu 3/Windows 11 users, please click [here](#mumu3users) for instructions specific to you.)*
+*(**Note**: Mumu 3/Windows 11 users, please click [here](#mumu-3-users) for instructions specific to you.)*
 1. Go to the [releases page](https://github.com/bover87/HMB-FFRK-JP-LabMem/releases) and find the lastest release
 2. Under 'Assets' dropdown download `FFRK-LabMem-x.x.x-Beta-Installer.exe` file and download, run, and follow the steps. (Or you can manually install by downloading and extracting the .zip file instead)
 3. Start Emulator / Connect device to USB
