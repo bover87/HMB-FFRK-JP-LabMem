@@ -186,7 +186,8 @@ namespace FFRK_LabMem.Machines
         {
             var state = await Lab.Adb.IsPackageRunning(Adb.FFRK_PACKAGE_NAME, System.Threading.CancellationToken.None);
             ColorConsole.Debug(ColorConsole.DebugCategory.Watchdog, "FFRK state: {0}", state ? "Running" : "Not Running");
-            if (!state)
+            if (Lab.StateMachine.State == Lab.State.Battle || Lab.StateMachine.State == Lab.State.EquipParty) return;
+            else if (!state)
             {
                 InvokeTimeout(sender, WatchdogEventArgs.TYPE.Crash, e);
             }
