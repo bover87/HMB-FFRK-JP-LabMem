@@ -176,7 +176,7 @@ Windows 11 users, however, will need to do some legwork to make the bot work. Yo
 - As Mumu 3 doesn't have the gray bar, you should add 2-4 extra pixels to the vertical offset to ensure LabMem clicks the right spot.
 
 ## Common Issues / FAQ
-Mumu 3 (Windows 11) users should click [here](#mumu3users) for information specific to you.
+Mumu 3 (Windows 11) users should click [here](#Mumu3Users) for information specific to you.
 
 For other issues check https://github.com/HughJeffner/FFRK-LabMem/wiki/Common-Issues-FAQ
 
