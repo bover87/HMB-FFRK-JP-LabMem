@@ -23,6 +23,7 @@ Built using Visual Studio 2022 Community, Installer using Inno Setup 6, pre-comp
 _All compatible versions using FFRK 7.0.0+ must install a certificate_
 
 ## (Somewhat) Quick Start
+*(**Note**: Mumu 3/Windows 11 users, please click [here](#mumu3users) for instructions specific to you.)*
 1. Go to the [releases page](https://github.com/bover87/HMB-FFRK-JP-LabMem/releases) and find the lastest release
 2. Under 'Assets' dropdown download `FFRK-LabMem-x.x.x-Beta-Installer.exe` file and download, run, and follow the steps. (Or you can manually install by downloading and extracting the .zip file instead)
 3. Start Emulator / Connect device to USB
@@ -90,7 +91,7 @@ If the proxy root CA certificate isn't installed the bot will copy it to the dev
 This certificate is only used to decrypt traffic to URLs used by FFRK to run, all other traffic is tunneled through the proxy with no inspection.
 
 ### <a name="japanesetext"></a>Japanese text
-*(**Note**: This section is optional. Any font that supports Japanese output, such as MS Mincho which was previously recommended, will work, but I now recommend MS Gothic because it's easier to set up and frankly looks better.)*
+*(**Note**: This section is optional. Any font that supports Japanese output, such as MS Mincho which was previously recommended, will work, but I now recommend MS Gothic because it's easier to set up and frankly looks better. This is unnecessary for Windows 11 users as it displays Japanese characters natively.)*
 
 The bot now supports Japanese text; however, the default font will not display it correctly. If you want to see Japanese characters, you will need to use a font that supports Japanese characters; my recommendation is MS Gothic. You can do this by clicking the treasure chest icon in the top-left corner of the window (next to the bot's name), clicking `Properties`, and going to the `Font` tab. Once there, select MS Mincho from the list and click `OK`. (If you get an error saying the shortcut cannot be modified, close LabMem, then right-click the shortcut and select `Run as Administrator`, then change the font and it will remember it for future launches.) Alternatively, you can simply change the default font (`Defaults` on the same menu where you select `Fonts`), although this will change every other console-based application to that font.
 
@@ -162,9 +163,22 @@ For a major release copy all files.  You can optionally keep your configuration 
 
 Please keep your `rootCert.pfx` file, or you will have to re-install the certificate on the android device
 
+## Mumu 3 Users
+If you're using Windows 10 or earlier, it's easiest to simply downgrade Mumu to [1.4.2](https://windows.apkpure.com/mumu-player/download/18615). It's best to stick with 8.3.1 in this case unless you're having problems with the bot restarting mid-battle, because the crash recovery is less robust in 8.3.2 to ensure compatibility.
+
+Windows 11 users, however, will need to do some legwork to make the bot work. You'll have to use Mumu 3; older Mumu versions and most other Android emulators don't work in Windows 11 without disabling a host of security settings, and Android Studio, Mumu Nebula, and Bluestacks aren't compatible with the bot. You should follow the instructions [above]((Somewhat)QuickStart) with the following exceptions:
+
+> You MUST use the latest version (8.3.2). Otherwise, the bot will often detect false "crashes" mid-battle and restart.
+> You can enable developer mode, but Mumu 3 does NOT support USB debugging. Mumu Pro may support it (in which case you can use 8.3.1 with the normal installation instructions), but I don't have access to it to test.
+> **Installing the certificate**: After installing and running the bot, look in its folder for `rootCert.pfx`. Place this file in the `MuMuShared` folder in your Documents folder. Then open your `Files` app in Mumu and click on the certificate to install it.
+> After installing the certificate, press Enter to advance the bot. When running the bot the first time, it will almost certainly crash. **This is fine**, just restart it and it should activate itself then.
+> You won't be able to install Minicap. This is fine, the bot will use ADB; however, performance may be slightly slower than otherwise.
+> As Mumu 3 doesn't have the gray bar, you should add 2-4 extra pixels to the vertical offset to ensure LabMem clicks the right spot.
 
 ## Common Issues / FAQ
-Check https://github.com/HughJeffner/FFRK-LabMem/wiki/Common-Issues-FAQ
+Mumu 3 (Windows 11) users should click [here](#mumu3users) for information specific to you.
+
+For other issues check https://github.com/HughJeffner/FFRK-LabMem/wiki/Common-Issues-FAQ
 
 ## Special Thanks
 Many, many thanks to HughJeffner for creating this amazing tool. Also, special thanks to mendicant for his modifications to the original project which served as the basis for this version of the bot.
