@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FFRK_Machines.Services.Adb;
+using System.Data.Common;
 
 namespace FFRK_LabMem.Machines
 {
@@ -1134,8 +1135,8 @@ namespace FFRK_LabMem.Machines
                 var ret = await Adb.FindImages(items, 3, this.CancellationToken);
                 if (ret != null)
                 {
-                    // Tap it
-                    await Adb.TapPct(ret.Location.Item1, ret.Location.Item2, this.CancellationToken);
+                    // Tap it (Y axis is incremented by 4.5 to account for lack of gray bar in Android 12)
+                    await Adb.TapPct(ret.Location.Item1, ret.Location.Item2 + 4.5, this.CancellationToken);
                 }
                 // Delay between finds
                 await Task.Delay(Adb.CaptureRate, this.CancellationToken);
