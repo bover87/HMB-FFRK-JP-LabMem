@@ -164,16 +164,15 @@ For a major release copy all files.  You can optionally keep your configuration 
 Please keep your `rootCert.pfx` file, or you will have to re-install the certificate on the android device
 
 ## Mumu 3 Users
-If you're using Windows 10 or earlier, it's easiest to simply downgrade Mumu to [1.4.2](https://windows.apkpure.com/mumu-player/download/18615). It's best to stick with 8.3.1 in this case unless you're having problems with the bot restarting mid-battle, because the crash recovery is less robust in 8.3.2 to ensure compatibility.
+If you're using Windows 10 or earlier, it's easiest to simply downgrade Mumu to [1.4.2](https://windows.apkpure.com/mumu-player/download/18615). It's best to stick with LabMem version 8.3.1 in this case unless you're having problems with the bot restarting mid-battle, because the crash recovery is less robust in 8.3.2+ to ensure compatibility.
 
 Windows 11 users, however, will need to do some legwork to make the bot work. You'll have to use Mumu 3; older Mumu versions and most other Android emulators don't work in Windows 11 without disabling a host of security settings, and Android Studio, Mumu Nebula, and Bluestacks aren't compatible with the bot. You should follow the instructions [above](#Somewhat-Quick-Start) with the following exceptions:
 
-- You MUST use the latest version (8.3.2). Otherwise, the bot will often detect false "crashes" mid-battle and restart.
+- You MUST use 8.3.2 or later. Otherwise, the bot will often detect false "crashes" mid-battle and restart.
 - You can enable developer mode, but Mumu 3 does NOT support USB debugging. Mumu Pro may support it (in which case you can use 8.3.1 with the normal installation instructions), but I don't have access to it to test.
 - **Installing the certificate**: After installing and running the bot, look in its folder for `rootCert.pfx`. Place this file in the `MuMuShared` folder in your Documents folder. Then open your `Files` app in Mumu and click on the certificate to install it.
 - After installing the certificate, press Enter to advance the bot. When running the bot the first time, it will almost certainly crash. **This is fine**, just restart it and it should activate itself then.
 - You won't be able to install Minicap. This is fine, the bot will use ADB; however, performance may be slightly slower than otherwise.
-- As Mumu 3 doesn't have the gray bar, you should add 2-4 extra pixels to the vertical offset to ensure LabMem clicks the right spot.
 
 ## Common Issues / FAQ
 Mumu 3 (Windows 11) users should click [here](#Mumu-3-Users) for information specific to you.
