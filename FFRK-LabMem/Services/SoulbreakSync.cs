@@ -1,4 +1,9 @@
-﻿using System;
+﻿using FFRK_Machines;
+using FFRK_Machines.Services.Adb;
+using Newtonsoft.Json.Linq;
+using Semver;
+using Syroot.Windows.IO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -6,13 +11,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Security.Policy;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using FFRK_Machines;
-using FFRK_Machines.Services.Adb;
-using Newtonsoft.Json.Linq;
-using Semver;
-using Syroot.Windows.IO;
 
 namespace FFRK_LabMem.Services
 {
@@ -94,7 +95,9 @@ namespace FFRK_LabMem.Services
                     { "party_list", parties },
                     { "api_key", APIKEY }
                 };
-                var content = new FormUrlEncodedContent(values);
+
+                var items = values.Select(i => WebUtility.UrlEncode(i.Key) + "=" + WebUtility.UrlEncode(i.Value));
+                var content = new StringContent(String.Join("&", items), null, "application/x-www-form-urlencoded");
                 var response = await checker.httpClient.PostAsync(PARTY_URL, content);
                 var result = response.Content.ReadAsStringAsync().Result;
                 if (result != "")
