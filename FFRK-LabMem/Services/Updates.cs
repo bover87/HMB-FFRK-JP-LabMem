@@ -37,7 +37,7 @@ namespace FFRK_LabMem.Services
 
         }
 
-        public static String GetVersionCode(String preRelease = "")
+        public static String GetVersionCode(String preRelease = "jp")
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             var suffix = (String.IsNullOrEmpty(preRelease))?"":"-" + preRelease;
