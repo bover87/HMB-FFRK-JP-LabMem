@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("FFRK-LabMem")]
-[assembly: AssemblyDescription("Labyrinth bot for FFRK JP")]
+[assembly: AssemblyDescription("Labyrinth bot and Soulbreak Tracker for FFRK (JP)")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("bover87")]
+[assembly: AssemblyCompany("trgKai")]
 [assembly: AssemblyProduct("FFRK-LabMem")]
-[assembly: AssemblyCopyright("Copyright © HughJeffner, mendicant, bover87 2026")]
+[assembly: AssemblyCopyright("Copyright © HughJeffner, mendicant, bover87, trgKai 2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("8.4.2.0")]
-[assembly: AssemblyFileVersion("8.4.2.0")]
+[assembly: AssemblyVersion("9.1.0.0")]
+[assembly: AssemblyFileVersion("9.1.0.0")]

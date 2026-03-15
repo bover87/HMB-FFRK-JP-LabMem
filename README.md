@@ -1,6 +1,8 @@
 # FFRK-LabMem
 This is a slightly modifed version of HughJeffner's [original LabMem bot](https://github.com/HughJeffner/FFRK-LabMem) for FFRK. It is built to run with FFRK JP, with various changes made by mendicant and further modified by bover87. **This version may contain bugs. I will try my best to fix any issues, but my knowledge of coding is extremely limited. If you find bugs and know how to fix them, please feel free to create a fork.**
 
+This version has been updated to include GigaForge's Soulbreak Tracker automatic import support.
+
 Full automation for labyrinth dungeons on Android FFRK and Windows using a proxy server and [adb](https://developer.android.com/studio/command-line/adb)
 
 ![App Screenshot](/docs/img/screenshot_01.png?v=3)
