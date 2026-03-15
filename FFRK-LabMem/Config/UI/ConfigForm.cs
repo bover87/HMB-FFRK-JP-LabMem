@@ -144,6 +144,7 @@ namespace FFRK_LabMem.Config.UI
             numericUpDownCountersRarity.Value = configHelper.GetInt("counters.materialsRarityFilter", 6);
             textBoxLogFolder.Text = configHelper.GetString("console.logFolder", "");
             textBoxScreenshotFolder.Text = configHelper.GetString("adb.screenshotFolder", "");
+            textBoxSoulbreakApiKey.Text = configHelper.GetString("soulbreak.api","");
 
             // Load lab .json
             LoadConfigs();
@@ -236,6 +237,8 @@ namespace FFRK_LabMem.Config.UI
             configHelper.SetValue("console.logging", checkBoxLogging.Checked);
             configHelper.SetValue("console.debugCategories", (short)buttonDebug.Tag);
             configHelper.SetValue("console.logFolder", textBoxLogFolder.Text);
+            configHelper.SetValue("soulbreak.api", textBoxSoulbreakApiKey.Text);
+            SoulbreakSync.APIKEY = textBoxSoulbreakApiKey.Text;
             ColorConsole.Timestamps = checkBoxTimestamps.Checked;
             ColorConsole.LogBuffer.Enabled = checkBoxLogging.Checked;
             ColorConsole.LogBuffer.UpdateFolderOrDefault(textBoxLogFolder.Text);

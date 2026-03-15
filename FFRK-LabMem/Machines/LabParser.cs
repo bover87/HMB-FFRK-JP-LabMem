@@ -1,4 +1,5 @@
 ﻿using FFRK_LabMem.Data;
+using FFRK_LabMem.Services;
 using FFRK_Machines;
 using Newtonsoft.Json.Linq;
 using System;
@@ -82,6 +83,19 @@ namespace FFRK_LabMem.Machines
                     Lab.CurrentFloor = newFloor;
                 }
             }
+
+        }
+        public async Task ParseSoulbreaks(RegistrationHandlerArgs args)
+        {
+            var soulbreaks = args.Data["soul_strikes"];
+            string sb_string = "";
+            foreach (var sb in soulbreaks)
+            {
+                sb_string += sb["id"] + ",";
+            }
+            sb_string = sb_string.Remove(sb_string.Length - 1, 1);
+            await SoulbreakSync.Sync(sb_string);
+
 
         }
 

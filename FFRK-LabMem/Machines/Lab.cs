@@ -346,6 +346,7 @@ namespace FFRK_LabMem.Machines
 
         public override void RegisterWithProxy(Proxy Proxy)
         {
+            Proxy.AddRegistration("party/list_buddy", parser.ParseSoulbreaks);
             Proxy.AddRegistration("get_display_paintings", parser.ParseDisplayPaintings);
             Proxy.AddRegistration("select_painting", async (args) =>
             {

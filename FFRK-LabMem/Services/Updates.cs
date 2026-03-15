@@ -23,8 +23,8 @@ namespace FFRK_LabMem.Services
         private HttpClient httpClient;
         private const String API_URL = "https://api.github.com/repos/{0}/{1}/releases";
         private const String WEB_URL = "https://github.com/{0}/{1}/releases";
-        private const string GITHUB_USER = "bover87";
-        private const string GITHUB_REPO = "HMB-FFRK-JP-LabMem";
+        private const string GITHUB_USER = "gigaforge";
+        private const string GITHUB_REPO = "FFRK-LabMem-SBTracker";
 
         public Updates(bool includePreRelease)
         {
@@ -37,7 +37,7 @@ namespace FFRK_LabMem.Services
 
         }
 
-        public static String GetVersionCode(String preRelease = "jp")
+        public static String GetVersionCode(String preRelease = "")
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             var suffix = (String.IsNullOrEmpty(preRelease))?"":"-" + preRelease;

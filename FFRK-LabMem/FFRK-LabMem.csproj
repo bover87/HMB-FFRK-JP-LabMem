@@ -154,6 +154,7 @@
     <Compile Include="Services\Clipboard.cs" />
     <Compile Include="Services\ConsoleTasks.cs" />
     <Compile Include="Services\Scheduler.cs" />
+    <Compile Include="Services\SoulbreakSync.cs" />
     <Compile Include="Services\Tray.cs" />
     <Compile Include="Services\Tyro.cs" />
     <Compile Include="Services\Updates.cs" />

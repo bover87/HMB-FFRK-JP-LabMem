@@ -55,6 +55,7 @@ namespace FFRK_LabMem
             Console.Title = versionTitle;
             if (config.GetBool("updates.checkForUpdates", false))
                 _ = Updates.Check(config.GetBool("updates.includePrerelease", false));
+            SoulbreakSync.APIKEY = config.GetString("soulbreak.api", "");
 
             // Hyper-V check
             ColorConsole.Debug(ColorConsole.DebugCategory.Notifcation, "Hyper-V is " + HyperV.GetHVStatus());
@@ -71,6 +72,12 @@ namespace FFRK_LabMem
                     ColorConsole.WriteLine(ConsoleColor.DarkYellow, "Japanese output: click treasure chest in top left then Properties and change Font to MS Gothic");
                     ColorConsole.WriteLine(ConsoleColor.DarkYellow, "See Readme.md on GitHub for more information");
                 }
+
+                // Soulbreak Synchronization Prompts
+                if (SoulbreakSync.APIKEY.Length < 1)
+                    Console.WriteLine("Enter an API Key from https://ffrk.gigaforge.com to begin tracking Soulbreaks.");
+                else
+                    Console.WriteLine("Soulbreaks will synchronize with https://ffrk.gigaforge.com when you enter the Party menu.");
 
                 // Ad-hoc command loop
                 Console.WriteLine("Press 'D' to Disable, 'E' to Enable, 'C' for Config, 'S' for Stats, 'Ctrl+X' to Exit");
