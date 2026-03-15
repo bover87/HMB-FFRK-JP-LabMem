@@ -93,9 +93,39 @@ namespace FFRK_LabMem.Machines
             {
                 sb_string += sb["id"] + ",";
             }
+
+            var legendmaterias = args.Data["legend_materias"];
+            foreach (var lm in legendmaterias)
+            {
+                sb_string += lm["id"] + ",";
+            }
             sb_string = sb_string.Remove(sb_string.Length - 1, 1);
             await SoulbreakSync.Sync(sb_string);
+        }
 
+        public async Task ParseParties(RegistrationHandlerArgs args)
+        {
+            var parties = args.Data["party_memory_collection"]["list"];
+            string party_string = "";
+            foreach (var party in parties)
+            {
+                var party_counter = party.SelectToken("buddies").Count();
+                if (party_counter < 1)
+                    continue;
+                party_string += party["party_memory_no"] + "," + party["party_name"] + "," + party_counter + ",";
+                for (var buddy = 0; buddy < party_counter; buddy++)
+                {
+                    party_string += party["buddies"][buddy]["id"] + "," + party["buddies"][buddy]["record_materia_1_id"] + "," +
+                        party["buddies"][buddy]["legend_materia_1_id"] + "," + party["buddies"][buddy]["legend_materia_2_id"] + "," +
+                        party["buddies"][buddy]["ability_1_id"] + "," + party["buddies"][buddy]["ability_2_id"] + ",";
+                    for (var sb = 1; sb <= 15; sb++)
+                    {
+                        party_string += party["buddies"][buddy]["soul_strike_" + sb + "_id"] + ",";
+                    }
+                }
+            }
+            party_string = party_string.Remove(party_string.Length - 1, 1);
+            await SoulbreakSync.SyncParties(party_string);
 
         }
 

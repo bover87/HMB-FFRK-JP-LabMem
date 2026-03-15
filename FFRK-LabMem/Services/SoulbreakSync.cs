@@ -22,15 +22,14 @@ namespace FFRK_LabMem.Services
         private String Endpoint { get; set; }
         private Boolean IncludePreRelease { get; set; }
         private HttpClient httpClient;
-        private const String WEB_URL = "https://ffrk.gigaforge.com/ffrk_sync.php";
+        private const String SB_URL = "https://ffrk.gigaforge.com/ffrk_sync.php";
+        private const String PARTY_URL = "https://ffrk.gigaforge.com/ffrk_party_sync";
         public static string APIKEY = "";
-        private const string GITHUB_USER = "gigaforge";
-        private const string GITHUB_REPO = "FFRK-LabMem-SBTracker";
         private static List<Int64> ownedSoulbreaks = new List<Int64>();
 
         public SoulbreakSync()
         {
-            this.Endpoint = WEB_URL;
+            this.Endpoint = SB_URL;
             ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
             httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Add("User-Agent", String.Format("{0} {1}", GetName(), GetVersionCode("")));
@@ -76,7 +75,27 @@ namespace FFRK_LabMem.Services
                     { "api_key", APIKEY }
                 };
                 var content = new FormUrlEncodedContent(values);
-                var response = await checker.httpClient.PostAsync(WEB_URL, content);
+                var response = await checker.httpClient.PostAsync(SB_URL, content);
+                var result = response.Content.ReadAsStringAsync().Result;
+                if (result != "")
+                    ColorConsole.WriteLine(ConsoleColor.DarkYellow, "{0}", response.Content.ReadAsStringAsync().Result);
+            }
+
+            return true;
+        }
+
+        public static async Task<bool> SyncParties(string parties)
+        {
+            if (APIKEY.Length > 1 && parties.Length > 100)
+            {
+                var checker = new SoulbreakSync();
+                var values = new Dictionary<string, string>
+                {
+                    { "party_list", parties },
+                    { "api_key", APIKEY }
+                };
+                var content = new FormUrlEncodedContent(values);
+                var response = await checker.httpClient.PostAsync(PARTY_URL, content);
                 var result = response.Content.ReadAsStringAsync().Result;
                 if (result != "")
                     ColorConsole.WriteLine(ConsoleColor.DarkYellow, "{0}", response.Content.ReadAsStringAsync().Result);
