@@ -398,6 +398,10 @@ namespace FFRK_LabMem.Machines
 
                 // Check for inventory full 
                 if (Config.UseTeleportStoneOnMasterPainting && this.CurrentFloor <= 1) await CheckInventoryFull();
+
+                // Trigger Battle state
+                await this.StateMachine.FireAsync(Trigger.EnterDungeon);
+
             } else
             {
                 // Informational message
