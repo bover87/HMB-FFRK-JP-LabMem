@@ -10,9 +10,9 @@ namespace FFRK_Machines.Services
     public class HyperV
     {
         static String HVStatus;
-        private static string CheckHVStatus()
+        private static String CheckHVStatus()
         {
-            ServiceController sc = new System.ServiceProcess.ServiceController("HvHost");
+            ServiceController sc = new ServiceController("HvHost");
 
             switch (sc.Status)
             {
@@ -32,15 +32,12 @@ namespace FFRK_Machines.Services
         }
         public static String GetHVStatus()
         {
-            if (HVStatus != null)
+            if (HVStatus == null)
             {
-                return HVStatus;
-            }
-            else
-            {
+                ColorConsole.Debug(ColorConsole.DebugCategory.Notification, "Checking for process HvHost...");
                 HVStatus = CheckHVStatus();
-                return HVStatus;
-            }
+            }      
+            return HVStatus;
         }
 
         // This was intended to reset Hyper-V status in the bot to null, hopefully allowing the certificate to be installed manually

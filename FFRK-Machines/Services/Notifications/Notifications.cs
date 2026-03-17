@@ -63,7 +63,7 @@ namespace FFRK_Machines.Services.Notifications
         public async Task ProcessEvent(EventType eventType, string message, EventList events)
         {
 
-            ColorConsole.Debug(ColorConsole.DebugCategory.Notifcation, "Processing event {0}", eventType);
+            ColorConsole.Debug(ColorConsole.DebugCategory.Notification, "Processing event {0}", eventType);
             try
             {
                 var args = new NotificationArgs() { EventType = eventType, Message = message };

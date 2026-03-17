@@ -58,7 +58,7 @@ namespace FFRK_LabMem
             SoulbreakSync.APIKEY = config.GetString("soulbreak.api", "");
 
             // Hyper-V check
-            ColorConsole.Debug(ColorConsole.DebugCategory.Notifcation, "Hyper-V is " + HyperV.GetHVStatus());
+            ColorConsole.Debug(ColorConsole.DebugCategory.Notification, "Hyper-V is " + HyperV.GetHVStatus());
 
             LabController controller = null;
             try
