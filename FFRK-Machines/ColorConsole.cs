@@ -24,7 +24,7 @@ namespace FFRK_Machines
             Proxy = 1 << 1,
             Lab = 1 << 2,
             Watchdog = 1 << 3,
-            Notifcation = 1 << 4,
+            Notification = 1 << 4,
             Timings = 1 << 5
         }
 

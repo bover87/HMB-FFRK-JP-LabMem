@@ -244,7 +244,7 @@ namespace FFRK_LabMem.Config.UI
             this.label14 = new System.Windows.Forms.Label();
             this.textBoxSMTPServer = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.checkBoxNotifcationEmail = new System.Windows.Forms.CheckBox();
+            this.checkBoxNotificationEmail = new System.Windows.Forms.CheckBox();
             this.checkBoxNotificationFlashTaskbar = new System.Windows.Forms.CheckBox();
             this.checkBoxNotificationConsole = new System.Windows.Forms.CheckBox();
             this.textBoxNotificationSound = new System.Windows.Forms.TextBox();
@@ -2563,7 +2563,7 @@ namespace FFRK_LabMem.Config.UI
             // tabPage9
             // 
             this.tabPage9.Controls.Add(this.panelSMTP);
-            this.tabPage9.Controls.Add(this.checkBoxNotifcationEmail);
+            this.tabPage9.Controls.Add(this.checkBoxNotificationEmail);
             this.tabPage9.Controls.Add(this.checkBoxNotificationFlashTaskbar);
             this.tabPage9.Controls.Add(this.checkBoxNotificationConsole);
             this.tabPage9.Controls.Add(this.textBoxNotificationSound);
@@ -2734,16 +2734,16 @@ namespace FFRK_LabMem.Config.UI
             this.label13.TabIndex = 0;
             this.label13.Text = "SMTP Server:";
             // 
-            // checkBoxNotifcationEmail
+            // checkBoxNotificationEmail
             // 
-            this.checkBoxNotifcationEmail.AutoSize = true;
-            this.checkBoxNotifcationEmail.Location = new System.Drawing.Point(3, 148);
-            this.checkBoxNotifcationEmail.Name = "checkBoxNotifcationEmail";
-            this.checkBoxNotifcationEmail.Size = new System.Drawing.Size(106, 19);
-            this.checkBoxNotifcationEmail.TabIndex = 7;
-            this.checkBoxNotifcationEmail.Text = "Send an email";
-            this.checkBoxNotifcationEmail.UseVisualStyleBackColor = true;
-            this.checkBoxNotifcationEmail.CheckedChanged += new System.EventHandler(this.CheckBoxNotifcationEmail_CheckedChanged);
+            this.checkBoxNotificationEmail.AutoSize = true;
+            this.checkBoxNotificationEmail.Location = new System.Drawing.Point(3, 148);
+            this.checkBoxNotificationEmail.Name = "checkBoxNotificationEmail";
+            this.checkBoxNotificationEmail.Size = new System.Drawing.Size(106, 19);
+            this.checkBoxNotificationEmail.TabIndex = 7;
+            this.checkBoxNotificationEmail.Text = "Send an email";
+            this.checkBoxNotificationEmail.UseVisualStyleBackColor = true;
+            this.checkBoxNotificationEmail.CheckedChanged += new System.EventHandler(this.CheckBoxNotificationEmail_CheckedChanged);
             // 
             // checkBoxNotificationFlashTaskbar
             // 
@@ -3166,7 +3166,7 @@ namespace FFRK_LabMem.Config.UI
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox textBoxSMTPServer;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.CheckBox checkBoxNotifcationEmail;
+        private System.Windows.Forms.CheckBox checkBoxNotificationEmail;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox textBoxSMTPTo;
         private System.Windows.Forms.TextBox textBoxSMTPFrom;

@@ -19,7 +19,7 @@ namespace FFRK_Machines.Services.Notifications
         public override async Task Notify(Notifications.NotificationArgs args)
         {
 
-            ColorConsole.Debug(ColorConsole.DebugCategory.Notifcation, "Sending email: {0}", this);
+            ColorConsole.Debug(ColorConsole.DebugCategory.Notification, "Sending email: {0}", this);
             using (var smtpClient = new SmtpClient(SMTPHost)
             {
                 Port = Port,

@@ -9,7 +9,7 @@ namespace FFRK_Machines.Services.Notifications
 
         public async override Task Notify(Notifications.NotificationArgs args)
         {
-            ColorConsole.Debug(ColorConsole.DebugCategory.Notifcation, "Playing sound: {0}", FilePath);
+            ColorConsole.Debug(ColorConsole.DebugCategory.Notification, "Playing sound: {0}", FilePath);
             Sound.Play(FilePath);
             await Task.CompletedTask;
         }

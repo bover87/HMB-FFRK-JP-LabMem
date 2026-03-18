@@ -969,7 +969,7 @@ namespace FFRK_LabMem.Config.UI
                 if (m == null)
                 {
                     n.Add(new EmailNotification() { 
-                        Enabled = checkBoxNotifcationEmail.Checked,
+                        Enabled = checkBoxNotificationEmail.Checked,
                         SMTPHost = textBoxSMTPServer.Text,
                         Port = (int)numericUpDownSMTPPort.Value,
                         EnableSsl = checkBoxSMTPSSL.Checked,
@@ -981,7 +981,7 @@ namespace FFRK_LabMem.Config.UI
                 }
                 else
                 {
-                    m.Enabled = checkBoxNotifcationEmail.Checked;
+                    m.Enabled = checkBoxNotificationEmail.Checked;
                     m.SMTPHost = textBoxSMTPServer.Text;
                     m.Port = (int)numericUpDownSMTPPort.Value;
                     m.EnableSsl = checkBoxSMTPSSL.Checked;
@@ -1026,11 +1026,11 @@ namespace FFRK_LabMem.Config.UI
             var email = notfications.OfType<EmailNotification>().FirstOrDefault();
             if (email == null)
             {
-                checkBoxNotifcationEmail.Checked = false;
+                checkBoxNotificationEmail.Checked = false;
             }
             else
             {
-                checkBoxNotifcationEmail.Checked = email.Enabled;
+                checkBoxNotificationEmail.Checked = email.Enabled;
                 textBoxSMTPServer.Text = email.SMTPHost;
                 numericUpDownSMTPPort.Value = email.Port;
                 checkBoxSMTPSSL.Checked = email.EnableSsl;
@@ -1061,9 +1061,9 @@ namespace FFRK_LabMem.Config.UI
             }
         }
 
-        private void CheckBoxNotifcationEmail_CheckedChanged(object sender, EventArgs e)
+        private void CheckBoxNotificationEmail_CheckedChanged(object sender, EventArgs e)
         {
-            panelSMTP.Enabled = checkBoxNotifcationEmail.Checked;
+            panelSMTP.Enabled = checkBoxNotificationEmail.Checked;
         }
 
         private void TextBoxSMTPUser_TextChanged(object sender, EventArgs e)

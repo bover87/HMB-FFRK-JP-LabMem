@@ -48,7 +48,7 @@ namespace FFRK_Machines.Services.Notifications
 
         public override Task Notify(Notifications.NotificationArgs args)
         {
-            ColorConsole.Debug(ColorConsole.DebugCategory.Notifcation, "Flashing the taskbar");
+            ColorConsole.Debug(ColorConsole.DebugCategory.Notification, "Flashing the taskbar");
             FLASHWINFO fi = new FLASHWINFO();
             fi.cbSize = Convert.ToUInt32(Marshal.SizeOf(fi));
             fi.hwnd = GetConsoleWindow();
