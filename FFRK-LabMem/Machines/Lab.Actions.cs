@@ -400,7 +400,7 @@ namespace FFRK_LabMem.Machines
                 if (Config.UseTeleportStoneOnMasterPainting && this.CurrentFloor <= 1) await CheckInventoryFull();
 
                 // Trigger EnterDungeon state
-                await this.StateMachine.FireAsync(Trigger.EnterDungeon);
+                await this.StateMachine.FireAsync(Trigger.StartBattle);
 
             } else
             {
