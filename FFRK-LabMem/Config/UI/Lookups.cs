@@ -24,11 +24,11 @@ namespace FFRK_LabMem.Config.UI
         };
 
         public static Dictionary<String, String> Treasures = new Dictionary<string, string>() {
-            {"5", "Hero Equipment"},
-            {"4", "Anima Lenses, Bookmark, 5* Rat Tails, Map x2, Teleport Stone"},
-            {"3", "6* Motes, 4* Rat Tails, Magic Key, Treasure Map, Lethe Potion"},
-            {"2", "6* Crystals, Rainbow Crystal, Rosetta Stone of Wisdom"},
-            {"1", "5* Orbs, 5* Motes"}
+            {"5", "Hero Motes/Equipment"},
+            {"4", "Anima Lenses, Bookmark, 5★ Rat Tails, Map ×2, Teleport Stone"},
+            {"3", "7★/6★ Motes, 4★ Rat Tails, Magic Key, Treasure Map, Lethe Potion"},
+            {"2", "6★ Crystals, Rainbow Crystal, Rosetta Stone of Wisdom"},
+            {"1", "5★ Orbs, 5★ Motes"}
         };
 
         public static BindingList<AdbHostItem> AdbHosts = new BindingList<AdbHostItem>() {

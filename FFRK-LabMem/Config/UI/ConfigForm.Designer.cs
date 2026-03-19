@@ -46,6 +46,9 @@ namespace FFRK_LabMem.Config.UI
             this.buttonCancel = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.checkboxEnglish = new System.Windows.Forms.CheckBox();
+            this.textBoxSoulbreakApiKey = new System.Windows.Forms.TextBox();
+            this.label46 = new System.Windows.Forms.Label();
             this.textBoxScreenshotFolder = new System.Windows.Forms.TextBox();
             this.label45 = new System.Windows.Forms.Label();
             this.buttonScreenshotFolder = new System.Windows.Forms.Button();
@@ -263,8 +266,6 @@ namespace FFRK_LabMem.Config.UI
             this.buttonApply = new System.Windows.Forms.Button();
             this.openFileDialogSound = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.label46 = new System.Windows.Forms.Label();
-            this.textBoxSoulbreakApiKey = new System.Windows.Forms.TextBox();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownScreenBottom)).BeginInit();
@@ -362,6 +363,7 @@ namespace FFRK_LabMem.Config.UI
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.checkboxEnglish);
             this.tabPage1.Controls.Add(this.textBoxSoulbreakApiKey);
             this.tabPage1.Controls.Add(this.label46);
             this.tabPage1.Controls.Add(this.textBoxScreenshotFolder);
@@ -388,10 +390,38 @@ namespace FFRK_LabMem.Config.UI
             this.tabPage1.Size = new System.Drawing.Size(504, 466);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "General";
+            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
+            // 
+            // checkboxEnglish
+            // 
+            this.checkboxEnglish.AutoSize = true;
+            this.checkboxEnglish.Location = new System.Drawing.Point(0, 128);
+            this.checkboxEnglish.Name = "checkboxEnglish";
+            this.checkboxEnglish.Size = new System.Drawing.Size(146, 19);
+            this.checkboxEnglish.TabIndex = 20;
+            this.checkboxEnglish.Text = "Enable English output";
+            this.toolTip1.SetToolTip(this.checkboxEnglish, "Enables English output instead of Japanese.");
+            this.checkboxEnglish.UseVisualStyleBackColor = true;
+            // 
+            // textBoxSoulbreakApiKey
+            // 
+            this.textBoxSoulbreakApiKey.Location = new System.Drawing.Point(149, 298);
+            this.textBoxSoulbreakApiKey.Name = "textBoxSoulbreakApiKey";
+            this.textBoxSoulbreakApiKey.Size = new System.Drawing.Size(280, 21);
+            this.textBoxSoulbreakApiKey.TabIndex = 19;
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(-3, 298);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(151, 15);
+            this.label46.TabIndex = 18;
+            this.label46.Text = "Soulbreak Tracker API Key";
             // 
             // textBoxScreenshotFolder
             // 
-            this.textBoxScreenshotFolder.Location = new System.Drawing.Point(149, 246);
+            this.textBoxScreenshotFolder.Location = new System.Drawing.Point(149, 271);
             this.textBoxScreenshotFolder.Name = "textBoxScreenshotFolder";
             this.textBoxScreenshotFolder.Size = new System.Drawing.Size(280, 21);
             this.textBoxScreenshotFolder.TabIndex = 16;
@@ -400,7 +430,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             // label45
             // 
-            this.label45.Location = new System.Drawing.Point(-3, 246);
+            this.label45.Location = new System.Drawing.Point(-3, 269);
             this.label45.Name = "label45";
             this.label45.Size = new System.Drawing.Size(146, 23);
             this.label45.TabIndex = 15;
@@ -411,7 +441,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             this.buttonScreenshotFolder.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonScreenshotFolder.Image = global::FFRK_LabMem.Properties.Resources.folder;
-            this.buttonScreenshotFolder.Location = new System.Drawing.Point(437, 245);
+            this.buttonScreenshotFolder.Location = new System.Drawing.Point(435, 273);
             this.buttonScreenshotFolder.Name = "buttonScreenshotFolder";
             this.buttonScreenshotFolder.Size = new System.Drawing.Size(29, 23);
             this.buttonScreenshotFolder.TabIndex = 17;
@@ -420,7 +450,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             // textBoxLogFolder
             // 
-            this.textBoxLogFolder.Location = new System.Drawing.Point(149, 219);
+            this.textBoxLogFolder.Location = new System.Drawing.Point(149, 244);
             this.textBoxLogFolder.Name = "textBoxLogFolder";
             this.textBoxLogFolder.Size = new System.Drawing.Size(280, 21);
             this.textBoxLogFolder.TabIndex = 13;
@@ -429,7 +459,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             // label43
             // 
-            this.label43.Location = new System.Drawing.Point(-3, 219);
+            this.label43.Location = new System.Drawing.Point(-1, 242);
             this.label43.Name = "label43";
             this.label43.Size = new System.Drawing.Size(146, 23);
             this.label43.TabIndex = 12;
@@ -440,7 +470,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             this.buttonLogFolder.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonLogFolder.Image = global::FFRK_LabMem.Properties.Resources.folder;
-            this.buttonLogFolder.Location = new System.Drawing.Point(437, 218);
+            this.buttonLogFolder.Location = new System.Drawing.Point(435, 244);
             this.buttonLogFolder.Name = "buttonLogFolder";
             this.buttonLogFolder.Size = new System.Drawing.Size(29, 23);
             this.buttonLogFolder.TabIndex = 14;
@@ -463,7 +493,7 @@ namespace FFRK_LabMem.Config.UI
             this.buttonDebug.BackColor = System.Drawing.SystemColors.Control;
             this.buttonDebug.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonShadow;
             this.buttonDebug.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonDebug.Location = new System.Drawing.Point(149, 131);
+            this.buttonDebug.Location = new System.Drawing.Point(149, 150);
             this.buttonDebug.Name = "buttonDebug";
             this.buttonDebug.Size = new System.Drawing.Size(233, 26);
             this.buttonDebug.TabIndex = 7;
@@ -474,7 +504,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             // label12
             // 
-            this.label12.Location = new System.Drawing.Point(-3, 132);
+            this.label12.Location = new System.Drawing.Point(-3, 150);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(143, 23);
             this.label12.TabIndex = 6;
@@ -493,7 +523,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             // numericUpDownScreenBottom
             // 
-            this.numericUpDownScreenBottom.Location = new System.Drawing.Point(149, 192);
+            this.numericUpDownScreenBottom.Location = new System.Drawing.Point(149, 209);
             this.numericUpDownScreenBottom.Maximum = new decimal(new int[] {
             500,
             0,
@@ -513,7 +543,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(-3, 192);
+            this.label2.Location = new System.Drawing.Point(-3, 209);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(146, 23);
             this.label2.TabIndex = 10;
@@ -522,7 +552,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             // numericUpDownScreenTop
             // 
-            this.numericUpDownScreenTop.Location = new System.Drawing.Point(149, 163);
+            this.numericUpDownScreenTop.Location = new System.Drawing.Point(149, 182);
             this.numericUpDownScreenTop.Maximum = new decimal(new int[] {
             500,
             0,
@@ -542,7 +572,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(-3, 163);
+            this.label1.Location = new System.Drawing.Point(-3, 180);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(146, 23);
             this.label1.TabIndex = 8;
@@ -2943,22 +2973,6 @@ namespace FFRK_LabMem.Config.UI
             this.openFileDialogSound.Filter = "WAV files|*.wav";
             this.openFileDialogSound.Title = "Choose sound file";
             // 
-            // label46
-            // 
-            this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(-1, 281);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(151, 15);
-            this.label46.TabIndex = 18;
-            this.label46.Text = "Soulbreak Tracker API Key";
-            // 
-            // textBoxSoulbreakApiKey
-            // 
-            this.textBoxSoulbreakApiKey.Location = new System.Drawing.Point(149, 278);
-            this.textBoxSoulbreakApiKey.Name = "textBoxSoulbreakApiKey";
-            this.textBoxSoulbreakApiKey.Size = new System.Drawing.Size(280, 21);
-            this.textBoxSoulbreakApiKey.TabIndex = 19;
-            // 
             // ConfigForm
             // 
             this.AcceptButton = this.buttonOk;
@@ -3277,5 +3291,6 @@ namespace FFRK_LabMem.Config.UI
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.TextBox textBoxSoulbreakApiKey;
         private System.Windows.Forms.Label label46;
+        private System.Windows.Forms.CheckBox checkboxEnglish;
     }
 }

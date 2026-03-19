@@ -1,5 +1,6 @@
 ﻿using FFRK_LabMem.Config;
 using FFRK_LabMem.Machines;
+using FFRK_LabMem.Services;
 using FFRK_Machines;
 using Newtonsoft.Json.Linq;
 using System;
@@ -91,11 +92,12 @@ namespace FFRK_LabMem.Data
                     foreach (var item in items)
                     {
                         var row = CreateDataRow(lab);
-                        row.Add(item["item_name"].ToString());
+                        String dropName = item["item_name"].ToString();
+                        row.Add(Translation.TranslateItem(dropName));
                         row.Add(item["num"].ToString());
                         WriteCSVLine(writer, row.ToArray(), row.Count);
 
-                        ColorConsole.WriteLine(ConsoleColor.DarkGreen, "Got Item: {0} x{1}",
+                        ColorConsole.WriteLine(ConsoleColor.DarkGreen, "Got Item: {0} ×{1}",
                             row[4].Replace("★", "*"),
                             row[5]);
 
@@ -122,11 +124,11 @@ namespace FFRK_LabMem.Data
                     foreach (var item in drops)
                     {
                         var row = CreateDataRow(lab);
-                        row.Add(item.First["name"].ToString());
+                        row.Add(Translation.TranslateItem(item.First["name"].ToString()));
                         row.Add((qtyMap[item.First["item_id"].ToString()] ?? "1").ToString());
                         WriteCSVLine(writer, row.ToArray(), row.Count);
 
-                        ColorConsole.WriteLine(ConsoleColor.DarkGreen, " Drop: {0} x{1}",
+                        ColorConsole.WriteLine(ConsoleColor.DarkGreen, " Drop: {0} ×{1}",
                             row[4].Replace("★", "*"),
                             row[5]);
 
@@ -163,7 +165,7 @@ namespace FFRK_LabMem.Data
                         var row = CreateDataRow(lab);
                         // Timestamp
                         row[2] = lab.Data["SERVER_TIME"].ToString();
-                        row.Add(item.First["name"].ToString());
+                        row.Add(Translation.TranslateItem(item.First["name"].ToString()));
                         // Get Qty
                         var itemid = ((JProperty)item).Name.ToString();
                         string qty = "0";

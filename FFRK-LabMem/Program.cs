@@ -67,7 +67,7 @@ namespace FFRK_LabMem
                 controller = LabController.CreateAndStart(config).Result;
 
                 // Instructions for Japanese output (Windows 10 and earlier)
-                if (HyperV.GetHVStatus() != "Running")
+                if (HyperV.GetHVStatus() != "Running" && FFRK_LabMem.Services.Translation.Translate == false)
                 {
                     ColorConsole.WriteLine(ConsoleColor.DarkYellow, "Japanese output: click treasure chest in top left then Properties and change Font to MS Gothic");
                     ColorConsole.WriteLine(ConsoleColor.DarkYellow, "See Readme.md on GitHub for more information");

@@ -29,6 +29,7 @@ namespace FFRK_LabMem.Machines
             PickedCombatant,
             PickedPortal,
             MoveOn,
+            LoadBattle,
             StartBattle,
             EnterDungeon,
             BattleSuccess,
@@ -51,6 +52,7 @@ namespace FFRK_LabMem.Machines
             PortalConfirm,
             BattleInfo,
             EquipParty,
+            LoadBattle,
             Battle,
             BattleFinished,
             Failed,
@@ -110,6 +112,7 @@ namespace FFRK_LabMem.Machines
                 .Permit(Trigger.FoundTreasure, State.FoundTreasure)
                 .Permit(Trigger.FoundBattle, State.EquipParty)
                 .Permit(Trigger.FoundDoor, State.FoundSealedDoor)
+                .Permit(Trigger.LoadBattle, State.LoadBattle)
                 .Permit(Trigger.StartBattle, State.Battle)
                 .Permit(Trigger.BattleSuccess, State.BattleFinished)
                 .Permit(Trigger.PickedCombatant, State.BattleInfo)
@@ -154,6 +157,7 @@ namespace FFRK_LabMem.Machines
             this.StateMachine.Configure(State.BattleInfo)
                 .OnEntryAsync(async (t) => await EnterDungeon())
                 .Permit(Trigger.EnterDungeon, State.EquipParty)
+                .Permit(Trigger.LoadBattle, State.LoadBattle)
                 .Permit(Trigger.StartBattle, State.Battle)
                 .Permit(Trigger.ResetState, State.Ready)
                 .Ignore(Trigger.MissedButton);
@@ -163,7 +167,11 @@ namespace FFRK_LabMem.Machines
                 .PermitReentry(Trigger.FoundBattle)
                 .Permit(Trigger.StartBattle, State.Battle)
                 .Permit(Trigger.ResetState, State.Ready)
+                .Permit(Trigger.LoadBattle, State.LoadBattle)
                 .Ignore(Trigger.MissedButton);
+
+            this.StateMachine.Configure(State.LoadBattle)
+                .Permit(Trigger.StartBattle, State.Battle);
 
             this.StateMachine.Configure(State.Battle)
                 .OnEntry((t) => battleStopwatch.Restart())
