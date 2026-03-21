@@ -13,6 +13,7 @@ namespace FFRK_Machines
         public static bool Timestamps { get; set; }
         public static LogFileBuffer LogBuffer { get; set; } = new LogFileBuffer();
         public static DebugCategory DebugCategories { get; set; }
+        public static bool Translate { get; set; }
         private static bool stamped = false;
         private static readonly object consoleLock = new object();
         

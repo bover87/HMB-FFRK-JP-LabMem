@@ -7,6 +7,8 @@ using FFRK_Machines;
 using FFRK_Machines.Services.Adb;
 using FFRK_Machines.Machines;
 using FFRK_Machines.Services.Notifications;
+using FFRK_LabMem.Config.UI;
+using System.Collections.Generic;
 
 namespace FFRK_LabMem.Machines
 {

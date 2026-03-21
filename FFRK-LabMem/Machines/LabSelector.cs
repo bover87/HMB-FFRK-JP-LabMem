@@ -1,12 +1,14 @@
 ﻿using FFRK_LabMem.Data;
+using FFRK_LabMem.Services;
 using FFRK_Machines;
+using FFRK_Machines.Services.Adb;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FFRK_Machines.Services.Adb;
+using static FFRK_LabMem.Machines.LabConfiguration;
 
 namespace FFRK_LabMem.Machines
 {
@@ -27,10 +29,10 @@ namespace FFRK_LabMem.Machines
         {
 
             // Type as string
-            var type = painting["type"].ToString();
-            var maxPriority = Config.PaintingPriorityMap.Values.Max() * 10;
-            var portalPriority = Config.PaintingPriorityMap.Where(p => p.Key.Equals("6")).FirstOrDefault().Value * 10;
-            var masterPriority = Config.PaintingPriorityMap.Where(p => p.Key.Equals("2")).FirstOrDefault().Value * 10;
+            string type = painting["type"].ToString();
+            int maxPriority = Config.PaintingPriorityMap.Values.Max() * 10;
+            int portalPriority = Config.PaintingPriorityMap.Where(p => p.Key.Equals("6")).FirstOrDefault().Value * 10;
+            int masterPriority = Config.PaintingPriorityMap.Where(p => p.Key.Equals("2")).FirstOrDefault().Value * 10;
 
             // Radiant painting
             if ((bool)painting["is_special_effect"])
@@ -47,7 +49,7 @@ namespace FFRK_LabMem.Machines
 
                 // Priority calculation
                 if (type.Equals("1")) type += "." + painting["display_type"].ToString();// Combatant sub-type 
-                var rPriority = Config.PaintingPriorityMap[type];                       // Default priority
+                int rPriority = Config.PaintingPriorityMap[type];                       // Default priority
                 if (Config.PaintingPriorityMap.ContainsKey("R")) 
                     rPriority = Math.Min(rPriority, Config.PaintingPriorityMap["R"]);   // Take the lower of the two
                 return (rPriority * 10) - 5;                                            // Break tie between 2 of the same type of painting
@@ -58,20 +60,45 @@ namespace FFRK_LabMem.Machines
             {
                 type += "." + painting["display_type"].ToString();
 
-                // Enemy blocklist
-                var enemyName = painting["dungeon"]["captures"][0]["tip_battle"]["title"].ToString();
-                var enemyEntry = Config.EnemyPriorityList.FirstOrDefault(b => b.Enabled && enemyName.ToLower().Contains(b.Name.ToLower()));
+                // Enemy
+                //
+                //
+                //
+                //
+                // list
+                string enemyName = painting["dungeon"]["captures"][0]["tip_battle"]["title"].ToString();
+
+                // First checks English translation of enemy name against blocklist
+                string enemyNameTranslated = Translation.ForceTranslateEnemy(enemyName).Replace(Translation.EnemySuffix, String.Empty);
+                LabConfiguration.EnemyPriority enemyEntry = Config.EnemyPriorityList.FirstOrDefault(b => b.Enabled && enemyNameTranslated.ToLower().Contains(b.Name.ToLower()));
                 if (enemyEntry != null)
                 {
                     ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Adjusting priority {0:+#;-#;0} due to enemy list: {1}",
                         enemyEntry.PriorityAdjust,
-                        enemyName);
+                        enemyNameTranslated);
                     var combatants = Config.PaintingPriorityMap.Where(p => p.Key.StartsWith("1."));
-                    var lowest = combatants.OrderBy(p2=>p2.Value).First().Value * 10;
-                    var priority = Config.PaintingPriorityMap[type] * 10;
+                    int lowest = combatants.OrderBy(p2 => p2.Value).First().Value * 10;
+                    int priority = Config.PaintingPriorityMap[type] * 10;
                     if (enemyEntry.PriorityAdjust > 0) priority = maxPriority + enemyEntry.PriorityAdjust;
                     if (enemyEntry.PriorityAdjust < 0) priority = lowest + enemyEntry.PriorityAdjust;
-                    return (Config.EnemyBlocklistAvoidOptionOverride ? maxPriority + 10 : priority);
+                    return Config.EnemyBlocklistAvoidOptionOverride ? maxPriority + 10 : priority;
+                }
+                else
+                {
+                    // If English name not found, checks for entry in Japanese
+                    enemyEntry = Config.EnemyPriorityList.FirstOrDefault(b => b.Enabled && enemyName.ToLower().Contains(b.Name.ToLower()));
+                    if (enemyEntry != null)
+                    {
+                        ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Adjusting priority {0:+#;-#;0} due to enemy list: {1}",
+                            enemyEntry.PriorityAdjust,
+                            enemyName);
+                        var combatants = Config.PaintingPriorityMap.Where(p => p.Key.StartsWith("1."));
+                        int lowest = combatants.OrderBy(p2 => p2.Value).First().Value * 10;
+                        int priority = Config.PaintingPriorityMap[type] * 10;
+                        if (enemyEntry.PriorityAdjust > 0) priority = maxPriority + enemyEntry.PriorityAdjust;
+                        if (enemyEntry.PriorityAdjust < 0) priority = lowest + enemyEntry.PriorityAdjust;
+                        return Config.EnemyBlocklistAvoidOptionOverride ? maxPriority + 10 : priority;
+                    }
                 }
             }
 
@@ -177,11 +204,23 @@ namespace FFRK_LabMem.Machines
         {
 
             // Check for enemy priority list
-            var enemyName = dungeon["captures"][0]["tip_battle"]["title"].ToString();
-            var enemyEntry = Config.EnemyPriorityList.FirstOrDefault(b => b.Enabled && b.Parties.Count > 0 && enemyName.ToLower().Contains(b.Name.ToLower()));
+            string enemyName = dungeon["captures"][0]["tip_battle"]["title"].ToString();
+
+            // First checks English translation of enemy name against blocklist
+            string enemyNameTranslated = Translation.ForceTranslateEnemy(enemyName).Replace(Translation.EnemySuffix, String.Empty);
+            LabConfiguration.EnemyPriority enemyEntry = Config.EnemyPriorityList.FirstOrDefault(b => b.Enabled && enemyNameTranslated.ToLower().Contains(b.Name.ToLower()));
             if (enemyEntry != null)
             {
                 return enemyEntry.Parties[0];
+            }
+            else
+            {
+                // If English name not found, checks for entry in Japanese
+                enemyEntry = Config.EnemyPriorityList.FirstOrDefault(b => b.Enabled && enemyName.ToLower().Contains(b.Name.ToLower()));
+                if (enemyEntry != null)
+                {
+                    return enemyEntry.Parties[0];
+                }
             }
 
             // Use configured party option
