@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using FFRK_Machines.Services.Notifications;
 using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace FFRK_LabMem.Config.UI
 {
@@ -27,7 +28,7 @@ namespace FFRK_LabMem.Config.UI
             { "【迷宮】アダマンケリス", "Adamanchelid" },
             { "【迷宮】アダマンタイマイ", "Adamantoise" },
             { "【迷宮】アデル", "Adel" },
-            { "【迷宮】憤怒の霊帝アドラメレク", "Adrammelech" },
+            { "【迷宮】アドラメレク", "Adrammelech" },
             { "【迷宮】アレキサンダー", "Alexander" },
             { "【迷宮】アンジールペナンス",  "Angeal Penance" },
             { "【迷宮】アルケニー", "Arachne" },
@@ -35,6 +36,7 @@ namespace FFRK_LabMem.Config.UI
             { "【迷宮】バハムート", "Bahamut" },
             { "【迷宮】バンダースナッチ", "Bandersnatch" },
             { "【迷宮】バルバリシア", "Barbariccia" },
+            { "【迷宮】バルク＆ナイト＆弓使い＆黒魔道士", "Barich, Knight, Archer & Black Mage" },
             { "【迷宮】ベヒーモス", "Behemoth" },
             { "【迷宮】ビッグホーン", "Big Horn" },
             { "【迷宮】ブラックプリン", "Black Flan" },
@@ -44,34 +46,41 @@ namespace FFRK_LabMem.Config.UI
             { "【迷宮】カーバンクル", "Carbuncle" },
             { "【迷宮】ケルべロス", "Cerberus" },
             { "【迷宮】カオス", "Chaos" },
+            { "【迷宮】ヘレティック・イフリート", "Dark Ifrit" },
             { "【迷宮】ヘレティック・ヴァルファーレ", "Dark Valefor" },
+            { "【迷宮】デスクロー", "Deathclaw" },
             { "【迷宮】デスマシーン", "Death Machine" },
-            { "【迷宮】ドレッドノート", "Dreadnought ×2" },
+            { "【迷宮】バクライリュウ", "Diepvern" },
+            { "【迷宮】ドレッドノート", "Dreadnought" },
             { "【迷宮】ダイスダーグ", "Dycedarg" },
             { "【迷宮】エキドナ", "Echidna" },
             { "【迷宮】エンキドゥ", "Enkidu" },
             { "【迷宮】エクスペリメント", "Experiment" },
             { "【迷宮】マルドゥーク", "Faeryl" },
+            { "【迷宮】ヴォルマルフ＆ローファル＆クレティアン", "Folmarv, Loffrey, & Cletienne" },
             { "【迷宮】ギザマルーク", "Gizamaluke" },
-            { "【迷宮】グリーンドラゴン", "Green Dragon ×2" },
+            { "【迷宮】グリーンドラゴン", "Green Dragon" },
             { "【迷宮】剣聖ギルガメッシュ", "Gilgamesh" },
             { "【迷宮】ゴールドル", "Goldor" },
             { "【迷宮】ガードスコーピオン", "Guard Scorpion" },
             { "【迷宮】ハシュマリム", "Hashmal" },
             { "【迷宮】ヘルハウス", "Hell House" },
+            { "【迷宮】鉄巨人", "Iron Giant" },
             { "【迷宮】キングベヒーモス", "King Behemoth" },
             { "【迷宮】クーンキリフ", "Kukulkan" },
             { "【迷宮】ラニ＆焔色の髪の男", "Lani & Scarlet Hair" },
             { "【迷宮】リバイアサン", "Leviathan" },
-            { "【迷宮】ルナザウルス", "Lunasaur ×2" },
+            { "【迷宮】リッチ&【迷宮】バンパイア", "Lich & Vampire" },
+            { "【迷宮】ルナザウルス", "Lunasaur" },
             { "【迷宮】マジックポット", "Magic Pot" },
-            { "【迷宮】魔導アーマー", "Magitek Armor ×2" },
+            { "【迷宮】魔導アーマー", "Magitek Armor" },
             { "【迷宮】マリリス", "Marilith" },
             { "【迷宮】メルティジェミニ", "Meltigemini" },
+            { "【迷宮】モーターボール", "Motor Ball" },
             { "【迷宮】ミスリルゴーレム", "Mythril Golem" },
             { "【迷宮】ナーガ", "Naga" },
-            { "【迷宮】ネオチュー", "Neochu ×2" },
-            { "【迷宮】ネオガルラ", "Neo Garula ×2" },
+            { "【迷宮】ネオチュー", "Neochu" },
+            { "【迷宮】ネオガルラ", "Neo Garula" },
             { "【迷宮】ニーズヘッグ", "Nidhogg" },
             { "【迷宮】ニンジャ", "Ninja" },
             { "【迷宮】にんじゃ＆ようじんぼう", "Ninja & Yojimbo" },
@@ -80,6 +89,7 @@ namespace FFRK_LabMem.Config.UI
             { "【迷宮】タイダリアサン", "Ogopogo" },
             { "【迷宮】パンデモニウム", "Pandaemonium" },
             { "【迷宮】プラントブレイン", "Plant Brain" },
+            { "【迷宮】ケツァルコアトル", "Quetzalcoatl" },
             { "【迷宮】ラムザ", "Ramza" },
             { "【迷宮】レイヴス", "Ravus" },
             { "【迷宮】赤竜", "Red Dragon" },
@@ -100,6 +110,19 @@ namespace FFRK_LabMem.Config.UI
             { "【迷宮】ザグナル", "Zaghnol" },
             { "【迷宮】ゼムス", "Zemus" },
             { "【迷宮】ゾンビボーゲン", "Zombie Borghen" }
+        };
+
+        // Lists enemies who have multiple copies in battles
+        public static readonly Dictionary<String, String> EnemyNumber = new Dictionary<String, String>()
+        {
+            { "Big Horn", "×4" },
+            { "Black Flan", "×2" },
+            { "Dreadnought", "×2" },
+            { "Green Dragon", "×2" },
+            { "Lunasaur", "×2" },
+            { "Magitek Armor", "×2" },
+            { "Neochu", "×2" },
+            { "Neo Garula", "×2" },
         };
 
         public static readonly Dictionary<String, String> Items = new Dictionary<string, string>()
@@ -380,8 +403,9 @@ namespace FFRK_LabMem.Config.UI
 
         public static readonly Dictionary<String, String> Sizes = new Dictionary<String, String>()
         {
-            { "【大】", "Greater" },
-            { "【極大】", "Major" }
+            { "【中】", "" },
+            { "【大】", "Greater " },
+            { "【極大】", "Major " }
         };
 
         // List of orb/crystal types in Japanese and their translations
@@ -480,6 +504,8 @@ namespace FFRK_LabMem.Config.UI
             {"QuickExplores", "Quick Explores"},
         };
 
+        public static AutoCompleteStringCollection EnemyAC = new AutoCompleteStringCollection();
+        
         public static Dictionary<Counters.DropCategory, String> DropCategories = new Dictionary<Counters.DropCategory, string>() {
             {Data.Counters.DropCategory.EQUIPMENT, "Hero Equipment"},
             {Data.Counters.DropCategory.LABYRINTH_ITEM, "Labyrinth Items (Bookmarks, Keys...)"},

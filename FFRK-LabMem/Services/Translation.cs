@@ -27,14 +27,20 @@ namespace FFRK_LabMem.Services
         // Translates enemy names
         public static String TranslateEnemy(String name)
         {
-            if (ColorConsole.Translate && Enemies.TryGetValue(name, out string enemyName)) return enemyName + EnemySuffix;
+            if (ColorConsole.Translate && Enemies.TryGetValue(name, out string enemyName)) return NumberEnemies(enemyName);
             else return name;
         }
 
-        // Translates enemy names regardless of configuration (used for checking enemy blocklist settings)
-        public static String ForceTranslateEnemy(String name)
+        private static String NumberEnemies(String name)
         {
-            if (Enemies.TryGetValue(name, out string enemyName)) return enemyName + EnemySuffix;
+            if (EnemyNumber.TryGetValue(name, out string enemyCount)) return name + " " + enemyCount + EnemySuffix;
+            else return name + EnemySuffix;
+        }
+
+        // Translates enemy names regardless of configuration (used for checking enemy blocklist settings)
+        public static String BlocklistTranslateEnemy(String name)
+        {
+            if (Enemies.TryGetValue(name, out string enemyName)) return enemyName;
             else return name;
         }
 
@@ -119,7 +125,7 @@ namespace FFRK_LabMem.Services
         // Translates Rat Tail names
         private static String TranslateRatTail(String name)
         {
-            if (Sizes.TryGetValue(name.Replace("ねずみのしっぽ", string.Empty), out string rarity)) return rarity + " Rat Tail";
+            if (Sizes.TryGetValue(name.Replace("ねずみのしっぽ", string.Empty), out string rarity)) return rarity + "Rat Tail";
             else return name;
         }
     }

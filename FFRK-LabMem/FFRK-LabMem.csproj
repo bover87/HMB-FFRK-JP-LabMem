@@ -188,6 +188,7 @@
     <Content Include="blocklist.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\DataSources\FFRK_LabMem.Config.UI.Lookups.datasource" />
     <None Include="Resources\button_brown_ok.bmp" />
     <None Include="Resources\lab_segment.bmp" />
     <None Include="Resources\button_blue_play.bmp" />
