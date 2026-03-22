@@ -114,7 +114,7 @@ namespace FFRK_LabMem.Machines
                 new EnemyPriority(){Name="Lunasaurs", Enabled=false},
                 new EnemyPriority(){Name="Octomammoth", Enabled=false},
                 new EnemyPriority(){Name="Marilith", Enabled=false},
-                new EnemyPriority(){Name="Vajra", Enabled = true, PriorityAdjust = -3},
+                new EnemyPriority(){Name="Vajra", Enabled = true, PriorityAdjust = 3},
                 new EnemyPriority(){Name="Behemoth", Enabled=false, PriorityAdjust = -1},
                 new EnemyPriority(){Name="Nidhogg", Enabled=false, PriorityAdjust = -1},
                 new EnemyPriority(){Name="Odin", Enabled=false, PriorityAdjust = -1},
