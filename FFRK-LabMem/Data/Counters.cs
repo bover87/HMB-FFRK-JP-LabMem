@@ -1,6 +1,7 @@
 ﻿using FFRK_LabMem.Config;
 using FFRK_LabMem.Machines;
 using FFRK_Machines;
+using FFRK_LabMem.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -344,12 +345,27 @@ namespace FFRK_LabMem.Data
                 await Save();
                 if (showMessage)
                 {
-                    ColorConsole.WriteLine(ConsoleColor.DarkCyan, "Current lab set to: {0}", name);
+                    try 
+                    {
+                        ColorConsole.WriteLine(ConsoleColor.DarkCyan, "Current lab set to: {0}", Translation.TranslateDungeon(name)); 
+                    }
+                    catch (InvalidDataException)
+                    {
+                        ColorConsole.WriteLine(ConsoleColor.Red, "Invalid dungeon data passed, unable to translate");
+                        ColorConsole.WriteLine(ConsoleColor.DarkCyan, "Current lab set to: {0}", name);
+                    }
                 } else
                 {
-                    ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Current lab set to: {0}", name);
+                    try
+                    {
+                        ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Current lab set to: {0}", Translation.TranslateDungeon(name));
+                    }
+                    catch (InvalidDataException)
+                    {
+                        ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Invalid dungeon data passed, unable to translate");
+                        ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Current lab set to: {0}", name);
+                    }
                 }
-                    
             }
             // Reset counters in buffer
             currentLabBufferSet.Reset(CounterSet.DataType.All);

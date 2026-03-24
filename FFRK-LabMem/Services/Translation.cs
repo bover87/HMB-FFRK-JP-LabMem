@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FFRK_Machines;
-using static FFRK_LabMem.Config.UI.Lookups;
+using static FFRK_LabMem.Services.TranslationLookups;
 
 namespace FFRK_LabMem.Services
 {
@@ -17,6 +17,25 @@ namespace FFRK_LabMem.Services
     {
         public const String EnemySuffix = " (Labyrinth)";
 
+        // Translates dungeon names
+        public static String TranslateDungeon(String name)
+        {
+            if (!ColorConsole.Translate) return name;
+            else
+            {
+                int index = name.IndexOf(" S");
+                if (index >= 0)
+                {
+                    String dungeon = name.Substring(0, index);
+                    String season = name.Replace(dungeon, String.Empty);
+
+                    if (Dungeons.TryGetValue(dungeon, out string dungeonName)) return dungeonName + season;
+                    else return name;
+                }
+                else throw new InvalidDataException();
+            }
+        }
+        
         // Translates painting names
         public static String TranslatePainting(String name)
         {
@@ -47,6 +66,7 @@ namespace FFRK_LabMem.Services
         // Translates item names
         public static String TranslateItem(String name)
         {
+            // Checks if translation is turned on and aborts method if not
             if (!ColorConsole.Translate) return name;
 
             // Checks if item name requires a more complex translation procedure
@@ -57,7 +77,9 @@ namespace FFRK_LabMem.Services
             else if (name.Contains("のフラグメント")) return TranslateMote(name);
             else if (name.Contains("ねずみのしっぽ")) return TranslateRatTail(name);
 
+            // Checks for item in translation dictionaries
             else if (Items.TryGetValue(name, out string itemName)) return itemName;
+            else if (HeroEquipment.TryGetValue(name, out string equipName)) return equipName;
             else return name;
         }
 

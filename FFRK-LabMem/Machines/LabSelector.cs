@@ -192,12 +192,14 @@ namespace FFRK_LabMem.Machines
             // Checks English translation of enemy name against blocklist
             string enemyNameTranslated = Translation.BlocklistTranslateEnemy(enemyName);
             LabConfiguration.EnemyPriority enemyEntry = Config.EnemyPriorityList.FirstOrDefault(b => b.Enabled && enemyNameTranslated.ToLower().Contains(b.Name.ToLower()));
-            if (enemyEntry != null)
+            
+            // Checks to ensure enemyEntry.Parties is not empty (length 0) before attempting to return from it
+            if (enemyEntry != null && enemyEntry.Parties.Count > 0)
             {
                 return enemyEntry.Parties[0];
             }
 
-            // Use configured party option
+            // Use configured Party option if enemy not in blocklist or Party option is set to Default
             switch (Lab.Config.PartyIndex)
             {
                 case LabConfiguration.PartyIndexOption.Team1:

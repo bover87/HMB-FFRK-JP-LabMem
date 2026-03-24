@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using static FFRK_LabMem.Services.TranslationLookups;
 
 namespace FFRK_LabMem.Machines
 {
@@ -42,7 +43,7 @@ namespace FFRK_LabMem.Machines
             await Counters.Initalize(config, ret);
             await Notifications.Initalize();
             
-            List<string> enemyNames = Lookups.Enemies.Values.ToList();
+            List<string> enemyNames = Enemies.Values.ToList();
             foreach (string enemyName in enemyNames)
             {
                 if (!Lookups.EnemyAC.Contains(enemyName))
