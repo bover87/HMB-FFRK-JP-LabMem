@@ -15,7 +15,7 @@ namespace FFRK_LabMem.Services
 {
     internal static class Translation
     {
-        public const String EnemySuffix = " (Labyrinth)";
+        public const string EnemySuffix = " (Labyrinth)";
 
         // Translates dungeon names
         public static String TranslateDungeon(String name)
@@ -148,6 +148,23 @@ namespace FFRK_LabMem.Services
         private static String TranslateRatTail(String name)
         {
             if (Sizes.TryGetValue(name.Replace("ねずみのしっぽ", string.Empty), out string rarity)) return rarity + "Rat Tail";
+            else return name;
+        }
+
+        // Always translates item name regardless of translation setting (used for keeping counters)
+        public static String CounterTranslateItem(String name)
+        {
+            // Checks if item name requires a more complex translation procedure
+            if (name.Contains("英雄専用フラグメント")) return TranslateHeroMote(name);
+            else if (name.Contains("アニマレンズ")) return TranslateAnima(name);
+            else if (name.Contains("のオーブ")) return TranslateOrb(name);
+            else if (name.Contains("の結晶")) return TranslateCrystal(name);
+            else if (name.Contains("のフラグメント")) return TranslateMote(name);
+            else if (name.Contains("ねずみのしっぽ")) return TranslateRatTail(name);
+
+            // Checks for item in translation dictionaries
+            else if (Items.TryGetValue(name, out string itemName)) return itemName;
+            else if (HeroEquipment.TryGetValue(name, out string equipName)) return equipName;
             else return name;
         }
     }

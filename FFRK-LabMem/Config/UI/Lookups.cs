@@ -83,6 +83,7 @@ namespace FFRK_LabMem.Config.UI
             {"FFRKRecoveries", "FFRK Recovered"},
             {"FFRKRestarts", "FFRK Restarted"},
             {"HeroEquipmentGot", "Hero Equipment Found"},
+            {"HeroMotesGot", "Hero Motes Found" },
             {"EnemyIsUponYou", "The Enemy is Upon You!"},
             {"QuickExplores", "Quick Explores"},
         };
@@ -90,16 +91,17 @@ namespace FFRK_LabMem.Config.UI
         public static AutoCompleteStringCollection EnemyAC = new AutoCompleteStringCollection();
         
         public static Dictionary<Counters.DropCategory, String> DropCategories = new Dictionary<Counters.DropCategory, string>() {
-            {Data.Counters.DropCategory.EQUIPMENT, "Hero Equipment"},
-            {Data.Counters.DropCategory.LABYRINTH_ITEM, "Labyrinth Items (Bookmarks, Keys...)"},
-            {Data.Counters.DropCategory.COMMON, "Anima Lenses"},
-            {Data.Counters.DropCategory.SPHERE_MATERIAL, "Motes"},
-            {Data.Counters.DropCategory.ABILITY_MATERIAL, "Crystals/Orbs"},
-            {Data.Counters.DropCategory.EQUIPMENT_SP_MATERIAL,"Upgrade Materials" },
-            {Data.Counters.DropCategory.HISTORIA_CRYSTAL_ENHANCEMENT_MATERIAL, "Rat Tails" },
-            {Data.Counters.DropCategory.GROW_EGG, "Growth Eggs" },
-            {Data.Counters.DropCategory.BEAST_FOOD, "Arcana" },
-            {Data.Counters.DropCategory.RECORD_MATERIA, "Record Materia" }
+            { Data.Counters.DropCategory.EQUIPMENT, "Hero Equipment" },
+            { Data.Counters.DropCategory.LABYRINTH_ITEM, "Labyrinth Items (Bookmarks, Keys...)" },
+            { Data.Counters.DropCategory.COMMON, "Anima Lenses" },
+            { Data.Counters.DropCategory.HERO_MOTE, "Hero Motes" },
+            { Data.Counters.DropCategory.SPHERE_MATERIAL, "Motes" },
+            { Data.Counters.DropCategory.ABILITY_MATERIAL, "Crystals/Orbs"},
+            { Data.Counters.DropCategory.EQUIPMENT_SP_MATERIAL,"Upgrade Materials" },
+            { Data.Counters.DropCategory.HISTORIA_CRYSTAL_ENHANCEMENT_MATERIAL, "Rat Tails" },
+            { Data.Counters.DropCategory.GROW_EGG, "Growth Eggs" },
+            { Data.Counters.DropCategory.BEAST_FOOD, "Arcana" },
+            { Data.Counters.DropCategory.RECORD_MATERIA, "Record Materia" }
         };
 
         public static Dictionary<String, Counters.DropCategory> DropCategoriesInverse = DropCategories.ToDictionary((i) => i.Value, (i) => i.Key);

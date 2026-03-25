@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FFRK_LabMem.Services;
 using static FFRK_LabMem.Data.Counters;
 
 namespace FFRK_LabMem.Data
@@ -11,26 +12,28 @@ namespace FFRK_LabMem.Data
     {
         public static int InferRarity(DropCategory category, string name)
         {
+            String nameTranslated = Translation.CounterTranslateItem(name);
 
-            // Motes - First character is a digit (star in name)
-            if (category == DropCategory.SPHERE_MATERIAL && char.IsDigit(name[0]))
+            // Motes - check for star in name
+            if (category == DropCategory.SPHERE_MATERIAL && nameTranslated.Contains("★"))
             {
-                return int.Parse(name[0].ToString());
+                int index = nameTranslated.IndexOf("★");
+                return int.Parse(name[index - 1].ToString());
             }
 
             // Crystals/Orbs
             if (category == DropCategory.ABILITY_MATERIAL)
             {
                 // Crystals are 6*
-                if (name.EndsWith("Crystal")) return 6;
+                if (nameTranslated.EndsWith("Crystal")) return 6;
 
                 // Orbs
-                if (name.EndsWith("Orb"))
+                if (nameTranslated.EndsWith("Orb"))
                 {
-                    if (name.StartsWith("Major")) return 5;
-                    if (name.StartsWith("Greater")) return 4;
-                    if (name.StartsWith("Lesser")) return 2;
-                    if (name.StartsWith("Minor")) return 1;
+                    if (nameTranslated.StartsWith("Major")) return 5;
+                    if (nameTranslated.StartsWith("Greater")) return 4;
+                    if (nameTranslated.StartsWith("Lesser")) return 2;
+                    if (nameTranslated.StartsWith("Minor")) return 1;
                     return 3;
                 }
             }

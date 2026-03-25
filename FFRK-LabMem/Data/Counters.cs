@@ -46,7 +46,8 @@ namespace FFRK_LabMem.Data
             HISTORIA_CRYSTAL_ENHANCEMENT_MATERIAL = 1 << 6,
             GROW_EGG = 1 << 7,
             BEAST_FOOD = 1 << 8,
-            RECORD_MATERIA = 1 << 9
+            RECORD_MATERIA = 1 << 9,
+            HERO_MOTE = 1 << 10,
         }
 
         // Public properties
@@ -62,7 +63,7 @@ namespace FFRK_LabMem.Data
         public int BufferSize { get; set; } = 10;
 
         // Private fields
-        private CounterSet currentLabBufferSet { get; set; } = new CounterSet();
+        private CounterSet CurrentLabBufferSet { get; set; } = new CounterSet();
         private readonly LabController controller;
         private readonly Stopwatch runtimeStopwatch = new Stopwatch();
         private int bufferWrites = 0;
@@ -226,7 +227,11 @@ namespace FFRK_LabMem.Data
                 {
                     _instance.IncrementHE(name, isQE);
                     await _instance.IncrementCounter("HeroEquipmentGot");
-                } else
+                } else if (_instance.DropCategories.HasFlag(DropCategory.HERO_MOTE))
+                {
+                    _instance.IncrementHM(name, isQE);
+                    await _instance.IncrementCounter("HeroMotesGot");
+                }
                 {
                     // Filter materials drops
                     if (rarity == 0) rarity = CounterInference.InferRarity(category, name);
@@ -298,6 +303,24 @@ namespace FFRK_LabMem.Data
                 }
             }
         }
+        private void IncrementHM(string name, bool isQE = false)
+        {
+            foreach (var set in GetTargetCounterSets())
+            {
+                if (!set.Key.Equals("Total") || LogDropsToTotalCounters)
+                {
+                    var target = (isQE) ? set.Value.HeroMotesQE : set.Value.HeroMotes;
+                    if (target.ContainsKey(name))
+                    {
+                        target[name] += 1;
+                    }
+                    else
+                    {
+                        target.Add(name, 1);
+                    }
+                }
+            }
+        }
         private void IncrementDrop(string name, int amt = 1, bool isQE = false)
         {
             foreach (var set in GetTargetCounterSets())
@@ -322,7 +345,7 @@ namespace FFRK_LabMem.Data
         }
         private List<KeyValuePair<string,CounterSet>> GetTargetCounterSets(){
             var ret = CounterSets.Where(s => DefaultCounterSets.ContainsKey(s.Key) || s.Key.Equals(CurrentLabId)).ToList();
-            if (CurrentLabId == null) ret.Add(new KeyValuePair<string, CounterSet>("_Buffer", currentLabBufferSet));
+            if (CurrentLabId == null) ret.Add(new KeyValuePair<string, CounterSet>("_Buffer", CurrentLabBufferSet));
             return ret;
         }
         private async void SetLab(string id, string name, bool showMessage = true)
@@ -332,14 +355,14 @@ namespace FFRK_LabMem.Data
                 // Update or create entry here
                 if (CounterSets.ContainsKey(id))
                 {
-                    CounterSets[id].AddCounters(currentLabBufferSet);
+                    CounterSets[id].AddCounters(CurrentLabBufferSet);
                 }
                 else
                 {
                     // Create a new entry and add counters in the buffer to it
                     CounterSet newEntry = new CounterSet();
                     newEntry.Name = name;
-                    newEntry.AddCounters(currentLabBufferSet);
+                    newEntry.AddCounters(CurrentLabBufferSet);
                     CounterSets.Add(id, newEntry);
                 }
                 await Save();
@@ -368,7 +391,7 @@ namespace FFRK_LabMem.Data
                 }
             }
             // Reset counters in buffer
-            currentLabBufferSet.Reset(CounterSet.DataType.All);
+            CurrentLabBufferSet.Reset(CounterSet.DataType.All);
             CurrentLabId = id;
         }
         public static void SetCurrentLab(string id, string name, bool showMessage = true)
@@ -377,7 +400,7 @@ namespace FFRK_LabMem.Data
         }
         public static void ClearCurrentLab()
         {
-            _instance.currentLabBufferSet.Reset(CounterSet.DataType.All);
+            _instance.CurrentLabBufferSet.Reset(CounterSet.DataType.All);
             _instance.CurrentLabId = null;
             ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Current lab cleared");
         }
