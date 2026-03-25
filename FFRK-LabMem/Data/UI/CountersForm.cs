@@ -287,15 +287,15 @@ namespace FFRK_LabMem.Data.UI
             IEnumerable<string> keySet;
             if (isHE)
             {
-                keySet = keySet = Counters.Default.CounterSets.Values.SelectMany(s => s.GetHEFiltered((CounterSet.FilterType)comboBoxQE.SelectedIndex).Keys);
+                keySet = keySet = Counters.Default.CounterSets.Values.SelectMany(s => s.GetHEFiltered((FilterType)comboBoxQE.SelectedIndex).Keys);
             }
             else if (isHM)
             {
-                keySet = Counters.Default.CounterSets.Values.SelectMany(s => s.GetHMFiltered((CounterSet.FilterType)comboBoxQE.SelectedIndex).Keys);
+                keySet = Counters.Default.CounterSets.Values.SelectMany(s => s.GetHMFiltered((FilterType)comboBoxQE.SelectedIndex).Keys);
             }
             else
             {
-                keySet = Counters.Default.CounterSets.Values.SelectMany(s => s.GetDropsFiltered((CounterSet.FilterType)comboBoxQE.SelectedIndex).Keys);
+                keySet = Counters.Default.CounterSets.Values.SelectMany(s => s.GetDropsFiltered((FilterType)comboBoxQE.SelectedIndex).Keys);
             }
 
             // Only distinct values
@@ -304,12 +304,12 @@ namespace FFRK_LabMem.Data.UI
             // If stage selected then only show its HE
             if (isHE)
             {
-                keySet = keySet.Where(i => GetSelectedLab().GetHEFiltered((CounterSet.FilterType)comboBoxQE.SelectedIndex).ContainsKey(i));
+                keySet = keySet.Where(i => GetSelectedLab().GetHEFiltered((FilterType)comboBoxQE.SelectedIndex).ContainsKey(i));
             }
             // If stage selected then only show its Hero Motes
             else if (isHM)
             {
-                keySet = keySet.Where(i => GetSelectedLab().GetHMFiltered((CounterSet.FilterType)comboBoxQE.SelectedIndex).ContainsKey(i));
+                keySet = keySet.Where(i => GetSelectedLab().GetHMFiltered((FilterType)comboBoxQE.SelectedIndex).ContainsKey(i));
             }
 
             // Remove any items present in the list that do not match
