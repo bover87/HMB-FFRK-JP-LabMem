@@ -1,5 +1,5 @@
 # FFRK-LabMem
-This is a slightly modifed version of HughJeffner's [original LabMem bot](https://github.com/HughJeffner/FFRK-LabMem) for FFRK. It is built to run with FFRK JP, with various changes made by mendicant and further modified by bover87. **This version may contain bugs. I will try my best to fix any issues, but my knowledge of coding is extremely limited. If you find bugs and know how to fix them, please feel free to create a fork.**
+This is a modifed version of HughJeffner's [original LabMem bot](https://github.com/HughJeffner/FFRK-LabMem) for FFRK, which now incorporates Soul Break automatic import for trgKai's [FFRK GigaForge](https://ffrk.gigaforge.com/). It is built to run with FFRK JP, with various changes made by mendicant and further modified by bover87 and trgKai.
 
 This version has been updated to include GigaForge's Soulbreak Tracker automatic import support.
 
@@ -7,7 +7,7 @@ Full automation for labyrinth dungeons on Android FFRK and Windows using a proxy
 
 ![App Screenshot](/docs/img/screenshot_01.png?v=3)
 
-Built using Visual Studio 2022 Community, Installer using Inno Setup 6, pre-compiled binaries provided on the [releases page](https://github.com/bover87/HMB-FFRK-JP-LabMem/releases/)
+Built using Visual Studio 2022/2026 Community. Installer using Inno Setup 6. Pre-compiled binaries provided on the [releases page](https://github.com/bover87/HMB-FFRK-JP-LabMem/releases/)
 
 **Note: button tap locations were calculated as a percentage of a 720 x 1280 screen, this may not work on other screen sizes, more testing needed**
 
@@ -41,17 +41,22 @@ _All compatible versions using FFRK 7.0.0+ must install a certificate_
 13. Restart the bot when prompted
 14. Restart your device/emulator when prompted
 15. Follow any on-screen instructions to install the certificate
-16. (Optional, Windows 10 and earlier) If you want to see Japanese characters, change the font to MS Gothic. More information about displaying Japanese characters is give [here](#japanesetext)
+16. (Optional, Windows 10 and earlier) If you want to see Japanese characters, disable English output (LabMem 10.0+) in the options and change the font to MS Gothic. More information about displaying Japanese characters is give [here](#japanesetext)
 17. Launch FFRK
 18. On the title screen (with the blue `START` button) auto-detect screen offsets `Alt+O` ('o' for offsets)
 19. Start a lab or enter one in-progress
 
 ## Basic Usage
-Use the installer or extract all files from the .zip file to a folder
+Use the installer or extract all files from the .zip file to a folder.
 
 Double-click `FFRK-LabMem.exe` it and it will run in the window.  At any time as it is running you can press `D` to disable, `E` to enable, `Ctrl+X` to exit, and `H` to minimize to system tray.
 
-Press `C` to open configuration options
+Press `C` to open configuration options.
+
+## Soul Break Import
+To use the Soul Break Import function, you must first copy your API key from [GigaForge](https://ffrk.gigaforge.com/) (you will need to make an account there if you haven't already done so) and paste it into the `Soulbreak Tracker API Key` field in the bot's options.
+
+Once done, open FFRK with the bot running and navegate to the Party screen, and your Soul Breaks, Legend Materia, and Favorite Parties will be automatically uploaded.
 
 ## Setup
 For this to work correctly, the following must be set up:
@@ -75,9 +80,9 @@ If you are going to use a physical device or an emulator on another system, plea
 ### <a name="adbconnection"></a>Adb connection
 This allows the application to interact with the android device. First you'll need to enable developer options in the device settings and enable USB debugging.  There are many tutorials online that cover this.
 
-If you are connecting an acutal device via USB, you may need the proper drivers.  See [here](https://developer.android.com/studio/run/oem-usb) -OR- [here](https://adb.clockworkmod.com/)
+If you are connecting an acutal device via USB, you may need the proper drivers. See [here](https://developer.android.com/studio/run/oem-usb) -OR- [here](https://adb.clockworkmod.com/)
 
-Connecting to an emulator works over TCP.  You can set up TCP with a physical device as well but this is beyond scope.  Android emulators seem to use different TCP port numbers, you'll have to look this up.  The default host and port number configured in `FFRK-LabMem.exe.config` is `127.0.0.1:7555` which is for running MuMu app player on the local machine.
+Connecting to an emulator works over TCP. You can set up TCP with a physical device as well but this is beyond scope. Android emulators seem to use different TCP port numbers, you'll have to look this up.  The default host and port number configured in `FFRK-LabMem.exe.config` is `127.0.0.1:7555` which is for running MuMu app player on the local machine.
 
 **Known Emulator host/ports**
 | Emulator  | Host/Port       | Other Possible Ports? |
@@ -93,9 +98,11 @@ If the proxy root CA certificate isn't installed the bot will copy it to the dev
 This certificate is only used to decrypt traffic to URLs used by FFRK to run, all other traffic is tunneled through the proxy with no inspection.
 
 ### <a name="japanesetext"></a>Japanese text
-*(**Note**: This section is optional. Any font that supports Japanese output, such as MS Mincho which was previously recommended, will work, but I now recommend MS Gothic because it's easier to set up and frankly looks better. This is unnecessary for Windows 11 users as it displays Japanese characters out-of-the-box.)*
+*(**Note**: This section is optional; the bot will function regardless and LabMem 10.0+ directly supports English translation. Any font that supports Japanese output, such as MS Mincho which was previously recommended, will work, but I now recommend MS Gothic because it's easier to set up and frankly looks better. This is unnecessary for Windows 11 users as it displays Japanese characters out-of-the-box.)*
 
-The bot now supports Japanese text; however, the default font will not display it correctly. If you want to see Japanese characters, you will need to use a font that supports Japanese characters; my recommendation is MS Gothic. You can do this by clicking the treasure chest icon in the top-left corner of the window (next to the bot's name), clicking `Properties`, and going to the `Font` tab. Once there, select MS Mincho from the list and click `OK`. (If you get an error saying the shortcut cannot be modified, close LabMem, then right-click the shortcut and select `Run as Administrator`, then change the font and it will remember it for future launches.) Alternatively, you can simply change the default font (`Defaults` on the same menu where you select `Fonts`), although this will change every other console-based application to that font.
+The bot now supports Japanese text; however, the default font will not display it correctly. In addition, LabMem 10.0+ supports English translation, making displaying Japanese characters unnecessary. In order to use English translation, `Enable English output` must be selected in the Configuration menu (under `General`).
+
+If you want to see Japanese characters, you will need to turn off English translation in the bot options and use a font that supports Japanese characters; my recommendation is MS Gothic. You can do this by clicking the treasure chest icon in the top-left corner of the window (next to the bot's name), clicking `Properties`, and going to the `Font` tab. Once there, select MS Mincho from the list and click `OK`. (If you get an error saying the shortcut cannot be modified, close LabMem, then right-click the shortcut and select `Run as Administrator`, then change the font and it will remember it for future launches.) Alternatively, you can simply change the default font (`Defaults` on the same menu where you select `Fonts`), although this will change every other console-based application to that font.
 
 ![Menu Screenshot](/docs/img/properties_01.png?v=3)
 
@@ -107,7 +114,7 @@ From version 0.9.10 and higher, screen offsets can be automatically detected usi
 ## Configuration
 ### General program options
 
-All of these settings can be accessed by pressing `C`
+All of these settings can be accessed by pressing `C`. **It is strongly recommended that you use the configuration tool instead of manually editing hte configuration files; we will only provide support for usage of the configuration tool.**
 
 ![Config Screenshot](/docs/img/config_lab_01.png?v=3)
 
@@ -183,6 +190,3 @@ For other issues check https://github.com/HughJeffner/FFRK-LabMem/wiki/Common-Is
 
 ## Special Thanks
 Many, many thanks to HughJeffner for creating this amazing tool. Also, special thanks to mendicant for his modifications to the original project which served as the basis for this version of the bot.
-
-
-
