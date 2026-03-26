@@ -251,7 +251,6 @@ namespace FFRK_LabMem.Data
             }
             foreach (string item in from.HeroMotes.Keys)
             {
-                ColorConsole.WriteLine(ConsoleColor.Blue, "Checking Hero Motes dictionary...");
                 if (this.HeroMotes.ContainsKey(item))
                 {
                     this.HeroMotes[item] += from.HeroMotes[item];
