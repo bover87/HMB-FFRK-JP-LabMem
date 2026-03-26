@@ -12,7 +12,7 @@ namespace FFRK_LabMem.Data
     {
         public static int InferRarity(DropCategory category, string name)
         {
-            String nameTranslated = Translation.CounterTranslateItem(name);
+            String nameTranslated = Translation.TranslateItem(name, true);
 
             // Motes - check for star in name
             if (category == DropCategory.SPHERE_MATERIAL && nameTranslated.Contains("★"))

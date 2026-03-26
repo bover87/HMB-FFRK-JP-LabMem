@@ -42,7 +42,7 @@ namespace FFRK_LabMem.Data.UI
                 IsLoaded = true;
                 Task mytask = Utility.StartSTATask(() =>
                 {
-                    var form = new CountersForm
+                    CountersForm form = new CountersForm
                     {
                         controller = controller
                     };
@@ -382,7 +382,7 @@ namespace FFRK_LabMem.Data.UI
 
         private void CleanGroup(string group, IEnumerable<string> keys)
         {
-            if (keys == null || keys.Count() == 0) return;
+            if (keys == null || keys.Count() <= 1) return;
             var remove = new List<ListViewItem>();
             foreach (ListViewItem item in listViewCounters.Groups[group].Items)
             {

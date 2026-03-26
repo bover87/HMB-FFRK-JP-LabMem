@@ -69,7 +69,7 @@ namespace FFRK_LabMem.Machines
                 string enemyName = painting["dungeon"]["captures"][0]["tip_battle"]["title"].ToString();
 
                 // Checks English translation of enemy name against blocklist
-                string enemyNameTranslated = Translation.BlocklistTranslateEnemy(enemyName);
+                string enemyNameTranslated = Translation.TranslateEnemy(enemyName, true);
                 LabConfiguration.EnemyPriority enemyEntry = Config.EnemyPriorityList.FirstOrDefault(b => b.Enabled && enemyNameTranslated.ToLower().Contains(b.Name.ToLower()));
                 if (enemyEntry != null)
                 {
@@ -190,7 +190,7 @@ namespace FFRK_LabMem.Machines
             string enemyName = dungeon["captures"][0]["tip_battle"]["title"].ToString();
 
             // Checks English translation of enemy name against blocklist
-            string enemyNameTranslated = Translation.BlocklistTranslateEnemy(enemyName);
+            string enemyNameTranslated = Translation.TranslateEnemy(enemyName, true);
             LabConfiguration.EnemyPriority enemyEntry = Config.EnemyPriorityList.FirstOrDefault(b => b.Enabled && enemyNameTranslated.ToLower().Contains(b.Name.ToLower()));
             
             // Checks to ensure enemyEntry.Parties is not empty (length 0) before attempting to return from it

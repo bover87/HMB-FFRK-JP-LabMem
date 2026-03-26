@@ -41,22 +41,23 @@ namespace FFRK_LabMem.Data
             LABYRINTH_ITEM = 1 << 1,
             COMMON = 1 << 2,
             SPHERE_MATERIAL = 1 << 3,
-            ABILITY_MATERIAL = 1 << 4,
-            EQUIPMENT_SP_MATERIAL = 1 << 5,
-            HISTORIA_CRYSTAL_ENHANCEMENT_MATERIAL = 1 << 6,
-            GROW_EGG = 1 << 7,
-            BEAST_FOOD = 1 << 8,
-            RECORD_MATERIA = 1 << 9,
-            HERO_MOTE = 1 << 10,
+            HERO_MOTE = 1 << 4,
+            ABILITY_MATERIAL = 1 << 5,
+            EQUIPMENT_SP_MATERIAL = 1 << 6,
+            HISTORIA_CRYSTAL_ENHANCEMENT_MATERIAL = 1 << 7,
+            GROW_EGG = 1 << 8,
+            BEAST_FOOD = 1 << 9,
+            RECORD_MATERIA = 1 << 10,
         }
 
         // Public properties
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public Dictionary<string, CounterSet> CounterSets { get; set; } 
+        public Dictionary<string, CounterSet> CounterSets { get; set; }
         public DropCategory DropCategories { get; set; } = DropCategory.EQUIPMENT | 
             DropCategory.LABYRINTH_ITEM | 
             DropCategory.COMMON | 
-            DropCategory.SPHERE_MATERIAL;
+            DropCategory.SPHERE_MATERIAL |
+            DropCategory.HERO_MOTE;
         public bool LogDropsToTotalCounters { get; set; } = false;
         public int MaterialsRarityFilter { get; set; } = 6;
         public string CurrentLabId = null;
@@ -90,7 +91,7 @@ namespace FFRK_LabMem.Data
             {
                 _instance = new Counters(controller);
                 await _instance.Load();
-                _instance.DropCategories = (Counters.DropCategory)config.GetInt("counters.dropCategories", 15);
+                _instance.DropCategories = (Counters.DropCategory)config.GetInt("counters.dropCategories", 31);
                 _instance.LogDropsToTotalCounters = config.GetBool("counters.logDropsToTotal", false);
                 _instance.MaterialsRarityFilter = config.GetInt("counters.materialsRarityFilter", 6);
             }
@@ -219,35 +220,34 @@ namespace FFRK_LabMem.Data
         {
             await _instance.IncrementCounter("EnemyIsUponYou");
         }
-        static async Task FoundDrop(DropCategory category, string name, int rarity, int qty, bool isQE = false)
+        static async Task FoundDrop(DropCategory category, string itemName, int rarity, int qty, bool isQE = false)
         {
-            if (_instance.DropCategories.HasFlag(category)){
-
-                if (category.Equals(DropCategory.EQUIPMENT))
-                {
-                    _instance.IncrementHE(name, isQE);
-                    await _instance.IncrementCounter("HeroEquipmentGot");
-                } else if (_instance.DropCategories.HasFlag(DropCategory.HERO_MOTE))
-                {
-                    _instance.IncrementHM(name, isQE);
-                    await _instance.IncrementCounter("HeroMotesGot");
-                }
-                {
-                    // Filter materials drops
-                    if (rarity == 0) rarity = CounterInference.InferRarity(category, name);
-                    if (!(DropCategory.LABYRINTH_ITEM | DropCategory.COMMON | DropCategory.RECORD_MATERIA).HasFlag(category) && rarity > 0 && rarity < _instance.MaterialsRarityFilter) return;
-                    
-                    _instance.IncrementDrop(name, qty, isQE);
-                    await _instance.Save();
-                }
+            if (category.Equals(DropCategory.EQUIPMENT))
+            {
+                _instance.IncrementHE(itemName, isQE);
+                await _instance.IncrementCounter("HeroEquipmentGot");
             }
-           
+            else if (category.Equals(DropCategory.HERO_MOTE))
+            {
+                _instance.IncrementHM(itemName, qty, isQE);
+                await _instance.IncrementCounter("HeroMotesGot", qty);
+            }
+            else
+            {
+                // Filter materials drops
+                if (rarity == 0 && category != DropCategory.LABYRINTH_ITEM && category != DropCategory.RECORD_MATERIA) rarity = CounterInference.InferRarity(category, itemName);
+                // if (!(DropCategory.LABYRINTH_ITEM | DropCategory.COMMON | DropCategory.RECORD_MATERIA).HasFlag(category) && rarity > 0 && rarity < _instance.MaterialsRarityFilter) return;
+
+                _instance.IncrementDrop(itemName, qty, isQE);
+                await _instance.Save();
+            }
         }
-        public static async Task FoundDrop(string dropType, string name, int rarity, int qty)
+        public static async Task FoundDrop(string dropType, string itemName, int rarity, int qty)
         {
             if (Enum.TryParse(dropType, out DropCategory category))
             {
-                await FoundDrop(category, name, rarity, qty);
+                if (category == DropCategory.SPHERE_MATERIAL && Translation.TranslateItem(itemName, true).Contains(Translation.HeroMote)) category = DropCategory.HERO_MOTE;
+                await FoundDrop(category, itemName, rarity, qty);
             }
             else
             {
@@ -257,7 +257,7 @@ namespace FFRK_LabMem.Data
         }
         public static async Task FoundQEDrop(string name, int qty, string imagePath)
         {
-            var category = CounterInference.InferCategory(imagePath);
+            DropCategory category = CounterInference.InferCategory(imagePath);
             if (category != DropCategory.UNKNOWN)
             {
                 // Passing 0 for rarity will use inference
@@ -271,7 +271,7 @@ namespace FFRK_LabMem.Data
         private async Task IncrementCounter(string key, int amt = 1, bool save = true)
         {
             if (amt == 0) return;
-            foreach (var set in GetTargetCounterSets())
+            foreach (KeyValuePair<string, CounterSet> set in GetTargetCounterSets())
             {
                 set.Value.Counters[key] += amt;
                 if (set.Value.Counters[key] < 0) set.Value.Counters[key] = 0;
@@ -288,11 +288,11 @@ namespace FFRK_LabMem.Data
         }
         private void IncrementHE(string name, bool isQE = false)
         {
-            foreach (var set in GetTargetCounterSets())
+            foreach (KeyValuePair<string, CounterSet> set in GetTargetCounterSets())
             {
                 if (!set.Key.Equals("Total") || LogDropsToTotalCounters)
                 {
-                    var target = (isQE) ? set.Value.HeroEquipmentQE : set.Value.HeroEquipment;
+                    SortedDictionary<string, int> target = (isQE) ? set.Value.HeroEquipmentQE : set.Value.HeroEquipment;
                     if (target.ContainsKey(name))
                     {
                         target[name] += 1;
@@ -303,20 +303,20 @@ namespace FFRK_LabMem.Data
                 }
             }
         }
-        private void IncrementHM(string name, bool isQE = false)
+        private void IncrementHM(string name, int amt = 1, bool isQE = false)
         {
-            foreach (var set in GetTargetCounterSets())
+            foreach (KeyValuePair<string, CounterSet> set in GetTargetCounterSets())
             {
                 if (!set.Key.Equals("Total") || LogDropsToTotalCounters)
                 {
-                    var target = (isQE) ? set.Value.HeroMotesQE : set.Value.HeroMotes;
+                    SortedDictionary<string, int> target = (isQE) ? set.Value.HeroMotesQE : set.Value.HeroMotes;
                     if (target.ContainsKey(name))
                     {
-                        target[name] += 1;
+                        target[name] += amt;
                     }
                     else
                     {
-                        target.Add(name, 1);
+                        target.Add(name, amt);
                     }
                 }
             }
@@ -344,11 +344,11 @@ namespace FFRK_LabMem.Data
             GetTargetCounterSets().ForEach(s => s.Value.LastCompleted = DateTime.Now);
         }
         private List<KeyValuePair<string,CounterSet>> GetTargetCounterSets(){
-            var ret = CounterSets.Where(s => DefaultCounterSets.ContainsKey(s.Key) || s.Key.Equals(CurrentLabId)).ToList();
+            List<KeyValuePair<string, CounterSet>> ret = CounterSets.Where(s => DefaultCounterSets.ContainsKey(s.Key) || s.Key.Equals(CurrentLabId)).ToList();
             if (CurrentLabId == null) ret.Add(new KeyValuePair<string, CounterSet>("_Buffer", CurrentLabBufferSet));
             return ret;
         }
-        private async void SetLab(string id, string name, bool showMessage = true)
+        private async void SetLab(string id, string dungeonName, bool showMessage = true)
         {
             if (CurrentLabId == null || !CurrentLabId.Equals(id))
             {
@@ -360,8 +360,10 @@ namespace FFRK_LabMem.Data
                 else
                 {
                     // Create a new entry and add counters in the buffer to it
-                    CounterSet newEntry = new CounterSet();
-                    newEntry.Name = name;
+                    CounterSet newEntry = new CounterSet
+                    {
+                        Name = Translation.TranslateDungeon(dungeonName)
+                    };
                     newEntry.AddCounters(CurrentLabBufferSet);
                     CounterSets.Add(id, newEntry);
                 }
@@ -370,23 +372,23 @@ namespace FFRK_LabMem.Data
                 {
                     try 
                     {
-                        ColorConsole.WriteLine(ConsoleColor.DarkCyan, "Current lab set to: {0}", Translation.TranslateDungeon(name)); 
+                        ColorConsole.WriteLine(ConsoleColor.DarkCyan, "Current lab set to: {0}", Translation.TranslateDungeon(dungeonName)); 
                     }
                     catch (InvalidDataException)
                     {
                         ColorConsole.WriteLine(ConsoleColor.Red, "Invalid dungeon data passed, unable to translate");
-                        ColorConsole.WriteLine(ConsoleColor.DarkCyan, "Current lab set to: {0}", name);
+                        ColorConsole.WriteLine(ConsoleColor.DarkCyan, "Current lab set to: {0}", dungeonName);
                     }
                 } else
                 {
                     try
                     {
-                        ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Current lab set to: {0}", Translation.TranslateDungeon(name));
+                        ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Current lab set to: {0}", Translation.TranslateDungeon(dungeonName));
                     }
                     catch (InvalidDataException)
                     {
                         ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Invalid dungeon data passed, unable to translate");
-                        ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Current lab set to: {0}", name);
+                        ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Current lab set to: {0}", dungeonName);
                     }
                 }
             }
@@ -394,9 +396,9 @@ namespace FFRK_LabMem.Data
             CurrentLabBufferSet.Reset(CounterSet.DataType.All);
             CurrentLabId = id;
         }
-        public static void SetCurrentLab(string id, string name, bool showMessage = true)
+        public static void SetCurrentLab(string id, string dungeonName, bool showMessage = true)
         {
-            _instance.SetLab(id, name, showMessage);
+            _instance.SetLab(id, dungeonName, showMessage);
         }
         public static void ClearCurrentLab()
         {

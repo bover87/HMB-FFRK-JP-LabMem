@@ -16,6 +16,7 @@ namespace FFRK_LabMem.Services
     internal static class Translation
     {
         public const string EnemySuffix = " (Labyrinth)";
+        public const string HeroMote = "Hero Mote";
 
         // Translates dungeon names
         public static String TranslateDungeon(String name)
@@ -43,10 +44,15 @@ namespace FFRK_LabMem.Services
             else return name;
         }
 
-        // Translates enemy names
-        public static String TranslateEnemy(String name)
+        // Translates enemy names, with option to ignore setting for use in blocklist checks
+        public static String TranslateEnemy(String name, bool ignoreSetting = false)
         {
-            if (ColorConsole.Translate && Enemies.TryGetValue(name, out string enemyName)) return NumberEnemies(enemyName);
+            if (!ColorConsole.Translate && !ignoreSetting) return name;
+            else if (Enemies.TryGetValue(name, out string enemyName))
+            {
+                if (!ignoreSetting) return NumberEnemies(enemyName);
+                else return enemyName;
+            }
             else return name;
         }
 
@@ -56,18 +62,11 @@ namespace FFRK_LabMem.Services
             else return name + EnemySuffix;
         }
 
-        // Translates enemy names regardless of configuration (used for checking enemy blocklist settings)
-        public static String BlocklistTranslateEnemy(String name)
+        // Translates item names (and ignores Translate setting if ignoreSetting == true)
+        public static String TranslateItem(String name, bool ignoreSetting = false)
         {
-            if (Enemies.TryGetValue(name, out string enemyName)) return enemyName;
-            else return name;
-        }
-
-        // Translates item names
-        public static String TranslateItem(String name)
-        {
-            // Checks if translation is turned on and aborts method if not
-            if (!ColorConsole.Translate) return name;
+            // Checks if translation is turned on and aborts method if not (unless called with ignoreSetting, for use with Counters)
+            if (!ColorConsole.Translate && !ignoreSetting) return name;
 
             // Checks if item name requires a more complex translation procedure
             else if (name.Contains("英雄専用フラグメント")) return TranslateHeroMote(name);
@@ -108,7 +107,7 @@ namespace FFRK_LabMem.Services
             String moteTier = s.Replace(heroName, String.Empty);
 
             // Generate full Hero Mote name if possible
-            if (Characters.TryGetValue(heroName, out string hero)) return "Hero Mote (" + hero + ") " + moteTier;
+            if (Characters.TryGetValue(heroName, out string hero)) return HeroMote + " (" + hero + ") " + moteTier;
             else return name;
         }
 
@@ -147,24 +146,7 @@ namespace FFRK_LabMem.Services
         // Translates Rat Tail names
         private static String TranslateRatTail(String name)
         {
-            if (Sizes.TryGetValue(name.Replace("ねずみのしっぽ", string.Empty), out string rarity)) return rarity + "Rat Tail";
-            else return name;
-        }
-
-        // Always translates item name regardless of translation setting (used for keeping counters)
-        public static String CounterTranslateItem(String name)
-        {
-            // Checks if item name requires a more complex translation procedure
-            if (name.Contains("英雄専用フラグメント")) return TranslateHeroMote(name);
-            else if (name.Contains("アニマレンズ")) return TranslateAnima(name);
-            else if (name.Contains("のオーブ")) return TranslateOrb(name);
-            else if (name.Contains("の結晶")) return TranslateCrystal(name);
-            else if (name.Contains("のフラグメント")) return TranslateMote(name);
-            else if (name.Contains("ねずみのしっぽ")) return TranslateRatTail(name);
-
-            // Checks for item in translation dictionaries
-            else if (Items.TryGetValue(name, out string itemName)) return itemName;
-            else if (HeroEquipment.TryGetValue(name, out string equipName)) return equipName;
+            if (Sizes.TryGetValue(name.Replace("ねずみのしっぽ", string.Empty), out string size)) return size + "Rat Tail";
             else return name;
         }
     }

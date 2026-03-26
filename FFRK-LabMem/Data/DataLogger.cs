@@ -165,7 +165,7 @@ namespace FFRK_LabMem.Data
                         var row = CreateDataRow(lab);
                         // Timestamp
                         row[2] = lab.Data["SERVER_TIME"].ToString();
-                        row.Add(Translation.TranslateItem(item.First["name"].ToString()));
+                        row.Add(Translation.TranslateItem(item.First["name"].ToString(), true));
                         // Get Qty
                         var itemid = ((JProperty)item).Name.ToString();
                         string qty = "0";
@@ -188,9 +188,9 @@ namespace FFRK_LabMem.Data
 
         private static async Task InspectDrop(JToken item, string typeField, string name, string qty)
         {
-            var typeName = item[typeField];
+            JToken typeName = item[typeField];
             int rarity = 0;
-            var rarityToken = item["rarity"];
+            JToken rarityToken = item["rarity"];
             if (rarityToken != null) rarity = int.Parse(rarityToken.ToString());
             if (typeName != null)
             {
@@ -201,7 +201,7 @@ namespace FFRK_LabMem.Data
 
         private static List<String> CreateDataRow(Lab lab)
         {
-            var row = new List<String>
+            List<string> row = new List<String>
             {
                 DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"),
                 GetCurrentStage(),

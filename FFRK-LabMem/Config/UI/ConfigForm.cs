@@ -194,10 +194,10 @@ namespace FFRK_LabMem.Config.UI
         private void LoadDropCategories()
         {
             checkedListBoxDropCategories.Items.Clear();
-            foreach (var item in Enum.GetValues(typeof(Counters.DropCategory)).Cast<Counters.DropCategory>())
+            foreach (Counters.DropCategory item in Enum.GetValues(typeof(Counters.DropCategory)).Cast<Counters.DropCategory>())
             {
                 if (item != Counters.DropCategory.UNKNOWN)
-                    checkedListBoxDropCategories.Items.Add(Lookups.DropCategories[item], Counters.Default.DropCategories.HasFlag((Enum)item));
+                    checkedListBoxDropCategories.Items.Add(Lookups.DropCategories[item], Counters.Default.DropCategories.HasFlag(item));
             }
             buttonShowCounters.Visible = !CountersForm.IsLoaded;
 

@@ -461,10 +461,10 @@ namespace FFRK_LabMem.Services
 
         public static readonly Dictionary<String, String> Sizes = new Dictionary<String, String>()
         {
-            { "【小】", "Lesser " },
+            { "【小】", "Small " },
             { "【中】", "" },
-            { "【大】", "Greater " },
-            { "【極大】", "Major " }
+            { "【大】", "Large " },
+            { "【極大】", "Huge " }
         };
 
         // List of orb/crystal types in Japanese and their translations

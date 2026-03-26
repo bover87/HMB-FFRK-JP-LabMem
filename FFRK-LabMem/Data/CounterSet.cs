@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FFRK_Machines;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -215,7 +216,7 @@ namespace FFRK_LabMem.Data
         /// <param name="from">The counter set to add values from</param>
         public void AddCounters(CounterSet from)
         {
-            foreach (var item in from.Counters.Keys)
+            foreach (string item in from.Counters.Keys)
             {
                 if (this.Counters.ContainsKey(item))
                 {
@@ -226,7 +227,7 @@ namespace FFRK_LabMem.Data
                     this.Counters.Add(item, from.Counters[item]);
                 }
             }
-            foreach (var item in from.Runtime.Keys)
+            foreach (string item in from.Runtime.Keys)
             {
                 if (this.Runtime.ContainsKey(item))
                 {
@@ -237,7 +238,7 @@ namespace FFRK_LabMem.Data
                     this.Runtime.Add(item, from.Runtime[item]);
                 }
             }
-            foreach (var item in from.HeroEquipment.Keys)
+            foreach (string item in from.HeroEquipment.Keys)
             {
                 if (this.HeroEquipment.ContainsKey(item))
                 {
@@ -248,8 +249,9 @@ namespace FFRK_LabMem.Data
                     this.HeroEquipment.Add(item, from.HeroEquipment[item]);
                 }
             }
-            foreach (var item in from.HeroMotes.Keys)
+            foreach (string item in from.HeroMotes.Keys)
             {
+                ColorConsole.WriteLine(ConsoleColor.Blue, "Checking Hero Motes dictionary...");
                 if (this.HeroMotes.ContainsKey(item))
                 {
                     this.HeroMotes[item] += from.HeroMotes[item];
@@ -259,7 +261,7 @@ namespace FFRK_LabMem.Data
                     this.HeroMotes.Add(item, from.HeroMotes[item]);
                 }
             }
-            foreach (var item in from.Drops.Keys)
+            foreach (string item in from.Drops.Keys)
             {
                 if (this.Drops.ContainsKey(item))
                 {
