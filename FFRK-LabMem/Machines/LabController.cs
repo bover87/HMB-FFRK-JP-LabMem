@@ -1,12 +1,16 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using FFRK_LabMem.Config;
+﻿using FFRK_LabMem.Config;
+using FFRK_LabMem.Config.UI;
 using FFRK_LabMem.Data;
 using FFRK_Machines;
-using FFRK_Machines.Services.Adb;
 using FFRK_Machines.Machines;
+using FFRK_Machines.Services.Adb;
 using FFRK_Machines.Services.Notifications;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using static FFRK_LabMem.Services.TranslationLookups;
 
 namespace FFRK_LabMem.Machines
 {
@@ -38,6 +42,15 @@ namespace FFRK_LabMem.Machines
             await DataLogger.Initalize(config);
             await Counters.Initalize(config, ret);
             await Notifications.Initalize();
+            
+            List<string> enemyNames = Enemies.Values.ToList();
+            foreach (string enemyName in enemyNames)
+            {
+                if (!Lookups.EnemyAC.Contains(enemyName))
+                {
+                    Lookups.EnemyAC.Add(enemyName);
+                }
+            }
 
             return ret;
 

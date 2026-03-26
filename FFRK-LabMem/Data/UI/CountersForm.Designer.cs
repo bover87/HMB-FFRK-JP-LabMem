@@ -32,8 +32,9 @@ namespace FFRK_LabMem.Data.UI
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.ListViewGroup listViewGroup5 = new System.Windows.Forms.ListViewGroup("Counters", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.ListViewGroup listViewGroup6 = new System.Windows.Forms.ListViewGroup("Runtime", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup7 = new System.Windows.Forms.ListViewGroup("Hero Equipment", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup8 = new System.Windows.Forms.ListViewGroup("Drops", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup7 = new System.Windows.Forms.ListViewGroup("Hero Motes", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup8 = new System.Windows.Forms.ListViewGroup("Hero Equipment", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup9 = new System.Windows.Forms.ListViewGroup("Drops", System.Windows.Forms.HorizontalAlignment.Left);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CountersForm));
             this.buttonCountersResetSession = new System.Windows.Forms.Button();
             this.buttonCountersResetLab = new System.Windows.Forms.Button();
@@ -116,15 +117,18 @@ namespace FFRK_LabMem.Data.UI
             listViewGroup5.Name = "Counters";
             listViewGroup6.Header = "Runtime";
             listViewGroup6.Name = "Runtime";
-            listViewGroup7.Header = "Hero Equipment";
-            listViewGroup7.Name = "HE";
-            listViewGroup8.Header = "Drops";
-            listViewGroup8.Name = "Drops";
+            listViewGroup7.Header = "Hero Motes";
+            listViewGroup7.Name = "HM";
+            listViewGroup8.Header = "Hero Equipment";
+            listViewGroup8.Name = "HE";
+            listViewGroup9.Header = "Drops";
+            listViewGroup9.Name = "Drops";
             this.listViewCounters.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
             listViewGroup5,
             listViewGroup6,
             listViewGroup7,
-            listViewGroup8});
+            listViewGroup8,
+            listViewGroup9});
             this.listViewCounters.HideSelection = false;
             this.listViewCounters.Location = new System.Drawing.Point(12, 42);
             this.listViewCounters.Name = "listViewCounters";

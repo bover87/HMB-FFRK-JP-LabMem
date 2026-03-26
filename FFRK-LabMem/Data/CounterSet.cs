@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FFRK_Machines;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,8 @@ namespace FFRK_LabMem.Data
             Runtime = 1 << 2,
             HeroEquipment = 1 << 3,
             Drops = 1 << 4,
-            QEDrops = 1 << 5
+            QEDrops = 1 << 5,
+            HeroMotes = 1 << 6
         }
 
         public enum FilterType
@@ -30,6 +32,8 @@ namespace FFRK_LabMem.Data
         public Dictionary<string, TimeSpan> Runtime { get; set; }
         public SortedDictionary<string, int> HeroEquipment { get; set; }
         public SortedDictionary<string, int> HeroEquipmentQE { get; set; } = new SortedDictionary<string, int>();
+        public SortedDictionary<string, int> HeroMotes { get; set; }
+        public SortedDictionary<string, int> HeroMotesQE { get; set; } = new SortedDictionary<string, int>();
         public SortedDictionary<string, int> Drops { get; set; }
         public SortedDictionary<string, int> DropsQE { get; set; } = new SortedDictionary<string, int>();
         public string Name { get; set; }
@@ -54,12 +58,31 @@ namespace FFRK_LabMem.Data
                 return ret;
             }
         }
+        public SortedDictionary<string, int> HeroMotesCombined
+        {
+            get
+            {
+                SortedDictionary<string, int> ret = new SortedDictionary<string, int>(HeroMotes);
+                foreach (var item in HeroMotesQE.Keys)
+                {
+                    if (ret.ContainsKey(item))
+                    {
+                        ret[item] += HeroMotesQE[item];
+                    }
+                    else
+                    {
+                        ret.Add(item, HeroMotesQE[item]);
+                    }
+                }
+                return ret;
+            }
+        }
         [JsonIgnore]
         public SortedDictionary<string, int> DropsCombined
         {
             get
             {
-                var ret = new SortedDictionary<string, int>(Drops);
+                SortedDictionary<string, int> ret = new SortedDictionary<string, int>(Drops);
                 foreach (var item in DropsQE.Keys)
                 {
                     if (ret.ContainsKey(item))
@@ -79,8 +102,8 @@ namespace FFRK_LabMem.Data
         {
             get
             {
-                var battles = this.Counters["BattlesWon"];
-                var runtime = this.Runtime["Battle"];
+                int battles = this.Counters["BattlesWon"];
+                TimeSpan runtime = this.Runtime["Battle"];
 
                 if (battles == 0) return TimeSpan.FromSeconds(0);
                 return TimeSpan.FromSeconds(runtime.TotalSeconds / battles);
@@ -96,6 +119,18 @@ namespace FFRK_LabMem.Data
                     return HeroEquipmentQE;
                 default:
                     return HeroEquipment;
+            }
+        }
+        public SortedDictionary<string, int> GetHMFiltered(FilterType filter)
+        {
+            switch (filter)
+            {
+                case FilterType.IncludeQE:
+                    return HeroMotesCombined;
+                case FilterType.OnlyQE:
+                    return HeroMotesQE;
+                default:
+                    return HeroMotes;
             }
         }
 
@@ -117,6 +152,7 @@ namespace FFRK_LabMem.Data
             this.Counters = GetDefaultCounters();
             this.Runtime = GetDefaultRuntimes();
             this.HeroEquipment = new SortedDictionary<string, int>();
+            this.HeroMotes = new SortedDictionary<string, int>();
             this.Drops = new SortedDictionary<string, int>();
         }
 
@@ -136,6 +172,7 @@ namespace FFRK_LabMem.Data
                     {"UsedStaminaPots",0},
                     {"PulledInPortal",0},
                     {"HeroEquipmentGot",0},
+                    {"HeroMotesGot",0 },
                     {"EnemyIsUponYou",0},
                     {"QuickExplores",0},
                     {"FFRKCrashes",0},
@@ -163,11 +200,13 @@ namespace FFRK_LabMem.Data
             if (types.HasFlag(DataType.Counters)) this.Counters = GetDefaultCounters();
             if (types.HasFlag(DataType.Runtime)) this.Runtime = GetDefaultRuntimes();
             if (types.HasFlag(DataType.HeroEquipment)) this.HeroEquipment = new SortedDictionary<string, int>();
+            if (types.HasFlag(DataType.HeroMotes)) this.HeroMotes = new SortedDictionary<string, int>();
             if (types.HasFlag(DataType.Drops)) this.Drops = new SortedDictionary<string, int>();
             if (types.HasFlag(DataType.QEDrops))
             {
                 this.DropsQE = new SortedDictionary<string, int>();
                 this.HeroEquipmentQE = new SortedDictionary<string, int>();
+                this.HeroMotesQE = new SortedDictionary<string, int>();
             }
         }
 
@@ -177,7 +216,7 @@ namespace FFRK_LabMem.Data
         /// <param name="from">The counter set to add values from</param>
         public void AddCounters(CounterSet from)
         {
-            foreach (var item in from.Counters.Keys)
+            foreach (string item in from.Counters.Keys)
             {
                 if (this.Counters.ContainsKey(item))
                 {
@@ -188,7 +227,7 @@ namespace FFRK_LabMem.Data
                     this.Counters.Add(item, from.Counters[item]);
                 }
             }
-            foreach (var item in from.Runtime.Keys)
+            foreach (string item in from.Runtime.Keys)
             {
                 if (this.Runtime.ContainsKey(item))
                 {
@@ -199,7 +238,7 @@ namespace FFRK_LabMem.Data
                     this.Runtime.Add(item, from.Runtime[item]);
                 }
             }
-            foreach (var item in from.HeroEquipment.Keys)
+            foreach (string item in from.HeroEquipment.Keys)
             {
                 if (this.HeroEquipment.ContainsKey(item))
                 {
@@ -210,7 +249,18 @@ namespace FFRK_LabMem.Data
                     this.HeroEquipment.Add(item, from.HeroEquipment[item]);
                 }
             }
-            foreach (var item in from.Drops.Keys)
+            foreach (string item in from.HeroMotes.Keys)
+            {
+                if (this.HeroMotes.ContainsKey(item))
+                {
+                    this.HeroMotes[item] += from.HeroMotes[item];
+                }
+                else
+                {
+                    this.HeroMotes.Add(item, from.HeroMotes[item]);
+                }
+            }
+            foreach (string item in from.Drops.Keys)
             {
                 if (this.Drops.ContainsKey(item))
                 {

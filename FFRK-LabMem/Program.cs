@@ -33,10 +33,11 @@ namespace FFRK_LabMem
             var configFile = (args.Length > 0) ? args[0] : null;
             var config = new ConfigHelper(configFile);
 
-            // Console
+            // Console and Translation
             ColorConsole.Timestamps = config.GetBool("console.timestamps", true);
             ColorConsole.DebugCategories = (ColorConsole.DebugCategory)config.GetInt("console.debugCategories", 0);
             ColorConsole.LogBuffer.Enabled = config.GetBool("console.logging", false);
+            ColorConsole.Translate = config.GetBool("console.translate", true);
             ColorConsole.LogBuffer.UpdateFolderOrDefault(config.GetString("console.logFolder", ""));
             ColorConsole.LogBuffer.BufferSize = config.GetInt("console.logBuffer", 10);
 
@@ -67,7 +68,7 @@ namespace FFRK_LabMem
                 controller = LabController.CreateAndStart(config).Result;
 
                 // Instructions for Japanese output (Windows 10 and earlier)
-                if (HyperV.GetHVStatus() != "Running")
+                if (HyperV.GetHVStatus() != "Running" && ColorConsole.Translate == false)
                 {
                     ColorConsole.WriteLine(ConsoleColor.DarkYellow, "Japanese output: click treasure chest in top left then Properties and change Font to MS Gothic");
                     ColorConsole.WriteLine(ConsoleColor.DarkYellow, "See Readme.md on GitHub for more information");
@@ -127,7 +128,7 @@ namespace FFRK_LabMem
             finally
             {
                 // Stop
-                if (controller != null) controller.Stop();
+                controller?.Stop();
                 OnConsoleExit();
             }
 

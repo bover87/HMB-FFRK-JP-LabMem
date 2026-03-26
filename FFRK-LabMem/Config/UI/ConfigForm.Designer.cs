@@ -1,4 +1,10 @@
 ﻿
+using FFRK_Machines;
+using System;
+using System.Data;
+using System.Drawing;
+using System.Windows.Forms;
+
 namespace FFRK_LabMem.Config.UI
 {
     partial class ConfigForm
@@ -31,8 +37,6 @@ namespace FFRK_LabMem.Config.UI
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("General", 0);
             System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Recovery", 1);
             System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Proxy", 2);
@@ -42,10 +46,15 @@ namespace FFRK_LabMem.Config.UI
             System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("Schedule", 6);
             System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("Counters", 7);
             System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("Notifications", 8);
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.checkboxEnglish = new System.Windows.Forms.CheckBox();
+            this.textBoxSoulbreakApiKey = new System.Windows.Forms.TextBox();
+            this.label46 = new System.Windows.Forms.Label();
             this.textBoxScreenshotFolder = new System.Windows.Forms.TextBox();
             this.label45 = new System.Windows.Forms.Label();
             this.buttonScreenshotFolder = new System.Windows.Forms.Button();
@@ -203,10 +212,6 @@ namespace FFRK_LabMem.Config.UI
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.dataGridViewEnemies = new System.Windows.Forms.DataGridView();
-            this.Enabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Priority = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Party = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.EnemyName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.checkBoxLabBlockListOverride = new System.Windows.Forms.CheckBox();
             this.comboBoxLab = new System.Windows.Forms.ComboBox();
             this.tabPage13 = new System.Windows.Forms.TabPage();
@@ -263,8 +268,10 @@ namespace FFRK_LabMem.Config.UI
             this.buttonApply = new System.Windows.Forms.Button();
             this.openFileDialogSound = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.label46 = new System.Windows.Forms.Label();
-            this.textBoxSoulbreakApiKey = new System.Windows.Forms.TextBox();
+            this.Enabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Priority = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Party = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.EnemyName = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownScreenBottom)).BeginInit();
@@ -362,6 +369,7 @@ namespace FFRK_LabMem.Config.UI
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.checkboxEnglish);
             this.tabPage1.Controls.Add(this.textBoxSoulbreakApiKey);
             this.tabPage1.Controls.Add(this.label46);
             this.tabPage1.Controls.Add(this.textBoxScreenshotFolder);
@@ -388,10 +396,38 @@ namespace FFRK_LabMem.Config.UI
             this.tabPage1.Size = new System.Drawing.Size(504, 466);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "General";
+            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
+            // 
+            // checkboxEnglish
+            // 
+            this.checkboxEnglish.AutoSize = true;
+            this.checkboxEnglish.Location = new System.Drawing.Point(0, 128);
+            this.checkboxEnglish.Name = "checkboxEnglish";
+            this.checkboxEnglish.Size = new System.Drawing.Size(146, 19);
+            this.checkboxEnglish.TabIndex = 20;
+            this.checkboxEnglish.Text = "Enable English output";
+            this.toolTip1.SetToolTip(this.checkboxEnglish, "Enables English output instead of Japanese.");
+            this.checkboxEnglish.UseVisualStyleBackColor = true;
+            // 
+            // textBoxSoulbreakApiKey
+            // 
+            this.textBoxSoulbreakApiKey.Location = new System.Drawing.Point(149, 298);
+            this.textBoxSoulbreakApiKey.Name = "textBoxSoulbreakApiKey";
+            this.textBoxSoulbreakApiKey.Size = new System.Drawing.Size(280, 21);
+            this.textBoxSoulbreakApiKey.TabIndex = 19;
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(-3, 298);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(151, 15);
+            this.label46.TabIndex = 18;
+            this.label46.Text = "Soulbreak Tracker API Key";
             // 
             // textBoxScreenshotFolder
             // 
-            this.textBoxScreenshotFolder.Location = new System.Drawing.Point(149, 246);
+            this.textBoxScreenshotFolder.Location = new System.Drawing.Point(149, 271);
             this.textBoxScreenshotFolder.Name = "textBoxScreenshotFolder";
             this.textBoxScreenshotFolder.Size = new System.Drawing.Size(280, 21);
             this.textBoxScreenshotFolder.TabIndex = 16;
@@ -400,7 +436,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             // label45
             // 
-            this.label45.Location = new System.Drawing.Point(-3, 246);
+            this.label45.Location = new System.Drawing.Point(-3, 269);
             this.label45.Name = "label45";
             this.label45.Size = new System.Drawing.Size(146, 23);
             this.label45.TabIndex = 15;
@@ -411,7 +447,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             this.buttonScreenshotFolder.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonScreenshotFolder.Image = global::FFRK_LabMem.Properties.Resources.folder;
-            this.buttonScreenshotFolder.Location = new System.Drawing.Point(437, 245);
+            this.buttonScreenshotFolder.Location = new System.Drawing.Point(435, 273);
             this.buttonScreenshotFolder.Name = "buttonScreenshotFolder";
             this.buttonScreenshotFolder.Size = new System.Drawing.Size(29, 23);
             this.buttonScreenshotFolder.TabIndex = 17;
@@ -420,7 +456,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             // textBoxLogFolder
             // 
-            this.textBoxLogFolder.Location = new System.Drawing.Point(149, 219);
+            this.textBoxLogFolder.Location = new System.Drawing.Point(149, 244);
             this.textBoxLogFolder.Name = "textBoxLogFolder";
             this.textBoxLogFolder.Size = new System.Drawing.Size(280, 21);
             this.textBoxLogFolder.TabIndex = 13;
@@ -429,7 +465,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             // label43
             // 
-            this.label43.Location = new System.Drawing.Point(-3, 219);
+            this.label43.Location = new System.Drawing.Point(-1, 242);
             this.label43.Name = "label43";
             this.label43.Size = new System.Drawing.Size(146, 23);
             this.label43.TabIndex = 12;
@@ -440,7 +476,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             this.buttonLogFolder.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonLogFolder.Image = global::FFRK_LabMem.Properties.Resources.folder;
-            this.buttonLogFolder.Location = new System.Drawing.Point(437, 218);
+            this.buttonLogFolder.Location = new System.Drawing.Point(435, 244);
             this.buttonLogFolder.Name = "buttonLogFolder";
             this.buttonLogFolder.Size = new System.Drawing.Size(29, 23);
             this.buttonLogFolder.TabIndex = 14;
@@ -463,7 +499,7 @@ namespace FFRK_LabMem.Config.UI
             this.buttonDebug.BackColor = System.Drawing.SystemColors.Control;
             this.buttonDebug.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonShadow;
             this.buttonDebug.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonDebug.Location = new System.Drawing.Point(149, 131);
+            this.buttonDebug.Location = new System.Drawing.Point(149, 150);
             this.buttonDebug.Name = "buttonDebug";
             this.buttonDebug.Size = new System.Drawing.Size(233, 26);
             this.buttonDebug.TabIndex = 7;
@@ -474,7 +510,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             // label12
             // 
-            this.label12.Location = new System.Drawing.Point(-3, 132);
+            this.label12.Location = new System.Drawing.Point(-3, 150);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(143, 23);
             this.label12.TabIndex = 6;
@@ -493,7 +529,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             // numericUpDownScreenBottom
             // 
-            this.numericUpDownScreenBottom.Location = new System.Drawing.Point(149, 192);
+            this.numericUpDownScreenBottom.Location = new System.Drawing.Point(149, 209);
             this.numericUpDownScreenBottom.Maximum = new decimal(new int[] {
             500,
             0,
@@ -513,7 +549,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(-3, 192);
+            this.label2.Location = new System.Drawing.Point(-3, 209);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(146, 23);
             this.label2.TabIndex = 10;
@@ -522,7 +558,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             // numericUpDownScreenTop
             // 
-            this.numericUpDownScreenTop.Location = new System.Drawing.Point(149, 163);
+            this.numericUpDownScreenTop.Location = new System.Drawing.Point(149, 182);
             this.numericUpDownScreenTop.Maximum = new decimal(new int[] {
             500,
             0,
@@ -542,7 +578,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(-3, 163);
+            this.label1.Location = new System.Drawing.Point(-3, 180);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(146, 23);
             this.label1.TabIndex = 8;
@@ -1377,9 +1413,9 @@ namespace FFRK_LabMem.Config.UI
             this.tabPage4.Controls.Add(this.buttonLabConfigurations);
             this.tabPage4.Controls.Add(this.tabControl1);
             this.tabPage4.Controls.Add(this.comboBoxLab);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Location = new System.Drawing.Point(4, 24);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(504, 468);
+            this.tabPage4.Size = new System.Drawing.Size(504, 466);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Lab";
             // 
@@ -1408,7 +1444,7 @@ namespace FFRK_LabMem.Config.UI
             this.tabControl1.Location = new System.Drawing.Point(3, 35);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(500, 416);
+            this.tabControl1.Size = new System.Drawing.Size(500, 414);
             this.tabControl1.TabIndex = 2;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.TabControl1_SelectedIndexChanged);
             // 
@@ -1426,7 +1462,7 @@ namespace FFRK_LabMem.Config.UI
             this.tabPage5.Location = new System.Drawing.Point(4, 24);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(492, 388);
+            this.tabPage5.Size = new System.Drawing.Size(492, 386);
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "Control";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -2241,10 +2277,10 @@ namespace FFRK_LabMem.Config.UI
             // 
             this.tabPage10.Controls.Add(this.dataGridViewEnemies);
             this.tabPage10.Controls.Add(this.checkBoxLabBlockListOverride);
-            this.tabPage10.Location = new System.Drawing.Point(4, 22);
+            this.tabPage10.Location = new System.Drawing.Point(4, 24);
             this.tabPage10.Name = "tabPage10";
             this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage10.Size = new System.Drawing.Size(492, 390);
+            this.tabPage10.Size = new System.Drawing.Size(492, 386);
             this.tabPage10.TabIndex = 5;
             this.tabPage10.Text = "Enemies";
             this.tabPage10.UseVisualStyleBackColor = true;
@@ -2263,64 +2299,24 @@ namespace FFRK_LabMem.Config.UI
             this.Priority,
             this.Party,
             this.EnemyName});
+            this.dataGridViewEnemies.DataError += new DataGridViewDataErrorEventHandler(DataGridViewEnemiesDataError);
             this.dataGridViewEnemies.Location = new System.Drawing.Point(7, 6);
             this.dataGridViewEnemies.MultiSelect = false;
             this.dataGridViewEnemies.Name = "dataGridViewEnemies";
-            this.dataGridViewEnemies.Size = new System.Drawing.Size(476, 353);
+            this.dataGridViewEnemies.Size = new System.Drawing.Size(476, 349);
             this.dataGridViewEnemies.TabIndex = 5;
             this.dataGridViewEnemies.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.DataGridViewEnemies_UserDeletingRow);
             this.dataGridViewEnemies.DragDrop += new System.Windows.Forms.DragEventHandler(this.DataGridViewEnemies_DragDrop);
             this.dataGridViewEnemies.DragOver += new System.Windows.Forms.DragEventHandler(this.DataGridViewEnemies_DragOver);
             this.dataGridViewEnemies.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DataGridViewEnemies_MouseDown);
             this.dataGridViewEnemies.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DataGridViewEnemies_MouseMove);
-            // 
-            // Enabled
-            // 
-            this.Enabled.HeaderText = "";
-            this.Enabled.Name = "Enabled";
-            this.Enabled.Width = 30;
-            // 
-            // Priority
-            // 
-            dataGridViewCellStyle1.Padding = new System.Windows.Forms.Padding(1);
-            this.Priority.DefaultCellStyle = dataGridViewCellStyle1;
-            this.Priority.HeaderText = "Priority";
-            this.Priority.Items.AddRange(new object[] {
-            "Prefer +3",
-            "Prefer +2",
-            "Prefer",
-            "Neutral",
-            "Avoid",
-            "Avoid +2",
-            "Avoid +3"});
-            this.Priority.Name = "Priority";
-            this.Priority.Width = 80;
-            // 
-            // Party
-            // 
-            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(1);
-            this.Party.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Party.HeaderText = "Party";
-            this.Party.Items.AddRange(new object[] {
-            "Default",
-            "Party 1",
-            "Party 2",
-            "Party 3"});
-            this.Party.Name = "Party";
-            this.Party.Width = 80;
-            // 
-            // EnemyName
-            // 
-            this.EnemyName.HeaderText = "Name";
-            this.EnemyName.MinimumWidth = 200;
-            this.EnemyName.Name = "EnemyName";
-            this.EnemyName.Width = 220;
+            this.dataGridViewEnemies.EditingControlShowing += new DataGridViewEditingControlShowingEventHandler(EnemyName_EditingControlShowing);
             // 
             // checkBoxLabBlockListOverride
             // 
             this.checkBoxLabBlockListOverride.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxLabBlockListOverride.AutoSize = true;
-            this.checkBoxLabBlockListOverride.Location = new System.Drawing.Point(336, 365);
+            this.checkBoxLabBlockListOverride.Location = new System.Drawing.Point(336, 361);
             this.checkBoxLabBlockListOverride.Name = "checkBoxLabBlockListOverride";
             this.checkBoxLabBlockListOverride.Size = new System.Drawing.Size(147, 19);
             this.checkBoxLabBlockListOverride.TabIndex = 4;
@@ -2943,21 +2939,51 @@ namespace FFRK_LabMem.Config.UI
             this.openFileDialogSound.Filter = "WAV files|*.wav";
             this.openFileDialogSound.Title = "Choose sound file";
             // 
-            // label46
+            // Enabled
             // 
-            this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(-1, 281);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(151, 15);
-            this.label46.TabIndex = 18;
-            this.label46.Text = "Soulbreak Tracker API Key";
+            this.Enabled.HeaderText = "";
+            this.Enabled.Name = "Enabled";
+            this.Enabled.Width = 30;
             // 
-            // textBoxSoulbreakApiKey
+            // Priority
             // 
-            this.textBoxSoulbreakApiKey.Location = new System.Drawing.Point(149, 278);
-            this.textBoxSoulbreakApiKey.Name = "textBoxSoulbreakApiKey";
-            this.textBoxSoulbreakApiKey.Size = new System.Drawing.Size(280, 21);
-            this.textBoxSoulbreakApiKey.TabIndex = 19;
+            dataGridViewCellStyle1.Padding = new System.Windows.Forms.Padding(1);
+            this.Priority.DefaultCellStyle = dataGridViewCellStyle1;
+            this.Priority.HeaderText = "Priority";
+            this.Priority.Items.AddRange(new object[] {
+            "Prefer +3",
+            "Prefer +2",
+            "Prefer",
+            "Neutral",
+            "Avoid",
+            "Avoid +2",
+            "Avoid +3"});
+            this.Priority.Name = "Priority";
+            this.Priority.Width = 80;
+            // 
+            // Party
+            // 
+            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(1);
+            this.Party.DefaultCellStyle = dataGridViewCellStyle2;
+            this.Party.HeaderText = "Party";
+            this.Party.Items.AddRange(new object[] {
+            "Default",
+            "Party 1",
+            "Party 2",
+            "Party 3"});
+            this.Party.Name = "Party";
+            this.Party.Width = 80;
+            // 
+            // EnemyName
+            // 
+            this.EnemyName.HeaderText = "Name";
+            this.EnemyName.MinimumWidth = 200;
+            this.EnemyName.Name = "EnemyName";
+            this.EnemyName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.EnemyName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.EnemyName.Width = 220;
+            this.EnemyName.DataSource = Lookups.EnemyAC;
+            this.EnemyName.ValueType = typeof(string);
             // 
             // ConfigForm
             // 
@@ -3050,6 +3076,38 @@ namespace FFRK_LabMem.Config.UI
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
+        }
+
+        private void EnemyName_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            ComboBox combo = e.Control as ComboBox;
+
+            if (combo != null)
+            {
+                // Remove an existing event-handler, if present, to avoid 
+                // adding multiple handlers when the editing control is reused.
+                combo.Click -= new EventHandler(ComboBox_EditText);
+
+                // Add the event handler. 
+                combo.Click += new EventHandler(ComboBox_EditText);
+            }
+        }
+
+        private void ComboBox_EditText(object sender, EventArgs e)
+        {
+            ((ComboBox)sender).DropDownStyle = ComboBoxStyle.DropDown;
+        }
+
+        private void DataGridViewEnemiesDataError(object sender, DataGridViewDataErrorEventArgs anError)
+        {
+            if ((anError.Exception) is ConstraintException)
+            {
+                DataGridView view = (DataGridView)sender;
+                // view.Rows[anError.RowIndex].ErrorText = "an error";
+                // view.Rows[anError.RowIndex].Cells[anError.ColumnIndex].ErrorText = "an error";
+
+                anError.ThrowException = false;
+            }
         }
 
         #endregion
@@ -3259,10 +3317,6 @@ namespace FFRK_LabMem.Config.UI
         private System.Windows.Forms.TrackBar trackBarFindPrecision;
         private System.Windows.Forms.Label label42;
         private System.Windows.Forms.DataGridView dataGridViewEnemies;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Enabled;
-        private System.Windows.Forms.DataGridViewComboBoxColumn Priority;
-        private System.Windows.Forms.DataGridViewComboBoxColumn Party;
-        private System.Windows.Forms.DataGridViewTextBoxColumn EnemyName;
         private System.Windows.Forms.NumericUpDown numericUpDownRestoreFatigue;
         private System.Windows.Forms.CheckBox checkBoxBoostRestore;
         private System.Windows.Forms.Label label39;
@@ -3277,5 +3331,10 @@ namespace FFRK_LabMem.Config.UI
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.TextBox textBoxSoulbreakApiKey;
         private System.Windows.Forms.Label label46;
+        private System.Windows.Forms.CheckBox checkboxEnglish;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Enabled;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Priority;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Party;
+        private System.Windows.Forms.DataGridViewComboBoxColumn EnemyName;
     }
 }

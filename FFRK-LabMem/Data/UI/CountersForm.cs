@@ -1,6 +1,7 @@
 ﻿using FFRK_LabMem.Config.UI;
 using FFRK_LabMem.Controls;
 using FFRK_LabMem.Machines;
+using FFRK_LabMem.Services;
 using FFRK_Machines;
 using FFRK_Machines.Threading;
 using Newtonsoft.Json;
@@ -15,6 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static FFRK_LabMem.Data.CounterSet;
 
 namespace FFRK_LabMem.Data.UI
 {
@@ -40,7 +42,7 @@ namespace FFRK_LabMem.Data.UI
                 IsLoaded = true;
                 Task mytask = Utility.StartSTATask(() =>
                 {
-                    var form = new CountersForm
+                    CountersForm form = new CountersForm
                     {
                         controller = controller
                     };
@@ -83,6 +85,7 @@ namespace FFRK_LabMem.Data.UI
             LoadTimestamps();
             LoadRuntimes();
             LoadDrops("HE");
+            LoadDrops("HM");
             LoadDrops("Drops");
         }
 
@@ -97,8 +100,8 @@ namespace FFRK_LabMem.Data.UI
 
             // Others
             int selectedIndex = 0;
-            var sets = Counters.Default.CounterSets.Where(s => !Counters.DefaultCounterSets.ContainsKey(s.Key)).OrderBy(s => s.Key).ToList();
-            foreach (var item in sets)
+            List<KeyValuePair<string, CounterSet>> sets = Counters.Default.CounterSets.Where(s => !Counters.DefaultCounterSets.ContainsKey(s.Key)).OrderBy(s => s.Key).ToList();
+            foreach (KeyValuePair<string, CounterSet> item in sets)
             {
                 comboBoxLab.Items.Add(item.Value);
                 if (item.Key.Equals(Counters.Default.CurrentLabId)) selectedIndex = comboBoxLab.Items.Count - 1;
@@ -267,6 +270,7 @@ namespace FFRK_LabMem.Data.UI
         private void LoadDrops(string group)
         {
             bool isHE = group.Equals("HE");
+            bool isHM = group.Equals("HM");
 
             // Create sorting object
             IComparer<string> sorter;
@@ -274,8 +278,8 @@ namespace FFRK_LabMem.Data.UI
             {
                 sorter = new CounterComparers.HEComparer();
             }
-            else 
-            { 
+            else
+            {
                 sorter = new CounterComparers.DropComparer();
             }
 
@@ -283,11 +287,15 @@ namespace FFRK_LabMem.Data.UI
             IEnumerable<string> keySet;
             if (isHE)
             {
-                keySet = keySet = Counters.Default.CounterSets.Values.SelectMany(s => s.GetHEFiltered((CounterSet.FilterType)comboBoxQE.SelectedIndex).Keys);
-            } 
+                keySet = keySet = Counters.Default.CounterSets.Values.SelectMany(s => s.GetHEFiltered((FilterType)comboBoxQE.SelectedIndex).Keys);
+            }
+            else if (isHM)
+            {
+                keySet = Counters.Default.CounterSets.Values.SelectMany(s => s.GetHMFiltered((FilterType)comboBoxQE.SelectedIndex).Keys);
+            }
             else
             {
-                keySet = Counters.Default.CounterSets.Values.SelectMany(s => s.GetDropsFiltered((CounterSet.FilterType)comboBoxQE.SelectedIndex).Keys);
+                keySet = Counters.Default.CounterSets.Values.SelectMany(s => s.GetDropsFiltered((FilterType)comboBoxQE.SelectedIndex).Keys);
             }
 
             // Only distinct values
@@ -296,13 +304,19 @@ namespace FFRK_LabMem.Data.UI
             // If stage selected then only show its HE
             if (isHE)
             {
-                keySet = keySet.Where(i => GetSelectedLab().GetHEFiltered((CounterSet.FilterType)comboBoxQE.SelectedIndex).ContainsKey(i));
-            } 
+                keySet = keySet.Where(i => GetSelectedLab().GetHEFiltered((FilterType)comboBoxQE.SelectedIndex).ContainsKey(i));
+            }
+            // If stage selected then only show its Hero Motes
+            else if (isHM)
+            {
+                keySet = keySet.Where(i => GetSelectedLab().GetHMFiltered((FilterType)comboBoxQE.SelectedIndex).ContainsKey(i));
+            }
 
             // Remove any items present in the list that do not match
             CleanGroup(group, keySet);
 
             // Iterate
+            DataType dataType = new DataType();
             foreach (var item in keySet.OrderBy(s => s, sorter))
             {
                 ListViewItem newItem;
@@ -316,7 +330,20 @@ namespace FFRK_LabMem.Data.UI
                     newItem.Group = listViewCounters.Groups[group];
                     newItem.Name = item;
                     newItem.Text = item;
-                    if (isHE && PerfectPassives.Contains(item)) newItem.BackColor = Color.LightGreen;
+                    if (isHE && PerfectPassives.Contains(item))
+                    {
+                        newItem.BackColor = Color.LightGreen;
+                        dataType = DataType.HeroEquipment;
+                    }
+                    else if (isHM)
+                    {
+                        newItem.BackColor = Color.LightGreen;
+                        dataType = DataType.HeroMotes;
+                    }
+                    else
+                    {
+                        dataType = DataType.All;
+                    }
                     newItem.SubItems.Add("");
                     newItem.SubItems.Add("");
                     newItem.SubItems.Add("");
@@ -324,11 +351,10 @@ namespace FFRK_LabMem.Data.UI
                     listViewCounters.Items.Add(newItem);
                 }
 
-                SetSubItemText(newItem.SubItems[1], item, isHE, Counters.Default.CounterSets["Session"]);
-                SetSubItemText(newItem.SubItems[2], item, isHE, GetSelectedLab());
-                SetSubItemText(newItem.SubItems[3], item, isHE, Counters.Default.CounterSets["Group"]);
-                SetSubItemText(newItem.SubItems[4], item, isHE, Counters.Default.CounterSets["Total"]);
-                
+                SetSubItemText(newItem.SubItems[1], item, dataType, Counters.Default.CounterSets["Session"]);
+                SetSubItemText(newItem.SubItems[2], item, dataType, GetSelectedLab());
+                SetSubItemText(newItem.SubItems[3], item, dataType, Counters.Default.CounterSets["Group"]);
+                SetSubItemText(newItem.SubItems[4], item, dataType, Counters.Default.CounterSets["Total"]);
             }
 
         }
@@ -338,10 +364,11 @@ namespace FFRK_LabMem.Data.UI
             return (CounterSet)comboBoxLab.SelectedItem;
         }
 
-        private void SetSubItemText(ListViewItem.ListViewSubItem subItem, string item, bool isHE, CounterSet counterSet)
+        private void SetSubItemText(ListViewItem.ListViewSubItem subItem, string item, CounterSet.DataType dataType, CounterSet counterSet)
         {
             SortedDictionary<string, int> target;
-            target = (isHE) ? counterSet.GetHEFiltered((CounterSet.FilterType)comboBoxQE.SelectedIndex) : 
+            if (dataType == CounterSet.DataType.HeroMotes) target = counterSet.GetHMFiltered((CounterSet.FilterType)comboBoxQE.SelectedIndex);
+            else target = (dataType == CounterSet.DataType.HeroEquipment) ? counterSet.GetHEFiltered((CounterSet.FilterType)comboBoxQE.SelectedIndex) :
                 counterSet.GetDropsFiltered((CounterSet.FilterType)comboBoxQE.SelectedIndex);
             if (target.ContainsKey(item))
             {
@@ -355,7 +382,8 @@ namespace FFRK_LabMem.Data.UI
 
         private void CleanGroup(string group, IEnumerable<string> keys)
         {
-            List<ListViewItem> remove = new List<ListViewItem>();
+            if (keys == null || keys.Count() <= 1) return;
+            var remove = new List<ListViewItem>();
             foreach (ListViewItem item in listViewCounters.Groups[group].Items)
             {
                 if (!keys.Contains(item.Text)) remove.Add(item);

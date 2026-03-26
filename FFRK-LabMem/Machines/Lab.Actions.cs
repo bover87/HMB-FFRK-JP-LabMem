@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FFRK_Machines.Services.Adb;
+using FFRK_LabMem.Services;
 using System.Data.Common;
 using System.Drawing;
 
@@ -192,10 +193,10 @@ namespace FFRK_LabMem.Machines
             }
 
             // Do Pick
-            ColorConsole.Write("Picking painting {0}: {1}", selectedPaintingIndex + 1, this.CurrentPainting["name"]);
+            ColorConsole.Write("Picking painting {0}: {1}", selectedPaintingIndex + 1, Translation.TranslatePainting((this.CurrentPainting["name"]).ToString()));
             if ((int)this.CurrentPainting["type"] <= 2)
             {
-                var title = this.CurrentPainting["dungeon"]["captures"][0]["tip_battle"]["title"].ToString();
+                var title = Translation.TranslateEnemy(this.CurrentPainting["dungeon"]["captures"][0]["tip_battle"]["title"].ToString());
                 var color = this.CurrentPainting["display_type"];
                 if (color != null && Combatant_Color.ContainsKey(color.ToString()))
                 {
@@ -203,7 +204,7 @@ namespace FFRK_LabMem.Machines
                 }
                 ColorConsole.Write(": ");
                 ColorConsole.Write(ConsoleColor.Yellow, "{0}", title);
-                if (title.ToString().ToLower().Contains("magic pot")) await Counters.FoundMagicPot();
+                if (title.ToString().ToLower().Contains("magic pot") || (title.ToString().Contains("【迷宮】マジックポット"))) await Counters.FoundMagicPot();
             }
             ColorConsole.WriteLine("");
            
@@ -400,7 +401,7 @@ namespace FFRK_LabMem.Machines
                 if (Config.UseTeleportStoneOnMasterPainting && this.CurrentFloor <= 1) await CheckInventoryFull();
 
                 // Trigger EnterDungeon state
-                await this.StateMachine.FireAsync(Trigger.StartBattle);
+                await this.StateMachine.FireAsync(Trigger.LoadBattle);
 
             } else
             {
@@ -425,7 +426,7 @@ namespace FFRK_LabMem.Machines
             var dungeon = this.Data["labyrinth_dungeon_session"]["dungeon"];
             if (dungeon != null)
             {
-                var title = dungeon["captures"][0]["tip_battle"]["title"];
+                var title = Translation.TranslateEnemy(dungeon["captures"][0]["tip_battle"]["title"].ToString());
                 ColorConsole.Write("The enemy is upon you! ");
                 ColorConsole.WriteLine(ConsoleColor.Yellow, "{0}", title);
                 await Counters.EnemyIsUponYou();
@@ -458,10 +459,13 @@ namespace FFRK_LabMem.Machines
                 // Click-thru Fatigue warning
                 await DelayedTapButton("Inter-StartBattle", BUTTON_BLUE, 2000, 56, 55, 65, 5, -1, 1);
 
+                // Change to LoadBattle State
+                await StateMachine.FireAsync(Trigger.LoadBattle);
+
             } else
             {
                 ColorConsole.WriteLine(ConsoleColor.DarkRed, "Failed to find button");
-                await this.StateMachine.FireAsync(Trigger.MissedButton);
+                await StateMachine.FireAsync(Trigger.MissedButton);
             }
 
             // Check for inventory full 

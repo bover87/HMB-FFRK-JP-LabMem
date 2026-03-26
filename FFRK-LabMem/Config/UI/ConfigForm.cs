@@ -108,6 +108,7 @@ namespace FFRK_LabMem.Config.UI
             checkBoxUpdates.Checked = configHelper.GetBool("updates.checkForUpdates", true);
             checkBoxPrerelease.Checked = configHelper.GetBool("updates.includePrerelease", false);
             checkBoxDatalog.Checked = configHelper.GetBool("datalogger.enabled", false);
+            checkboxEnglish.Checked = configHelper.GetBool("console.translate", true);
             numericUpDownScreenTop.Value = configHelper.GetInt("screen.topOffset", -1);
             numericUpDownScreenBottom.Value = configHelper.GetInt("screen.bottomOffset", -1);
             numericUpDownWatchdogHang.Value = configHelper.GetInt("lab.watchdogHangSeconds", 120);
@@ -193,10 +194,10 @@ namespace FFRK_LabMem.Config.UI
         private void LoadDropCategories()
         {
             checkedListBoxDropCategories.Items.Clear();
-            foreach (var item in Enum.GetValues(typeof(Counters.DropCategory)).Cast<Counters.DropCategory>())
+            foreach (Counters.DropCategory item in Enum.GetValues(typeof(Counters.DropCategory)).Cast<Counters.DropCategory>())
             {
                 if (item != Counters.DropCategory.UNKNOWN)
-                    checkedListBoxDropCategories.Items.Add(Lookups.DropCategories[item], Counters.Default.DropCategories.HasFlag((Enum)item));
+                    checkedListBoxDropCategories.Items.Add(Lookups.DropCategories[item], Counters.Default.DropCategories.HasFlag(item));
             }
             buttonShowCounters.Visible = !CountersForm.IsLoaded;
 
@@ -235,12 +236,14 @@ namespace FFRK_LabMem.Config.UI
             // Console
             configHelper.SetValue("console.timestamps", checkBoxTimestamps.Checked);
             configHelper.SetValue("console.logging", checkBoxLogging.Checked);
+            configHelper.SetValue("console.translate", checkboxEnglish.Checked);
             configHelper.SetValue("console.debugCategories", (short)buttonDebug.Tag);
             configHelper.SetValue("console.logFolder", textBoxLogFolder.Text);
             configHelper.SetValue("soulbreak.api", textBoxSoulbreakApiKey.Text);
             SoulbreakSync.APIKEY = textBoxSoulbreakApiKey.Text;
             ColorConsole.Timestamps = checkBoxTimestamps.Checked;
             ColorConsole.LogBuffer.Enabled = checkBoxLogging.Checked;
+            ColorConsole.Translate = checkboxEnglish.Checked;
             ColorConsole.LogBuffer.UpdateFolderOrDefault(textBoxLogFolder.Text);
             ColorConsole.DebugCategories = (ColorConsole.DebugCategory)buttonDebug.Tag;
 
@@ -1239,6 +1242,15 @@ namespace FFRK_LabMem.Config.UI
 
         #endregion
 
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }

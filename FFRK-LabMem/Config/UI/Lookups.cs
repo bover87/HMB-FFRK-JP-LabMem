@@ -4,12 +4,12 @@ using System.Linq;
 using System.Collections.Generic;
 using FFRK_Machines.Services.Notifications;
 using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace FFRK_LabMem.Config.UI
 {
     class Lookups
     {
-
         public static Dictionary<String, String> Paintings = new Dictionary<string, string>() {
             {"1.1", "Combatant Painting (Green)"},
             {"1.2", "Combatant Painting (Orange)"},
@@ -24,11 +24,11 @@ namespace FFRK_LabMem.Config.UI
         };
 
         public static Dictionary<String, String> Treasures = new Dictionary<string, string>() {
-            {"5", "Hero Equipment"},
-            {"4", "Anima Lenses, Bookmark, 5* Rat Tails, Map x2, Teleport Stone"},
-            {"3", "6* Motes, 4* Rat Tails, Magic Key, Treasure Map, Lethe Potion"},
-            {"2", "6* Crystals, Rainbow Crystal, Rosetta Stone of Wisdom"},
-            {"1", "5* Orbs, 5* Motes"}
+            {"5", "Hero Motes/Equipment"},
+            {"4", "Anima Lenses, Bookmark, 5★ Rat Tails, Map ×2, Teleport Stone"},
+            {"3", "7★/6★ Motes, 4★ Rat Tails, Magic Key, Treasure Map, Lethe Potion"},
+            {"2", "6★ Crystals, Rainbow Crystal, Rosetta Stone of Wisdom"},
+            {"1", "5★ Orbs, 5★ Motes"}
         };
 
         public static BindingList<AdbHostItem> AdbHosts = new BindingList<AdbHostItem>() {
@@ -57,12 +57,13 @@ namespace FFRK_LabMem.Config.UI
 
         public static Dictionary<String, String> Blocklist = new Dictionary<string, string>() {
             {"Alexander", "High resistance"},
-            {"Atomos", "Slowga, High Damage"},
-            {"Diablos", "High Damage"},
-            {"Lani & Scarlet Hair", "Damage Sponge"},
+            {"Atomos", "Slowga, High damage"},
+            {"Diablos", "High damage"},
+            {"Lani & Scarlet Hair", "Damage sponge"},
             {"Lunasaurs", "Reflect"},
             {"Octomammoth","Reflect" },
-            {"Marilith", "High resistance, Blind" }
+            {"Marilith", "High resistance, Blind" },
+            {"Vajra", "High damage" }
         };
 
         public static Dictionary<String, String> Counters = new Dictionary<string, string>() {
@@ -82,21 +83,25 @@ namespace FFRK_LabMem.Config.UI
             {"FFRKRecoveries", "FFRK Recovered"},
             {"FFRKRestarts", "FFRK Restarted"},
             {"HeroEquipmentGot", "Hero Equipment Found"},
+            {"HeroMotesGot", "Hero Motes Found" },
             {"EnemyIsUponYou", "The Enemy is Upon You!"},
             {"QuickExplores", "Quick Explores"},
         };
 
+        public static AutoCompleteStringCollection EnemyAC = new AutoCompleteStringCollection();
+        
         public static Dictionary<Counters.DropCategory, String> DropCategories = new Dictionary<Counters.DropCategory, string>() {
-            {Data.Counters.DropCategory.EQUIPMENT, "Hero Equipment"},
-            {Data.Counters.DropCategory.LABYRINTH_ITEM, "Labyrinth Items (Bookmarks, Keys...)"},
-            {Data.Counters.DropCategory.COMMON, "Anima Lenses"},
-            {Data.Counters.DropCategory.SPHERE_MATERIAL, "Motes"},
-            {Data.Counters.DropCategory.ABILITY_MATERIAL, "Crystals/Orbs"},
-            {Data.Counters.DropCategory.EQUIPMENT_SP_MATERIAL,"Upgrade Materials" },
-            {Data.Counters.DropCategory.HISTORIA_CRYSTAL_ENHANCEMENT_MATERIAL, "Rat Tails" },
-            {Data.Counters.DropCategory.GROW_EGG, "Growth Eggs" },
-            {Data.Counters.DropCategory.BEAST_FOOD, "Arcana" },
-            {Data.Counters.DropCategory.RECORD_MATERIA, "Record Materia" }
+            { Data.Counters.DropCategory.EQUIPMENT, "Hero Equipment" },
+            { Data.Counters.DropCategory.LABYRINTH_ITEM, "Labyrinth Items (Bookmarks, Keys...)" },
+            { Data.Counters.DropCategory.COMMON, "Anima Lenses" },
+            { Data.Counters.DropCategory.HERO_MOTE, "Hero Motes" },
+            { Data.Counters.DropCategory.SPHERE_MATERIAL, "Motes" },
+            { Data.Counters.DropCategory.ABILITY_MATERIAL, "Crystals/Orbs"},
+            { Data.Counters.DropCategory.EQUIPMENT_SP_MATERIAL,"Upgrade Materials" },
+            { Data.Counters.DropCategory.HISTORIA_CRYSTAL_ENHANCEMENT_MATERIAL, "Rat Tails" },
+            { Data.Counters.DropCategory.GROW_EGG, "Growth Eggs" },
+            { Data.Counters.DropCategory.BEAST_FOOD, "Arcana" },
+            { Data.Counters.DropCategory.RECORD_MATERIA, "Record Materia" }
         };
 
         public static Dictionary<String, Counters.DropCategory> DropCategoriesInverse = DropCategories.ToDictionary((i) => i.Value, (i) => i.Key);
