@@ -176,6 +176,7 @@ namespace FFRK_LabMem.Services
             { "Green Dragon", "×2" },
             { "Imperial Soldier", "×3" },
             { "Kraken & Shark", "×2" },
+            { "Kukulkan", "×3" },
             { "Lunasaur", "×2" },
             { "Magitek Armor", "×2" },
             { "Neochu", "×2" },
