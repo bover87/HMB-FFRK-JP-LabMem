@@ -1197,6 +1197,7 @@ namespace FFRK_LabMem.Services
             { "道化の回廊", "Corridor of the Fools" },
             { "128の回廊", "Corridor of 128" },
             { "大津波の回廊", "Corridor of the Tsunami" },
+            { "社長の回廊", "Corridor of the President" },
             { "新社長の回廊", "Corridor of the President" },
             { "刺客の回廊", "Corridor of the Assassin" },
             { "軍曹の回廊", "Corridor of the Sergeant" },
