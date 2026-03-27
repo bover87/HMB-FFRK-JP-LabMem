@@ -265,8 +265,6 @@ namespace FFRK_LabMem.Data.UI
 
         }
 
-
-
         private void LoadDrops(string group)
         {
             bool isHE = group.Equals("HE");
@@ -382,7 +380,7 @@ namespace FFRK_LabMem.Data.UI
 
         private void CleanGroup(string group, IEnumerable<string> keys)
         {
-            if (keys == null || keys.Count() <= 1) return;
+            // if (keys == null || keys.Count() <= 1) return;
             var remove = new List<ListViewItem>();
             foreach (ListViewItem item in listViewCounters.Groups[group].Items)
             {

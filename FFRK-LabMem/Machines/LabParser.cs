@@ -372,8 +372,8 @@ namespace FFRK_LabMem.Machines
             if (node != null)
             {
                 Lab.Data = args.Data;
-                await Counters.QuickExplore(node["id"].ToString(), node["name"].ToString());
-                ColorConsole.WriteLine(ConsoleColor.Green, $"Quick Explore: {node["name"]}");
+                await Counters.QuickExplore(node["id"].ToString(), Translation.TranslateDungeon(node["name"].ToString()));
+                ColorConsole.WriteLine(ConsoleColor.Green, $"Quick Explore: {Translation.TranslateDungeon(node["name"].ToString())}");
                 await DataLogger.LogQEDrops(Lab);
                 Counters.ClearCurrentLab();
                 Lab.AutoResetEventQuickExplore.Set();

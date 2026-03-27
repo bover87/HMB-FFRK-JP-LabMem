@@ -15,8 +15,24 @@ namespace FFRK_LabMem.Services
 {
     internal static class Translation
     {
-        public const string EnemySuffix = " (Labyrinth)";
         public const string HeroMote = "Hero Mote";
+        public const string Mote = "Mote";
+        public const string Crystal = "Crystal";
+        public const string Orb = "Orb";
+        public const string AnimaLens = "Anima Lens";
+        public const string RatTail = "Rat Tail";
+        public const string Arcana = "Arcana";
+
+        public const string EnemySuffix = " (Labyrinth)";
+
+        public const string HeroMoteJP = "英雄専用フラグメント";
+        public const string AnimaLensJP = "アニマレンズ";
+        public const string CrystalJP = "の結晶";
+        public const string OrbJP = "のオーブ";
+        public const string MoteJP = "のフラグメント";
+        public const string RatTailJP = "ねずみのしっぽ";
+        public const string ArcanaJP = "アルカナ";
+
 
         // Translates dungeon names
         public static String TranslateDungeon(String name)
@@ -56,9 +72,10 @@ namespace FFRK_LabMem.Services
             else return name;
         }
 
+        // Appends the enemy count to console output, where appropriate
         private static String NumberEnemies(String name)
         {
-            if (EnemyNumber.TryGetValue(name, out string enemyCount)) return name + " " + enemyCount + EnemySuffix;
+            if (EnemyNumber.TryGetValue(name, out string enemyCount)) return name + enemyCount + EnemySuffix;
             else return name + EnemySuffix;
         }
 
@@ -69,12 +86,13 @@ namespace FFRK_LabMem.Services
             if (!ColorConsole.Translate && !ignoreSetting) return name;
 
             // Checks if item name requires a more complex translation procedure
-            else if (name.Contains("英雄専用フラグメント")) return TranslateHeroMote(name);
-            else if (name.Contains("アニマレンズ")) return TranslateAnima(name);
-            else if (name.Contains("のオーブ")) return TranslateOrb(name);
-            else if (name.Contains("の結晶")) return TranslateCrystal(name);
-            else if (name.Contains("のフラグメント")) return TranslateMote(name);
-            else if (name.Contains("ねずみのしっぽ")) return TranslateRatTail(name);
+            else if (name.Contains(HeroMoteJP)) return TranslateHeroMote(name);
+            else if (name.Contains(AnimaLensJP)) return TranslateAnima(name);
+            else if (name.Contains(OrbJP)) return TranslateOrb(name);
+            else if (name.Contains(CrystalJP)) return TranslateCrystal(name);
+            else if (name.Contains(MoteJP)) return TranslateMote(name);
+            else if (name.Contains(RatTailJP)) return TranslateRatTail(name);
+            else if (name.Contains(ArcanaJP)) return TranslateArcana(name);
 
             // Checks for item in translation dictionaries
             else if (Items.TryGetValue(name, out string itemName)) return itemName;
@@ -86,7 +104,7 @@ namespace FFRK_LabMem.Services
         private static String TranslateHeroMote(String name)
         {
             // Strip brackets and Japanese "Hero Mote" text from mote name
-            String s = name.Replace("英雄専用フラグメント", string.Empty);
+            String s = name.Replace(HeroMoteJP, string.Empty);
             s = s.Replace("【", string.Empty);
             s = s.Replace("】", string.Empty);
 
@@ -114,21 +132,28 @@ namespace FFRK_LabMem.Services
         // Translates Anima Lens names
         private static String TranslateAnima(String name)
         {
-            if (AnimaTypes.TryGetValue(name.Replace("アニマレンズ", string.Empty), out string lensType)) return "Anima Lens " + lensType;
-            else return name;
+            return AnimaTypes.TryGetValue(name.Replace(AnimaLensJP, string.Empty), out string lensType) ? AnimaLens + lensType : name;
         }
 
         // Translates Crystal names
         private static String TranslateCrystal(String name)
         {
-            if (OrbTypes.TryGetValue(name.Replace("の結晶", string.Empty), out string crystalType)) return crystalType + " Crystal";
-            else return name;
+            return OrbTypes.TryGetValue(name.Replace(CrystalJP, string.Empty), out string crystalType) ? crystalType + Crystal : name;
         }
         
         // Translate Orb names
         private static String TranslateOrb(String name)
         {
-            if (OrbTypes.TryGetValue(name.Replace("のオーブ(極大)", string.Empty), out string orbType)) return "Major " + orbType + " Orb";
+            string s = name.Replace("(", String.Empty);
+            s = s.Replace(")", string.Empty);
+            s = s.Replace(OrbJP, string.Empty);
+
+            int index = s.Contains("召喚") ? 2 : 1;
+
+            if (OrbTypes.TryGetValue(s.Substring(0, index), out string orbType))
+            {
+                return OrbRarities.TryGetValue(s.Substring(index), out string orbRarity) ? orbRarity + orbType + Orb : name;
+            }
             else return name;
         }
 
@@ -137,17 +162,28 @@ namespace FFRK_LabMem.Services
         {
             String moteType = name[0].ToString();
             String moteRarity = name.Remove(0, 1);
-            moteRarity = moteRarity.Replace("のフラグメント(★", string.Empty);
+            moteRarity = moteRarity.Replace(MoteJP + "(★", string.Empty);
 
-            if (MoteTypes.TryGetValue(moteType, out string type) && Rarities.TryGetValue(moteRarity, out string rarity)) return type + " Mote (" + rarity;
-            else return name;
+            return MoteTypes.TryGetValue(moteType, out string type) && Rarities.TryGetValue(moteRarity, out string rarity)
+                ? type + Mote + rarity
+                : name;
         }
 
         // Translates Rat Tail names
         private static String TranslateRatTail(String name)
         {
-            if (Sizes.TryGetValue(name.Replace("ねずみのしっぽ", string.Empty), out string size)) return size + "Rat Tail";
+            if (Sizes.TryGetValue(name.Replace(RatTailJP, string.Empty), out string size)) return size + RatTail;
             else return name;
+        }
+
+        // Translates Arcana names
+        private static String TranslateArcana(String name)
+        {
+            string s = name.Replace("【", String.Empty);
+            s = s.Replace("】", String.Empty);
+            s = s.Replace(ArcanaJP, string.Empty);
+
+            return OrbRarities.TryGetValue(s, out string rarity) ? rarity + Arcana : name;
         }
     }
 }

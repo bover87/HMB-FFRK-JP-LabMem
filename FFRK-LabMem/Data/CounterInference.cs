@@ -15,20 +15,24 @@ namespace FFRK_LabMem.Data
             String nameTranslated = Translation.TranslateItem(name, true);
 
             // Motes - check for star in name
-            if (category == DropCategory.SPHERE_MATERIAL && nameTranslated.Contains("★"))
+            if (category == DropCategory.SPHERE_MATERIAL)
             {
-                int index = nameTranslated.IndexOf("★");
-                return int.Parse(name[index - 1].ToString());
+                if (nameTranslated.Contains("★"))
+                {
+                    int index = nameTranslated.IndexOf("★");
+                    return int.Parse(name[index - 1].ToString());
+                }
+                else return 99;
             }
 
             // Crystals/Orbs
             if (category == DropCategory.ABILITY_MATERIAL)
             {
                 // Crystals are 6*
-                if (nameTranslated.EndsWith("Crystal")) return 6;
+                if (nameTranslated.EndsWith(Translation.Crystal)) return 6;
 
                 // Orbs
-                if (nameTranslated.EndsWith("Orb"))
+                if (nameTranslated.EndsWith(Translation.Orb))
                 {
                     if (nameTranslated.StartsWith("Major")) return 5;
                     if (nameTranslated.StartsWith("Greater")) return 4;

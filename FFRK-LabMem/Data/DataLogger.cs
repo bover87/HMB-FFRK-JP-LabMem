@@ -174,7 +174,7 @@ namespace FFRK_LabMem.Data
                         row.Add(qty);
                         WriteCSVLine(writer, row.ToArray(), row.Count);
 
-                        ColorConsole.WriteLine(ConsoleColor.DarkGreen, "Got Drop: {0} x{1}",
+                        ColorConsole.WriteLine(ConsoleColor.DarkGreen, "Got Drop: {0} ×{1}",
                             row[4].Replace("★", "*"),
                             row[5]);
                         await Counters.FoundQEDrop(row[4], int.Parse(row[5]), item.First["image_path"].ToString());

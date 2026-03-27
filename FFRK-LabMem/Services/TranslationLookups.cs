@@ -165,23 +165,24 @@ namespace FFRK_LabMem.Services
         };
 
         // Lists enemies who have multiple copies in battles
-        public static readonly Dictionary<String, String> EnemyNumber = new Dictionary<String, String>()
+        public static readonly SortedDictionary<String, String> EnemyNumber = new SortedDictionary<String, String>()
         {
-            { "Arachne", "×2" },
-            { "Bandersnatch", "×2" },
-            { "Big Horn", "×4" },
-            { "Black Flan", "×2" },
-            { "Captain & Sergeant", "×2" },
-            { "Dreadnought", "×2" },
-            { "Green Dragon", "×2" },
-            { "Imperial Soldier", "×3" },
-            { "Kraken & Shark", "×2" },
-            { "Kukulkan", "×3" },
-            { "Lunasaur", "×2" },
-            { "Magitek Armor", "×2" },
-            { "Neochu", "×2" },
-            { "Neo Garula", "×2" },
-            { "Propagator", "×2" }
+            { "Arachne", " ×2" },
+            { "Bandersnatch", " ×2" },
+            { "Big Horn", " ×4" },
+            { "Black Flan", " ×2" },
+            { "Captain & Sergeant", " ×2" },
+            { "Deathclaw", " ×2" },
+            { "Dreadnought", " ×2" },
+            { "Green Dragon", " ×2" },
+            { "Imperial Soldier",  " ×3" },
+            { "Kraken & Shark", " ×2" },
+            { "Kukulkan", " ×3" },
+            { "Lunasaur", " ×2" },
+            { "Magitek Armor", " ×2" },
+            { "Neochu", " ×2" },
+            { "Neo Garula", " ×2" },
+            { "Propagator", " ×2" }
         };
 
         public static readonly Dictionary<String, String> Items = new Dictionary<string, string>()
@@ -193,7 +194,7 @@ namespace FFRK_LabMem.Services
             { "レテのしずく", "Lethe Tear" },
             { "魔法の鍵", "Magic Key" },
             { "記憶のしおり", "Record Marker" },
-            { "七色の結晶", "Rainbow Shard" },
+            { "七色の結晶", "Rainbow Crystal" },
             { "叡智のロゼッタ石", "Rosette Stone of Wisdom" },
             { "ヒヒイロカネ【極大】", "Giant Scaletite" },
             { "テレポストーン", "Teleport Stone" },
@@ -436,28 +437,28 @@ namespace FFRK_LabMem.Services
 
         public static readonly Dictionary<String, String> MoteTypes = new Dictionary<String, String>()
         {
-            { "技", "Dexterity" },
-            { "心", "Spirit" },
-            { "体", "Vitality" },
-            { "知", "Wisdom" },
-            { "勇", "Bravery" }
+            { "技", "Dexterity " },
+            { "心", "Spirit " },
+            { "体", "Vitality " },
+            { "知", "Wisdom " },
+            { "勇", "Bravery " }
         };
 
         public static readonly Dictionary<String, String> AnimaTypes = new Dictionary<String, String>()
         {
-            { "Lv1", "Lv1" },
-            { "Lv2", "Lv2" },
-            { "Lv3", "Lv3" },
-            { "EX", "EX" }
+            { "Lv1", " Lv1" },
+            { "Lv2", " Lv2" },
+            { "Lv3", " Lv3" },
+            { "EX", " EX" }
         };
 
         public static readonly Dictionary<String, String> Rarities = new Dictionary<String, String>()
         {
-            { "3)", "3★)" },
-            { "4)", "4★)" },
-            { "5)", "5★)" },
-            { "6)", "6★)" },
-            { "7)", "7★)" }
+            { "3)", " (3★)" },
+            { "4)", " (4★)" },
+            { "5)", " (5★)" },
+            { "6)", " (6★)" },
+            { "7)", " (7★)" }
         };
 
         public static readonly Dictionary<String, String> Sizes = new Dictionary<String, String>()
@@ -468,23 +469,32 @@ namespace FFRK_LabMem.Services
             { "【極大】", "Huge " }
         };
 
+        public static readonly Dictionary<String, String> OrbRarities = new Dictionary<String, String>()
+        {
+            { "極", "Minor " },
+            { "小", "Lesser " },
+            { "中", "" },
+            { "大", "Greater " },
+            { "極大", "Major " }
+        };
+
         // List of orb/crystal types in Japanese and their translations
         public static readonly Dictionary<String, String> OrbTypes = new Dictionary<String, String>()
         {
-            { "炎", "Fire" },
-            { "氷", "Ice" },
-            { "雷", "Lightning" },
-            { "水", "Water" },
-            { "風", "Wind" },
-            { "地", "Earth" },
-            { "聖", "Holy" },
-            { "闇", "Dark" },
-            { "毒", "Poison" },
-            { "無", "Non-Elemental" },
-            { "力", "Power" },
-            { "白", "White" },
-            { "黒", "Black" },
-            { "召喚", "Summoning" }
+            { "炎", "Fire " },
+            { "氷", "Ice " },
+            { "雷", "Lightning " },
+            { "水", "Water " },
+            { "風", "Wind " },
+            { "地", "Earth " },
+            { "聖", "Holy "  },
+            { "闇", "Dark "  },
+            { "毒", "Poison " },
+            { "無", "Non-Elemental " },
+            { "力", "Power " },
+            { "白", "White " },
+            { "黒", "Black " },
+            { "召喚", "Summoning " }
         };
 
         public static readonly Dictionary<String, String> HeroEquipment = new Dictionary<String, String>()
