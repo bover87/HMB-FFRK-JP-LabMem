@@ -194,7 +194,6 @@ namespace FFRK_LabMem.Services
             { "レテのしずく", "Lethe Tear" },
             { "魔法の鍵", "Magic Key" },
             { "記憶のしおり", "Record Marker" },
-            { "七色の結晶", "Rainbow Crystal" },
             { "叡智のロゼッタ石", "Rosette Stone of Wisdom" },
             { "ヒヒイロカネ【極大】", "Giant Scaletite" },
             { "テレポストーン", "Teleport Stone" },
@@ -494,7 +493,8 @@ namespace FFRK_LabMem.Services
             { "力", "Power " },
             { "白", "White " },
             { "黒", "Black " },
-            { "召喚", "Summoning " }
+            { "召喚", "Summoning " },
+            { "七色", "Rainbow " }
         };
 
         public static readonly Dictionary<String, String> HeroEquipment = new Dictionary<String, String>()
