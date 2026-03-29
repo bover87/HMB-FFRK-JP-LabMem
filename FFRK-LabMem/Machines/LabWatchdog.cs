@@ -186,20 +186,13 @@ namespace FFRK_LabMem.Machines
 
         private async void WatchdogCrashTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            var state = await Lab.Adb.IsPackageRunning(Adb.FFRK_PACKAGE_NAME, System.Threading.CancellationToken.None);
+            string ffrkPID = await Lab.Adb.GetProcessID(Adb.FFRK_PACKAGE_NAME, System.Threading.CancellationToken.None);
+            bool state = ffrkPID != String.Empty
+                         && ffrkPID != null;
+
+            ColorConsole.Debug(ColorConsole.DebugCategory.Adb, "FFRK PID == {0}", ffrkPID);
             ColorConsole.Debug(ColorConsole.DebugCategory.Watchdog, "FFRK state: {0}", state ? "Running" : "Not Running");
-            if (Lab.StateMachine.State == Lab.State.Battle || Lab.StateMachine.State == Lab.State.LoadBattle || Lab.StateMachine.State == Lab.State.BattleFinished)
-            {
-                if (GetHVStatus() == "Running")
-                {
-                    return;
-                }
-                else
-                {
-                    InvokeTimeout(sender, WatchdogEventArgs.TYPE.Crash, e);
-                }
-            }
-            else if (!state)
+            if (!state)
             {
                 InvokeTimeout(sender, WatchdogEventArgs.TYPE.Crash, e);
             }

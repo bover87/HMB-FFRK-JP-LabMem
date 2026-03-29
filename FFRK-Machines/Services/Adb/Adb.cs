@@ -212,6 +212,19 @@ namespace FFRK_Machines.Services.Adb
                 2000);
         }
 
+        public async Task<string> GetProcessID(string packageName, CancellationToken cancellationToken)
+        {
+            ConsoleOutputReceiver receiver = new ConsoleOutputReceiver();
+            await AdbClient.Instance.ExecuteRemoteCommandAsync(string.Format("pidof {0}", packageName),
+            this.Device,
+            receiver,
+            cancellationToken,
+            2000);
+            return receiver.ToString();
+        }
+        /*
+         * Old crash detection code - leaving commented out for now, will delete later once more thorough testing is completed
+         * 
         public async Task<bool> IsPackageRunning(string packageName, CancellationToken cancellationToken)
         {
             var receiver = new ConsoleOutputReceiver();
@@ -222,6 +235,7 @@ namespace FFRK_Machines.Services.Adb
             2000);
             return receiver.ToString().Contains(packageName);
         }
+        */
 
         public async Task StartActivity(String packageName, String activityName, CancellationToken cancellationToken)
         {
