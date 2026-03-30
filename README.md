@@ -19,16 +19,16 @@ Built using Visual Studio 2022/2026 Community. Installer using Inno Setup 6. Pre
 | Android 6 (Marshmallow)         | 7.0.0+          | Yes        |
 | Android 7 (Nougat)              | 7.0.0+          | Yes (root) |
 | Android 8 (Oreo)                | 7.0.0+          | Yes (root) |
-| Android 9 (Nougat)              | 7.0.0+          | Yes (root) |
-| Android 10 +                    | 7.0.0+          | Yes (root) |
+| Android 9 (Nougat)              | 11.0.0+         | Yes (root) |
+| Android 10 +                    | 11.0.0+         | Yes (root) |
 
 _All compatible versions using FFRK 7.0.0+ must install a certificate_
 
 ## (Somewhat) Quick Start
-*(**Note**: Mumu 3/Windows 11 users, please click [here](#mumu-3-users) for instructions specific to you.)*
+*(**Note**: Mumu 3/Windows 11 users, please click [here](#newandroid) for instructions specific to you.)*
 1. Go to the [releases page](https://github.com/bover87/HMB-FFRK-JP-LabMem/releases) and find the lastest release
 2. Under 'Assets' dropdown download `FFRK-LabMem-x.x.x-Beta-Installer.exe` file and download, run, and follow the steps. (Or you can manually install by downloading and extracting the .zip file instead)
-3. Start Emulator / Connect device to USB
+3. Start compatible emulator / connect device to USB.
 4. Set emulator resolution to 720 (width) × 1280 (height).
 5. (Optional) If playing using an emulator, lower the frame rate to 30 unless you use it to play other games or stream/record, to improve performance.
 6. Turn on 'Developer Mode' in android settings [see here](https://developer.android.com/studio/debug/dev-options)
@@ -85,12 +85,14 @@ If you are connecting an acutal device via USB, you may need the proper drivers.
 Connecting to an emulator works over TCP. You can set up TCP with a physical device as well but this is beyond scope. Android emulators seem to use different TCP port numbers, you'll have to look this up.  The default host and port number configured in `FFRK-LabMem.exe.config` is `127.0.0.1:7555` which is for running MuMu app player on the local machine.
 
 **Known Emulator host/ports**
-| Emulator  | Host/Port       | Other Possible Ports? |
-| --------- | --------------- | --------------------- |
-| MuMu      | 127.0.0.1:7555  |                       |
-| Nox (5)   | 127.0.0.1:62001 | 62025,62026,62027     |
-| MeMu      | 127.0.0.1:21503 | 21513, 21523 (based on instance id)|
-| LDPlayer  | 127.0.0.1:5555  | See [here](https://www.ldplayer.net/apps/adb-debugging-on-pc.html) |
+| Emulator  | Host/Port       | Other Possible Ports?                                              | Compatibility Status          |
+| --------- | --------------- | ---------------------                                              | ---------------               |
+| MuMu      | 127.0.0.1:7555  |                                                                    | compatible                    |
+| Nox (5)   | 127.0.0.1:62001 | 62025,62026,62027                                                  | unavailable for download      |
+| MeMu      | 127.0.0.1:21503 | 21513, 21523 (based on instance id)                                | compatible                    |
+| LDPlayer  | 127.0.0.1:5555  | See [here](https://www.ldplayer.net/apps/adb-debugging-on-pc.html) | unknown (black screen in W11) |
+
+Android Studio and current versions of BlueStacks are incompatible with LabMem.
 
 ### Install trusted CA certificate
 If the proxy root CA certificate isn't installed the bot will copy it to the device and switch to the settings screen and offer guidance on installing it.  The root CA certificate is auto-generated on startup in a file called `rootCert.pfx` with a 10-year lifetime (so you only have to install it once).  Addtionally, the .pfx file contains the private key corresponding to the root CA public key contained in the certificate that is installed on the device.
@@ -155,7 +157,7 @@ Not enabled by default, set `Enable data logging` in general program options.  T
 ### Statistics
 ![Counters Screenshot](/docs/img/counters_01.png?v=3)
 
-Press `S` to show the statistic counters
+Press `S` to show the statistic counters.
 
 ## Upgrading
 
@@ -172,16 +174,16 @@ For a major release copy all files.  You can optionally keep your configuration 
 
 Please keep your `rootCert.pfx` file, or you will have to re-install the certificate on the android device
 
-## Mumu 3 Users
-If you're using Windows 10 or earlier, it's easiest to simply downgrade Mumu to [1.4.2](https://windows.apkpure.com/mumu-player/download/18615) and turn off Windows Hypervisor (Hyper-V) if it's running. While crash detection now (as of 10.1.0) works on all Mumu versions and other supported emulators, certification installation and detection is much smoother on older versions if you're running Windows 10.
+## <a name="newandroid">Android 10+ Users
+*(**Note**: For older versions of the bot, please refer to the `readme.md` file included in that bot's files. The below information is applicable as of LabMem 10.3.)*
 
-Windows 11 users, however, will need to do some legwork to make the bot work. You'll have to use Mumu 3; older Mumu versions and most other Android emulators don't work in Windows 11 without disabling a host of security settings, and Android Studio, Mumu Nebula, Memu, and Bluestacks aren't compatible with the bot. You should follow the instructions [above](#Somewhat-Quick-Start) with the following exceptions:
+This bot runs into some problems on Android 10.0+, as security fixes on these versions do not allow the bot to detect that the certificate is installed. The bot is designed to detect the Android version you're running, and will adjust some of its behaviors accordingly. FFRK is incompatible with verions older than Android 9.0, and most emulators running versions of Android older than 10 run into serious issues with Windows 11's Hypervisor (Hyper-V) as well.
 
-- You MUST use 8.3.2 or later. Otherwise, the bot will often detect false "crashes" mid-battle and restart. For versions 8.3.2 through 10.0.2, Hyper-V must be running or the bot will detect false "crashes" during battle and restart constantly. Starting with version 10.1, crash detection is fully fixed and will work correctly on all emulator versions regardless of Hyper-V being enabled or not.
-- You can enable developer mode, but Mumu 3 does NOT support USB debugging. Mumu Pro may support it, but I don't have access to it to test.
-- In Windows 11, do NOT disable Hyper-V unless you also plan to disable all the other features that prevent older emus from running. If Hyper-V is not running the bot will not correctly configure its features for newer emulators. More concretely, the service `HV Host Service` must be in the `Running` state to be detected (other states, including `Stopped`, are treated as it being not present, and other Hyper-V services aren't checked).
+- You MUST use LabMem 8.3.2 or later. Otherwise, the bot will often detect false "crashes" mid-battle and restart. For versions 8.3.2 through 10.0.2, Hyper-V must be running or the bot will detect false "crashes" during battle and restart constantly. Starting with version 10.1, crash detection is fully fixed and will work correctly on all emulator versions regardless of Hyper-V status or your Android version.
+- Older emulators will not run with Hyper-V active, and newer ones will check Hyper-V and prompt you if Hyper-V needs to be reinstalled. Follow the instructions provided with your emulator.
+- The bot itself does check for `HV Host Service` being in the `Running` state (other states, including `Stopped`, are treated as it being not present, and other Hyper-V services aren't checked), but only for the purpose of checking your Windows version. All functions of the bot (except for information on enable Japanese output for those with English translation off) now work identically regardless of Hyper-V.
 - **Installing the certificate**: After installing and running the bot, look in its folder for `rootCert.pfx`. Place this file in the `MuMuShared` folder in your Documents folder. Then open your `Files` app in Mumu and click on the certificate to install it.
-- After installing the certificate, press `Enter` to advance the bot. When running the bot the first time, it will almost certainly crash. **This is fine**, just restart it and it should activate itself then (press `Enter` again when prompted).
+- After installing the certificate, press `Enter` to advance the bot. When running the bot the first time, it might crash. **This is fine**, just restart it and it should activate itself then (press `Enter` again when prompted).
 
 ## Common Issues / FAQ
 Mumu 3 (Windows 11) users should click [here](#Mumu-3-Users) for information specific to you.
