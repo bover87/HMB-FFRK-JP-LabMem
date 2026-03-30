@@ -81,10 +81,10 @@ namespace FFRK_Machines.Services.Adb
                 }
                 finally
                 {
-                    if (HyperV.GetHVStatus() == "Running" && hasRun == false)
+                    if (!Adb.CertDetectable() && hasRun == false)
                     {
                         hasRun = true;
-                        ColorConsole.Debug(ColorConsole.DebugCategory.Adb, "Hyper-V preventing Minicap detection, bot will continue with Minicap");
+                        ColorConsole.Debug(ColorConsole.DebugCategory.Adb, "Android Ver " + Adb.AndroidVersion + " too high to allow Minicap detection");
                     }
                     else
                     {

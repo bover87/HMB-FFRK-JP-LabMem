@@ -171,10 +171,11 @@ namespace FFRK_Machines.Services.Adb
                 ColorConsole.WriteLine(ConsoleColor.Yellow, "Choose VPN and Apps for credential use");
                 ColorConsole.WriteLine(ConsoleColor.Yellow, "(You may need to set a device lockscreen)");
 
-                if (GetHVStatus() == "Running")
+                if (!Adb.CertDetectable())
                 {
-                    ColorConsole.WriteLine(ConsoleColor.Blue, "*****Hyper-V detected, certificate and root detection unreliable*****");
-                    ColorConsole.WriteLine(ConsoleColor.Blue, "*****LabMem will still work on supported emulators (e.g. Mumu)*****");
+                    ColorConsole.WriteLine(ConsoleColor.Blue, "********Your device/emulator is running Android version: " + Adb.AndroidVersion + "********");
+                    ColorConsole.WriteLine(ConsoleColor.Blue, "******Certifcate detecion incompatible with Android v" + Adb.CERT_UNDETECTED_ANDROID_VER + " or higher******");
+                    ColorConsole.WriteLine(ConsoleColor.Blue, "*****LabMem will still work on supported emulators (e.g. Mumu, Memu)*****");
                     // ColorConsole.WriteLine(ConsoleColor.Blue, "*****See Readme.md on GitHub for more information*****");
                 }
                     // Need root
@@ -190,9 +191,9 @@ namespace FFRK_Machines.Services.Adb
                         {
                             ColorConsole.WriteLine(ConsoleColor.Yellow, "Copy complete.  You may now delete the user certificate");
                         }
-                        else if (GetHVStatus() == "Running")
+                        else if (!Adb.CertDetectable())
                         {
-                            ColorConsole.WriteLine(ConsoleColor.Blue, "Hyper-V running, cannot detect installation state");
+                            ColorConsole.WriteLine(ConsoleColor.Blue, "Android version too high, cannot detect installation state");
                             ColorConsole.WriteLine(ConsoleColor.Blue, "If you followed the readme the bot will still run");
                         }
                         else

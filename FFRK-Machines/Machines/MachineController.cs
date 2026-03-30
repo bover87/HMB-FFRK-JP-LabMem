@@ -167,6 +167,11 @@ namespace FFRK_Machines.Machines
         private async Task EngageMachine()
         {
             Machine.RegisterWithProxy(Proxy);
+
+            // Check Android version
+            await Adb.GetAndroidVersion(CancellationToken.None);
+            ColorConsole.Debug(ColorConsole.DebugCategory.Adb, "Detected Adroid Version: " + Adb.AndroidVersion);
+
             if (startArguments.ProxySecure) await Adb.InstallCertificate("rootCert.pfx", CancellationToken.None);
             if (startArguments.ProxyAutoConfig) await Adb.SetProxySettings(this.Proxy.Port, CancellationToken.None);
             await Adb.CaptureSetup(CancellationToken.None);

@@ -18,6 +18,10 @@ namespace FFRK_Machines.Services.Adb
 
         public const String FFRK_PACKAGE_NAME = "jp.mbga.a12019103.lite";
         public const String FFRK_ACTIVITY_NAME = "jp.dena.dot.Dot";
+
+        public static Version AndroidVersion { get; private set; }
+        public static readonly Version CERT_UNDETECTED_ANDROID_VER = new Version(10, 0);
+
         private int cachedApiLevel = 0;
         private string cachedAbi = string.Empty;
         private Size cachedScreenSize = null;
@@ -154,6 +158,29 @@ namespace FFRK_Machines.Services.Adb
             }
 
 
+        }
+
+        public async Task<Version> GetAndroidVersion(CancellationToken cancellationToken)
+        {
+            if (AndroidVersion == null || AndroidVersion.Equals(new Version(0, 0, 0, 0)))
+            {
+                ConsoleOutputReceiver receiver = new ConsoleOutputReceiver();
+                await AdbClient.Instance.ExecuteRemoteCommandAsync("getprop ro.build.version.release",
+                this.Device,
+                receiver,
+                cancellationToken,
+                2000);
+                
+                string versionStr = receiver.ToString();
+                if (!versionStr.Contains(".")) versionStr += ".0.0.0";
+                AndroidVersion = Version.Parse(versionStr);
+            }
+            return AndroidVersion;
+        }
+
+        public static bool CertDetectable()
+        {
+            return AndroidVersion < CERT_UNDETECTED_ANDROID_VER;
         }
 
         public Task<List<String>> GetDevices()
