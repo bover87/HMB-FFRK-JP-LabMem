@@ -175,7 +175,7 @@ For a major release copy all files.  You can optionally keep your configuration 
 Please keep your `rootCert.pfx` file, or you will have to re-install the certificate on the android device
 
 ## <a name="newandroid">Android 10+ Users
-*(**Note**: For older versions of the bot, please refer to the `readme.md` file included in that bot's files. The below information is applicable as of LabMem 10.3.)*
+*(**Note**: For older versions of the bot, please refer to the `readme.md` file included in that bot's files. The below information is applicable as of LabMem 10.2.)*
 
 This bot runs into some problems on Android 10.0+, as security fixes on these versions do not allow the bot to detect that the certificate is installed. The bot is designed to detect the Android version you're running, and will adjust some of its behaviors accordingly. FFRK is incompatible with verions older than Android 9.0, and most emulators running versions of Android older than 10 run into serious issues with Windows 11's Hypervisor (Hyper-V) as well.
 
