@@ -12,15 +12,15 @@ Built using Visual Studio 2022/2026 Community. Installer using Inno Setup 6. Pre
 **Note: button tap locations were calculated as a percentage of a 720 x 1280 screen, this may not work on other screen sizes, more testing needed**
 
 ## Compatibility
-| Android Version                 | JP FFRK Version | Compatible |
-| ------------------------------- | --------------- | ---------- |
-| Android (Any)                   | 6.x and lower | Not Supported|
-| Android 5 (Lollipop)            | 7.0.0+          | Yes        |
-| Android 6 (Marshmallow)         | 7.0.0+          | Yes        |
-| Android 7 (Nougat)              | 7.0.0+          | Yes (root) |
-| Android 8 (Oreo)                | 7.0.0+          | Yes (root) |
-| Android 9 (Nougat)              | 11.0.0+         | Yes (root) |
-| Android 10 +                    | 11.0.0+         | Yes (root) |
+| Android Version                 | JP FFRK Version | Compatible                   |
+| ------------------------------- | --------------- | ----------                   |
+| Android (Any)                   | 6.x and lower   | Not Supported                |
+| Android 5 (Lollipop)            | 7.0.0+          | Yes                          |
+| Android 6 (Marshmallow)         | 7.0.0+          | Yes                          |
+| Android 7 (Nougat)              | 7.0.0+          | Yes (root)                   |
+| Android 8 (Oreo)                | 7.0.0+          | Yes (root)                   |
+| Android 9 (Nougat)              | 11.0.0+         | Yes (root)                   |
+| Android 10 +                    | 11.0.0+         | Yes [see notes](#newandroid) |
 
 _All compatible versions using FFRK 7.0.0+ must install a certificate_
 
