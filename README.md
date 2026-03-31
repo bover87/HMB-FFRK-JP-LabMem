@@ -20,7 +20,7 @@ Built using Visual Studio 2022/2026 Community. Installer using Inno Setup 6. Pre
 | Android 7 (Nougat)              | 7.0.0+          | Yes (root)                     |
 | Android 8 (Oreo)                | 7.0.0+          | Yes (root)                     |
 | Android 9 (Nougat)              | 11.0.0+         | Yes (root)                     |
-| Android 10 +                    | 11.0.0+         | Yes [see notes](#newandroid))" |
+| Android 10 +                    | 11.0.0+         | Yes ([see notes](#newandroid)) |
 
 _All compatible versions using FFRK 7.0.0+ must install a certificate_
 
