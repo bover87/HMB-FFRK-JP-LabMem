@@ -15,9 +15,9 @@ namespace FFRK_Machines.Services.Adb
 {
     public class Adb
     {
-
-        public const String FFRK_PACKAGE_NAME = "jp.mbga.a12019103.lite";
-        public const String FFRK_ACTIVITY_NAME = "jp.dena.dot.Dot";
+        public const int MaxOffset = 500;
+        public const string FFRKPackageName = "jp.mbga.a12019103.lite";
+        public const string FFRKActivityName = "jp.dena.dot.Dot";
 
         public static Version AndroidVersion { get; private set; }
         public static readonly Version CERT_UNDETECTED_ANDROID_VER = new Version(10, 0);
@@ -77,7 +77,7 @@ namespace FFRK_Machines.Services.Adb
         public int TapDelay { get; set; } = 30;
         public int TapDuration { get; set; } = 0;
         public int TapPressure { get; set; } = 50;
-        public String ScreenshotFolder { get; set; } = "";
+        public string ScreenshotFolder { get; set; } = "";
         public bool HasDevice
         {
             get
@@ -91,7 +91,7 @@ namespace FFRK_Machines.Services.Adb
 
             ColorConsole.Debug(ColorConsole.DebugCategory.Adb, "Starting server");
             AdbServer server = new AdbServer();
-            var result = server.StartServer(path, restartServerIfNewer: true);
+            StartServerResult result = server.StartServer(path, restartServerIfNewer: true);
             this.Host = host;
             this.TopOffset = topOffset;
             this.BottomOffset = bottomOffset;
@@ -108,7 +108,7 @@ namespace FFRK_Machines.Services.Adb
         private void OnDeviceChanged(object sender, DeviceDataEventArgs e)
         {
             ColorConsole.WriteLine("Device changed: {1}:{0}", e.Device, e.Device.State);
-            if (e.Device.Serial.Equals(this.Host))
+            if (e.Device.Serial.Equals(Host))
             {
                 if (e.Device.State == DeviceState.Online) DeviceAvailable?.Invoke(sender, e);
                 if (e.Device.State == DeviceState.Offline) DeviceUnavailable?.Invoke(sender, e);
@@ -157,7 +157,6 @@ namespace FFRK_Machines.Services.Adb
                 return false;
             }
 
-
         }
 
         public async Task<Version> GetAndroidVersion(CancellationToken cancellationToken)
@@ -183,12 +182,12 @@ namespace FFRK_Machines.Services.Adb
             return AndroidVersion < CERT_UNDETECTED_ANDROID_VER;
         }
 
-        public Task<List<String>> GetDevices()
+        public Task<List<string>> GetDevices()
         {
             return Task.FromResult(AdbClient.Instance.GetDevices().Select(d => d.Serial).ToList());
         }
 
-        public async Task InstallCertificate(String pfxPath, CancellationToken cancellationToken)
+        public async Task InstallCertificate(string pfxPath, CancellationToken cancellationToken)
         {
             var certificateManager = new CertificateManager(this);
             await certificateManager.InstallRootCert(pfxPath, cancellationToken);
@@ -230,7 +229,7 @@ namespace FFRK_Machines.Services.Adb
                 1000);
         }
 
-        public async Task StopPackage(String packageName, CancellationToken cancellationToken)
+        public async Task StopPackage(string packageName, CancellationToken cancellationToken)
         {
             await AdbClient.Instance.ExecuteRemoteCommandAsync(String.Format("am force-stop {0}", packageName),
                 this.Device,
@@ -264,9 +263,9 @@ namespace FFRK_Machines.Services.Adb
         }
         */
 
-        public async Task StartActivity(String packageName, String activityName, CancellationToken cancellationToken)
+        public async Task StartActivity(string packageName, string activityName, CancellationToken cancellationToken)
         {
-            await AdbClient.Instance.ExecuteRemoteCommandAsync(String.Format("am start -n {0}/{1}", packageName, activityName),
+            await AdbClient.Instance.ExecuteRemoteCommandAsync(string.Format("am start -n {0}/{1}", packageName, activityName),
                 this.Device,
                 null,
                 cancellationToken,
@@ -337,8 +336,8 @@ namespace FFRK_Machines.Services.Adb
             tappingStopwatch.Restart();
             do
             {
-                var tX = rng.Next(target.Item1 - variance.Item1, target.Item1 + variance.Item1);
-                var tY = rng.Next(target.Item2 - variance.Item2, target.Item2 + variance.Item2);
+                int tX = rng.Next(target.Item1 - variance.Item1, target.Item1 + variance.Item1);
+                int tY = rng.Next(target.Item2 - variance.Item2, target.Item2 + variance.Item2);
                 await TapXY(tX, tY, cancellationToken);
                 await Task.Delay(TapDelay * 3);
             } while (tappingStopwatch.ElapsedMilliseconds < duration.TotalMilliseconds && tappingStopwatch.IsRunning);
@@ -366,14 +365,14 @@ namespace FFRK_Machines.Services.Adb
                         gr.DrawImage(framebuffer, new Rectangle(0, 0, b.Width, b.Height));
                     }
                     var templateMatcher = new AForge.Imaging.ExhaustiveTemplateMatching();
-                    foreach (var item in images)
+                    foreach (ImageDef item in images)
                     {
                         templateMatcher.SimilarityThreshold = item.Simalarity;
-                        var matches = templateMatcher.ProcessImage(b, item.Image);
+                        AForge.Imaging.TemplateMatch[] matches = templateMatcher.ProcessImage(b, item.Image);
                         if (matches.Length > 0)
                         {
                             // Return the center of the found image as a pct
-                            var match = matches[0].Rectangle;
+                            Rectangle match = matches[0].Rectangle;
 
                             item.Location = new Tuple<double, double>(
                                 ((match.X + (match.Width/2)) / (double)width) * 100, 
@@ -382,7 +381,7 @@ namespace FFRK_Machines.Services.Adb
                             ret = item;
                             if (ColorConsole.CheckCategory(ColorConsole.DebugCategory.Adb))
                             {
-                                var pixelLoc = await ConvertPctToXY(item.Location);
+                                Tuple<int, int> pixelLoc = await ConvertPctToXY(item.Location);
                                 ColorConsole.Debug(ColorConsole.DebugCategory.Adb, "matches: {0}, closest: {1} [{2},{3}]", matches.Length, matches[0].Similarity, pixelLoc.Item1, pixelLoc.Item2);
                             }
                             break;
@@ -401,11 +400,11 @@ namespace FFRK_Machines.Services.Adb
         {
 
             var ret = new List<Color>();
-            using (var framebuffer = await GetFrame(cancellationToken))
+            using (Image framebuffer = await GetFrame(cancellationToken))
             {
                 using (Bitmap b = new Bitmap(framebuffer))
                 {
-                    foreach (var item in coords)
+                    foreach (Tuple<int, int> item in coords)
                     {
                         // Sanity checks
                         if (item.Item1 < b.Width && item.Item2 < b.Height)
@@ -439,7 +438,7 @@ namespace FFRK_Machines.Services.Adb
 
             // Convert to XY
             var coords = new List<Tuple<int, int>>();
-            foreach (var item in coordsPct)
+            foreach (Tuple<double, double> item in coordsPct)
             {
                 coords.Add(await ConvertPctToXY(item));
             }
@@ -450,7 +449,7 @@ namespace FFRK_Machines.Services.Adb
 
         public async Task<Color> GetPixelColorXY(int X, int Y, CancellationToken cancellationToken)
         {
-            var color = await GetPixelColorXY(new List<Tuple<int, int>>() { 
+            List<Color> color = await GetPixelColorXY(new List<Tuple<int, int>>() {
                 new Tuple<int, int>(X, Y) 
             }, cancellationToken);
             return color.First();
@@ -458,7 +457,7 @@ namespace FFRK_Machines.Services.Adb
 
         public async Task<Color> GetPixelColorPct(double X, double Y, CancellationToken cancellationToken)
         {
-            var color = await GetPixelColorPct(new List<Tuple<double, double>>() { 
+            List<Color> color = await GetPixelColorPct(new List<Tuple<double, double>>() {
                 new Tuple<double, double>(X, Y) 
             }, cancellationToken);
             return color.First();
@@ -469,7 +468,7 @@ namespace FFRK_Machines.Services.Adb
             if (cachedScreenSize == null)
             {
                 // Get screen dimensions
-                using (var framebuffer = await AdbClient.Instance.GetFrameBufferAsync(this.Device, CancellationToken.None))
+                using (Image framebuffer = await AdbClient.Instance.GetFrameBufferAsync(Device, CancellationToken.None))
                 {
                     using (Bitmap b = new Bitmap(framebuffer))
                     {
@@ -481,9 +480,7 @@ namespace FFRK_Machines.Services.Adb
                         // Rotation check
                         if (size.Width > size.Height)
                         {
-                            var w = size.Width;
-                            size.Width = size.Height;
-                            size.Height = w;
+                            (size.Height, size.Width) = (size.Width, size.Height);
                         }
                         cachedScreenSize = size;
                         ColorConsole.Debug(ColorConsole.DebugCategory.Adb, $"Screen size set to: {cachedScreenSize}");
@@ -495,7 +492,7 @@ namespace FFRK_Machines.Services.Adb
             return cachedScreenSize;
         }
 
-        public async Task<Tuple<double, double>> GetButton(String htmlButtonColor, int threshold, double xPct, double yPctStart, double yPctEnd, CancellationToken cancellationToken, double precision = -1)
+        public async Task<Tuple<double, double>> GetButton(string htmlButtonColor, int threshold, double xPct, double yPctStart, double yPctEnd, CancellationToken cancellationToken, double precision = -1)
         {
 
             // Defaults
@@ -503,8 +500,8 @@ namespace FFRK_Machines.Services.Adb
 
             if (ColorConsole.CheckCategory(ColorConsole.DebugCategory.Adb))
             {
-                var dTargetStart = await ConvertPctToXY(xPct, yPctStart);
-                var dTargetEnd = await ConvertPctToXY(xPct, yPctEnd);
+                Tuple<int, int> dTargetStart = await ConvertPctToXY(xPct, yPctStart);
+                Tuple<int, int> dTargetEnd = await ConvertPctToXY(xPct, yPctEnd);
                 ColorConsole.Debug(ColorConsole.DebugCategory.Adb, $"Finding button {htmlButtonColor} [{dTargetStart.Item1},{dTargetStart.Item2}-{dTargetEnd.Item2}] t:{threshold} p:{precision}");
             }
             // Build input for pixel colors
@@ -513,19 +510,19 @@ namespace FFRK_Machines.Services.Adb
             {
                 coords.Add(new Tuple<double, double>(xPct, i));
             }
-            var results = await GetPixelColorPct(coords, cancellationToken);
+            List<Color> results = await GetPixelColorPct(coords, cancellationToken);
 
             // Target color
-            var target = ColorTranslator.FromHtml(htmlButtonColor);
+            Color target = ColorTranslator.FromHtml(htmlButtonColor);
 
             // Hold matches
             Dictionary<int, Tuple<double, double>> matches = new Dictionary<int,Tuple<double,double>>();
 
             // Iterate color and get distance
-            foreach (var item in results)
+            foreach (Color item in results)
             {
                 // Distance to target
-                var d = item.GetDistance(target);
+                int d = item.GetDistance(target);
 
                 // If below threshold
                 if (d < threshold) {
@@ -541,11 +538,11 @@ namespace FFRK_Machines.Services.Adb
             // Return closest match
             if (matches.Count > 0)
             {
-                var min = matches.Keys.Min();
-                var match = matches[min];
+                int min = matches.Keys.Min();
+                Tuple<double, double> match = matches[min];
                 if (ColorConsole.CheckCategory(ColorConsole.DebugCategory.Adb))
                 {
-                    var pixelLoc = await ConvertPctToXY(match);
+                    Tuple<int, int> pixelLoc = await ConvertPctToXY(match);
                     ColorConsole.Debug(ColorConsole.DebugCategory.Adb, "matches: {0}, closest: {1} [{2},{3}]", matches.Count, min, pixelLoc.Item1, pixelLoc.Item2);
                 }
                 return match;
@@ -556,10 +553,10 @@ namespace FFRK_Machines.Services.Adb
 
         }
 
-        public async Task<FindButtonResult> FindButtonAndTap(String htmlButtonColor, int threshold, double xPct, double yPctStart, double yPctEnd, int retries, CancellationToken cancellationToken, double precision = -1, int accuracy = -1)
+        public async Task<FindButtonResult> FindButtonAndTap(string htmlButtonColor, int threshold, double xPct, double yPctStart, double yPctEnd, int retries, CancellationToken cancellationToken, double precision = -1, int accuracy = -1)
         {
 
-            var button = await FindButton(htmlButtonColor, threshold, xPct, yPctStart, yPctEnd, retries, cancellationToken, precision, accuracy);
+            FindButtonResult button = await FindButton(htmlButtonColor, threshold, xPct, yPctStart, yPctEnd, retries, cancellationToken, precision, accuracy);
             if (button == null)
             {
                 return new FindButtonResult();
@@ -591,7 +588,7 @@ namespace FFRK_Machines.Services.Adb
             List<Tuple<double, double>> prevButtons = new List<Tuple<double, double>>();
             do
             {
-                var b = await GetButton(htmlButtonColor, threshold, xPct, yPctStart, yPctEnd, cancellationToken, precision);
+                Tuple<double, double> b = await GetButton(htmlButtonColor, threshold, xPct, yPctStart, yPctEnd, cancellationToken, precision);
                 if (b != null)
                 {
                     if (accuracy <= 0 || prevButtons.Where(i => i.Equals(b)).Count() >= accuracy)
@@ -606,15 +603,15 @@ namespace FFRK_Machines.Services.Adb
 
         }
 
-        public async Task<ImageDef> WaitForImage(Adb.ImageDef image, int scaleFactor, int timeout, CancellationToken cancellationToken)
+        public async Task<ImageDef> WaitForImage(ImageDef image, int scaleFactor, int timeout, CancellationToken cancellationToken)
         {
-            List<Adb.ImageDef> items = new List<Adb.ImageDef>() { image };
+            List<ImageDef> items = new List<ImageDef>() { image };
 
             // Find
             var time = new Stopwatch();
             do
             {
-                var img = await FindImages(items, scaleFactor,cancellationToken);
+                ImageDef img = await FindImages(items, scaleFactor, cancellationToken);
                 if (img != null)
                 {
                     return img;
@@ -627,35 +624,34 @@ namespace FFRK_Machines.Services.Adb
 
         public async Task<Tuple<int, int>> GetOffsets(string htmlColor, int threshold, CancellationToken cancellationToken)
         {
-
             int topOffset = 0;
             int bottomOffset = 0;
 
             // Screen size
-            var size = await GetScreenSize();
+            Size size = await GetScreenSize();
 
             // Coordinates from top of screen to bottom
-            var coords = new List<Tuple<int, int>>();
+            List<Tuple<int, int>> coords = new List<Tuple<int, int>>();
             for (int i = 0; i < size.Height; i++)
             {
                 coords.Add(new Tuple<int, int>(size.Width / 2, i));
             }
 
             // Get color values
-            var results = await GetPixelColorXY(coords, cancellationToken);
+            List<Color> results = await GetPixelColorXY(coords, cancellationToken);
 
             // Target color gray
-            var target = ColorTranslator.FromHtml(htmlColor);
+            Color target = ColorTranslator.FromHtml(htmlColor);
 
             // Hold matches
             var matches = new List<int>();
             int itemIndex = 0;
 
             // Inspect each item
-            foreach (var item in results)
+            foreach (Color item in results)
             {
                 // Distance to target
-                var d = item.GetDistance(target);
+                int d = item.GetDistance(target);
 
                 // If below threshold add to matches
                 if (d < threshold) matches.Add(itemIndex);
@@ -687,8 +683,17 @@ namespace FFRK_Machines.Services.Adb
             if (topOffset < 0) topOffset = 0;
             if (bottomOffset < 0) bottomOffset = 0;
 
-            return new Tuple<int, int>(topOffset, bottomOffset);
+            // Checks for out-of-bounds results (for example, if the auto-set is attempted on something other than FFRK)
+            if (topOffset > MaxOffset)
+            {
+                throw new ArgumentOutOfRangeException("topOffset", "Top offset " + topOffset + " out of range, maximum value: " + MaxOffset.ToString());
+            }
+            if (bottomOffset > MaxOffset)
+            {
+                throw new ArgumentOutOfRangeException("bottomOffset", "Bottom offset " + bottomOffset + " out of range, maximum value: " + MaxOffset.ToString());
+            }
 
+            return new Tuple<int, int>(topOffset, bottomOffset);
         }
 
         private async Task<Tuple<int, int>> ConvertPctToXY(Tuple<double, double> coords)
@@ -699,7 +704,7 @@ namespace FFRK_Machines.Services.Adb
         private async Task<Tuple<int, int>> ConvertPctToXY(double xPct, double yPct)
         {
 
-            var size = await GetScreenSize();
+            Size size = await GetScreenSize();
             double virtX = size.Width * (xPct / 100);
             double virtY = (size.Height - this.TopOffset - this.BottomOffset) * (yPct / 100) + this.TopOffset;
             return new Tuple<int, int>((int)virtX, (int)virtY);

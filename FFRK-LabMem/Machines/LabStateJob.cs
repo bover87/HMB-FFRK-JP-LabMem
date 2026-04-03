@@ -52,7 +52,7 @@ namespace FFRK_LabMem.Machines
                     {
                         ColorConsole.WriteLine(ConsoleColor.Red, "Closing FFRK due to schedule: {0}", context.Trigger.Description);
                         controller.Disable();
-                        await controller.Adb.StopPackage(Adb.FFRK_PACKAGE_NAME, CancellationToken.None);
+                        await controller.Adb.StopPackage(Adb.FFRKPackageName, CancellationToken.None);
                     } else
                     {
                         ColorConsole.WriteLine(ConsoleColor.Red, "Disable requested due to schedule: {0}", context.Trigger.Description);

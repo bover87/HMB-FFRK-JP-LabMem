@@ -85,26 +85,26 @@ namespace FFRK_LabMem.Machines
         {
 
             // Config
-            this.Config = config;
-            this.Adb = adb;
-            this.Watchdog = new LabWatchdog(this, watchdogConfig);
-            this.Watchdog.Timeout += Watchdog_Timeout;
-            this.Watchdog.Warning += Watchdog_Warning;
-            this.Watchdog.RestartLoop += Watchdog_RestartLoop;
-            this.Watchdog.BattleLoop += Watchdog_BattleLoop;
-            this.parser = new LabParser(this);
-            this.selector = new LabSelector(this);
+            Config = config;
+            Adb = adb;
+            Watchdog = new LabWatchdog(this, watchdogConfig);
+            Watchdog.Timeout += Watchdog_Timeout;
+            Watchdog.Warning += Watchdog_Warning;
+            Watchdog.RestartLoop += Watchdog_RestartLoop;
+            Watchdog.BattleLoop += Watchdog_BattleLoop;
+            parser = new LabParser(this);
+            selector = new LabSelector(this);
         }
 
         public override void ConfigureStateMachine()
         {
 
-            this.StateMachine = new StateMachine<State, Trigger>(State.Starting);
+            StateMachine = new StateMachine<State, Trigger>(State.Starting);
             
-            this.StateMachine.Configure(State.Starting)
+            StateMachine.Configure(State.Starting)
                 .Permit(Trigger.Started, State.Unknown);
 
-            this.StateMachine.Configure(State.Unknown)
+            StateMachine.Configure(State.Unknown)
                 .OnEntry(async (t) => await DetermineState())
                 .Permit(Trigger.ResetState, State.Ready)
                 .Permit(Trigger.FoundThing, State.FoundThing)
@@ -122,7 +122,7 @@ namespace FFRK_LabMem.Machines
                 .IgnoreIf(Trigger.EnteredOutpost, () => !recoverStopwatch.IsRunning)
                 .PermitIf(Trigger.EnteredOutpost, State.Outpost, () => recoverStopwatch.IsRunning);
 
-            this.StateMachine.Configure(State.Ready)
+            StateMachine.Configure(State.Ready)
                 .OnEntryAsync(async (t) => await SelectPainting())
                 .PermitReentry(Trigger.ResetState)
                 .Permit(Trigger.FoundThing, State.FoundThing)
@@ -136,25 +136,25 @@ namespace FFRK_LabMem.Machines
                 .Permit(Trigger.FinishedLab, State.Completed)
                 .Ignore(Trigger.MissedButton);
 
-            this.StateMachine.Configure(State.FoundThing)
+            StateMachine.Configure(State.FoundThing)
                 .OnEntryFromAsync(Trigger.FoundThing, async (t) => await MoveOn(false))
                 .OnEntryFromAsync(Trigger.FoundPortal, async(t) => await MoveOn(true))
                 .Permit(Trigger.MoveOn, State.Ready)
                 .Permit(Trigger.MissedButton, State.Unknown);
 
-            this.StateMachine.Configure(State.FoundTreasure)
+            StateMachine.Configure(State.FoundTreasure)
                 .OnEntryAsync(async (t) => await SelectTreasures(t))
                 .PermitReentry(Trigger.FoundTreasure)
                 .Permit(Trigger.MoveOn, State.Ready);
 
-            this.StateMachine.Configure(State.FoundSealedDoor)
+            StateMachine.Configure(State.FoundSealedDoor)
                 .OnEntryAsync(async (t) => await OpenSealedDoor())
                 .PermitReentry(Trigger.FoundDoor)
                 .Permit(Trigger.FoundBattle, State.EquipParty)
                 .Permit(Trigger.FoundThing, State.FoundThing)
                 .Permit(Trigger.FoundTreasure, State.FoundTreasure);
 
-            this.StateMachine.Configure(State.BattleInfo)
+            StateMachine.Configure(State.BattleInfo)
                 .OnEntryAsync(async (t) => await EnterDungeon())
                 .Permit(Trigger.EnterDungeon, State.EquipParty)
                 .Permit(Trigger.LoadBattle, State.LoadBattle)
@@ -162,7 +162,7 @@ namespace FFRK_LabMem.Machines
                 .Permit(Trigger.ResetState, State.Ready)
                 .Ignore(Trigger.MissedButton);
 
-            this.StateMachine.Configure(State.EquipParty)
+            StateMachine.Configure(State.EquipParty)
                 .OnEntryAsync(async (t) => await StartBattle())
                 .PermitReentry(Trigger.FoundBattle)
                 .Permit(Trigger.StartBattle, State.Battle)
@@ -170,52 +170,52 @@ namespace FFRK_LabMem.Machines
                 .Permit(Trigger.LoadBattle, State.LoadBattle)
                 .Ignore(Trigger.MissedButton);
 
-            this.StateMachine.Configure(State.LoadBattle)
+            StateMachine.Configure(State.LoadBattle)
                 .Permit(Trigger.StartBattle, State.Battle);
 
-            this.StateMachine.Configure(State.Battle)
+            StateMachine.Configure(State.Battle)
                 .OnEntry((t) => battleStopwatch.Restart())
                 .PermitReentry(Trigger.StartBattle)
                 .Permit(Trigger.BattleSuccess, State.BattleFinished)
                 .Permit(Trigger.BattleFailed, State.Failed);
 
-            this.StateMachine.Configure(State.BattleFinished)
+            StateMachine.Configure(State.BattleFinished)
                 .OnEntryAsync(async (t) => await FinishBattle())
                 .Permit(Trigger.FinishedLab, State.Completed)
                 .Permit(Trigger.ResetState, State.Ready);
 
-            this.StateMachine.Configure(State.PortalConfirm)
+            StateMachine.Configure(State.PortalConfirm)
                 .OnEntryAsync(async (t) => await ConfirmPortal())
                 .Permit(Trigger.FinishedLab, State.Completed)
                 .Permit(Trigger.ResetState, State.Ready);
 
-            this.StateMachine.Configure(State.Completed)
+            StateMachine.Configure(State.Completed)
                 .OnEntryAsync(async (t) => await FinishLab(t))
                 .Permit(Trigger.ResetState, State.Ready)
                 .Permit(Trigger.Restart, State.Restarting)
                 .Ignore(Trigger.BattleSuccess);
 
-            this.StateMachine.Configure(State.Restarting)
+            StateMachine.Configure(State.Restarting)
                 .OnEntryAsync(async (t) => await RestartLab())
                 .Permit(Trigger.ResetState, State.Unknown)
                 .Ignore(Trigger.EnteredOutpost)
                 .Ignore(Trigger.PickedCombatant);
 
-            this.StateMachine.Configure(State.WaitForBoss)
+            StateMachine.Configure(State.WaitForBoss)
                 .OnEntryAsync(async (t) => await FinishLab(t))
                 .Permit(Trigger.ResetState, State.Ready)
                 .Permit(Trigger.FinishedLab, State.Completed)
                 .Ignore(Trigger.BattleSuccess)
                 .Ignore(Trigger.PickedCombatant);
 
-            this.StateMachine.Configure(State.Failed)
+            StateMachine.Configure(State.Failed)
                 .OnEntryAsync(async (t) => await RestartBattle())
                 .Permit(Trigger.ResetState, State.Ready)
                 .Permit(Trigger.StartBattle, State.Battle)
                 .Permit(Trigger.BattleSuccess, State.BattleFinished)
                 .PermitReentry(Trigger.BattleFailed);
 
-            this.StateMachine.Configure(State.Outpost)
+            StateMachine.Configure(State.Outpost)
                 .OnEntryAsync(async (t) => await EnterOutpost())
                 .Permit(Trigger.FinishedLab, State.Completed);
 
@@ -226,7 +226,7 @@ namespace FFRK_LabMem.Machines
 
             // Watchdog
             StateMachine.OnTransitioned((state) => {
-                Watchdog.Kick(this.Data != null);
+                Watchdog.Kick(Data != null);
                 recoverStopwatch.Stop();
             });
 
@@ -306,7 +306,7 @@ namespace FFRK_LabMem.Machines
             {
                 // Message and screenshot
                 ColorConsole.WriteLine(ConsoleColor.Yellow, "Possible hang, attempting recovery!");
-                if (Watchdog.Config.HangScreenshot) await Adb.SaveScreenshot(String.Format("hang_{0}.png", DateTime.Now.ToString("yyyyMMddHHmmss")), this.CancellationToken);
+                if (Watchdog.Config.HangScreenshot) await Adb.SaveScreenshot(String.Format("hang_{0}.png", DateTime.Now.ToString("yyyyMMddHHmmss")), CancellationToken);
 
                 // Keep track of current state in case it changes
                 var previousState = StateMachine.State;
@@ -318,7 +318,7 @@ namespace FFRK_LabMem.Machines
                     for (int i = 0; i < 3; i++)
                     {
                         if (StateMachine.State == State.Battle) break;
-                        await Adb.NavigateBack(this.CancellationToken);
+                        await Adb.NavigateBack(CancellationToken);
                         await Task.Delay(500);
                     }
                     await Task.Delay(3000);
@@ -365,28 +365,28 @@ namespace FFRK_LabMem.Machines
             Proxy.AddRegistration("choose_explore_painting", parser.ParsePainting);
             Proxy.AddRegistration("open_treasure_chest", async (args) =>
             {
-                this.Data = args.Data;
-                await this.StateMachine.FireAsync(Trigger.FoundTreasure);
+                Data = args.Data;
+                await StateMachine.FireAsync(Trigger.FoundTreasure);
             });
             Proxy.AddRegistration("dungeon_recommend_info", async(args) => 
             {
                 await Adb.StopTaps();
-                if (this.Data != null) await this.StateMachine.FireAsync(Trigger.PickedCombatant); 
+                if (Data != null) await StateMachine.FireAsync(Trigger.PickedCombatant); 
             });
             Proxy.AddRegistration("labyrinth/[0-9]+/win_battle", async(args) => 
             {
-                this.Data = args.Data;
+                Data = args.Data;
                 // Prevent unexpected state change if error present
-                if (args.Data["error"] == null) await this.StateMachine.FireAsync(Trigger.BattleSuccess);
+                if (args.Data["error"] == null) await StateMachine.FireAsync(Trigger.BattleSuccess);
             });
             Proxy.AddRegistration("continue/get_info", async(args) =>
             {
-                await this.StateMachine.FireAsync(Trigger.BattleFailed);
+                await StateMachine.FireAsync(Trigger.BattleFailed);
             });
             Proxy.AddRegistration("labyrinth/[0-9]+/get_battle_init_data", async(args) => {
                 recoverStopwatch.Stop();
                 Watchdog.HangReset(); // Started battle indicates we not in hang state
-                await this.StateMachine.FireAsync(Trigger.StartBattle);
+                await StateMachine.FireAsync(Trigger.StartBattle);
             });
             Proxy.AddRegistration("labyrinth/party/list", parser.ParsePartyList);
             Proxy.AddRegistration("labyrinth/buddy/info", parser.ParseFatigueInfo);
@@ -409,7 +409,7 @@ namespace FFRK_LabMem.Machines
             Proxy.AddRegistration("labyrinth/[0-9]+/enter_labyrinth_dungeon", parser.ParseEnterLab);
             Proxy.AddRegistration("labyrinth/[0-9]+/get_data", async (args) =>
             {
-                await this.StateMachine.FireAsync(Trigger.EnteredOutpost);
+                await StateMachine.FireAsync(Trigger.EnteredOutpost);
             });
         }
 
@@ -431,16 +431,16 @@ namespace FFRK_LabMem.Machines
             battleStopwatch.Reset();
 
             // Reset status
-            this.Data = null;
-            this.CurrentPainting = null;
-            this.CurrentFloor = 0;
-            this.FinalFloor = 0;
-            this.CurrentKeys = 0;
-            this.CurrentTears = 0;
-            this.SelectedPartyIndex = 0;
-            this.RestartLabCounter = -1;
-            this.FatigueInfo.Clear();
-            this.StaminaInfo.Clear();
+            Data = null;
+            CurrentPainting = null;
+            CurrentFloor = 0;
+            FinalFloor = 0;
+            CurrentKeys = 0;
+            CurrentTears = 0;
+            SelectedPartyIndex = 0;
+            RestartLabCounter = -1;
+            FatigueInfo.Clear();
+            StaminaInfo.Clear();
             AutoResetEventQuickExplore.Reset();
             restartTries = 0;
             disableSafeRequested = false;

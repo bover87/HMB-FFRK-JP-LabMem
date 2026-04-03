@@ -29,13 +29,13 @@ namespace FFRK_LabMem.Machines
             };
 
             // Validate config file
-            var configFilePath = config.GetString("lab.configFile", "Config/lab.balanced.json");
+            string configFilePath = config.GetString("lab.configFile", "Config/lab.balanced.json");
             if (!File.Exists(configFilePath))
             {
                 ColorConsole.WriteLine(ConsoleColor.Red, "Could not load {0}!", configFilePath);
                 return ret;
             }
-            var findPrecision = config.GetDouble("adb.findPrecision", 0.5);
+            double findPrecision = config.GetDouble("adb.findPrecision", 0.5);
             if (findPrecision < 0 || findPrecision > 1) config.SetValue("adb.findPrecision", 0.5);
 
             // Services
@@ -59,7 +59,7 @@ namespace FFRK_LabMem.Machines
         public static async Task<LabController> CreateAndStart(ConfigHelper config)
         {
 
-            var ret = await Create(config);
+            LabController ret = await Create(config);
 
             // Start it
             var args = new StartArguments()
@@ -114,24 +114,34 @@ namespace FFRK_LabMem.Machines
                 RestartLoopWindowMinutes = configHelper.GetInt("lab.watchdogLoopDetectionWindowMinutes", 60),
                 BattleMaxRetries = configHelper.GetInt("lab.watchdogBattleMaxRetries", 5)
             };
-            return new Lab(this.Adb, config, watchdogConfig);
+            return new Lab(Adb, config, watchdogConfig);
         }
 
         public async void AutoDetectOffsets(ConfigHelper config) {
 
-            if (this.Adb != null && this.Adb.HasDevice && config.GetInt("screen.topOffset", -1) == -1)
+            if (Adb != null && Adb.HasDevice && config.GetInt("screen.topOffset", -1) == -1)
             {
                 ColorConsole.WriteLine(ConsoleColor.DarkYellow, "Detecting screen offsets...");
-                var offsets = await this.Adb.GetOffsets("#151515", 2000, System.Threading.CancellationToken.None);
+                Tuple<int, int> offsets;
+                try
+                {
+                    offsets = await Adb.GetOffsets("#151515", 2000, System.Threading.CancellationToken.None);
+                }
+                catch (ArgumentOutOfRangeException e)
+                {
+                    ColorConsole.Debug(ColorConsole.DebugCategory.Adb, e.Message);
+                    ColorConsole.WriteLine(ConsoleColor.Red, "Could not set offsets. Please ensure FFRK is the active app and press [Alt + O] to try again.");
+                    return;
+                }
                 ColorConsole.WriteLine(ConsoleColor.DarkYellow, "Detected offset t:{0}, b:{1}, saving to .config", offsets.Item1, offsets.Item2);
-                this.Adb.TopOffset = offsets.Item1;
-                this.Adb.BottomOffset = offsets.Item2;
+                Adb.TopOffset = offsets.Item1;
+                Adb.BottomOffset = offsets.Item2;
                 config.SetValue("screen.topOffset", offsets.Item1);
                 config.SetValue("screen.bottomOffset", offsets.Item2);
             }
             else
             {
-                ColorConsole.WriteLine(ConsoleColor.DarkYellow, "Screen offsets already set ({0},{1}).  Please set them in the .config file to '-1' for auto-detect", this.Adb.TopOffset, this.Adb.BottomOffset);
+                ColorConsole.WriteLine(ConsoleColor.DarkYellow, "Screen offsets already set ({0},{1}).  Please set them to '-1' for auto-detect", Adb.TopOffset, Adb.BottomOffset);
             }
 
         }
@@ -139,7 +149,7 @@ namespace FFRK_LabMem.Machines
         public async void ManualFFRKRestart()
         {
 
-            if (Enabled) await this.Machine.ManualFFRKRestart();
+            if (Enabled) await Machine.ManualFFRKRestart();
 
         }
 
@@ -160,7 +170,7 @@ namespace FFRK_LabMem.Machines
                 int max = 0;
 
                 // Prompt for times
-                if (this.Machine.Config.RestartLab)
+                if (Machine.Config.RestartLab)
                 {
                     ColorConsole.Write("Number of times to QE? [0-999] (0 for unlimited): 0");
                     Console.CursorLeft -= 1;
@@ -187,12 +197,12 @@ namespace FFRK_LabMem.Machines
                 {
 
                     ColorConsole.WriteLine("Starting Quick Explore ('D' to Disable)");
-                    while (this.Enabled && (max==0 || times < max))
+                    while (Enabled && (max==0 || times < max))
                     {
                         try
                         {
                             ColorConsole.WriteLine("Quick explore {0} of {1}", times + 1, max == 0 ? "Unlimited" : max.ToString());
-                            if (!await this.Machine.QuickExplore()) break;
+                            if (!await Machine.QuickExplore()) break;
                             times += 1;
                         }
                         catch (OperationCanceledException) { }
@@ -200,7 +210,7 @@ namespace FFRK_LabMem.Machines
                         {
                             ColorConsole.WriteLine(ConsoleColor.Red, ex.ToString());
                         }
-                        if (!this.Machine.Config.RestartLab)
+                        if (!Machine.Config.RestartLab)
                         {
                             ColorConsole.WriteLine("Stopping because Restart Lab control not enabled");
                             break;
@@ -233,7 +243,8 @@ namespace FFRK_LabMem.Machines
                         ColorConsole.WriteLine("Setting lab restart count limit to unlimited", count);
                     }
                     Machine.RestartLabCounter = count;
-                } else
+                }
+                else
                 {
                     ColorConsole.WriteLine(ConsoleColor.Red, "Ignoring because Restart Lab control not enabled");
                 }

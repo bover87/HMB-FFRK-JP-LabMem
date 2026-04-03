@@ -9,12 +9,12 @@ namespace FFRK_Machines.Services
 {
     public class HyperV
     {
-        public const string RUNNING = "Running";
-        public const string STOPPED = "Stopped";
-        public const string PAUSED = "Paused";
-        public const string STOPPING = "Stopping";
-        public const string STARTING = "Starting";
-        public const string NOT_DETECTED = "not detected";
+        public const string Running = "Running";
+        public const string Stopped = "Stopped";
+        public const string Paused = "Paused";
+        public const string Stopping = "Stopping";
+        public const string Starting = "Starting";
+        public const string NotDetected = "not detected";
 
         static String HVStatus;
         private static String CheckHVStatus()
@@ -24,17 +24,17 @@ namespace FFRK_Machines.Services
             switch (sc.Status)
             {
                 case ServiceControllerStatus.Running:
-                    return RUNNING;
+                    return Running;
                 case ServiceControllerStatus.Stopped:
-                    return STOPPED;
+                    return Stopped;
                 case ServiceControllerStatus.Paused:
-                    return PAUSED;
+                    return Paused;
                 case ServiceControllerStatus.StopPending:
-                    return STOPPING;
+                    return Stopping;
                 case ServiceControllerStatus.StartPending:
-                    return STARTING;
+                    return Starting;
                 default:
-                    return NOT_DETECTED;
+                    return NotDetected;
             }
         }
         public static String GetHVStatus()

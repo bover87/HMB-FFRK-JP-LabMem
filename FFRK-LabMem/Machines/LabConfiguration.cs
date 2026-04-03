@@ -84,7 +84,7 @@ namespace FFRK_LabMem.Machines
         public LabConfiguration() {
 
             // Defaults
-            this.PaintingPriorityMap = new Dictionary<string, int>
+            PaintingPriorityMap = new Dictionary<string, int>
             {
                 { "R", 0 },
                 { "3", 1 },
@@ -97,7 +97,7 @@ namespace FFRK_LabMem.Machines
                 { "1.1", 8 },
                 { "2", 9 }
             };
-            this.TreasureFilterMap = new Dictionary<string, TreasureFilter>
+            TreasureFilterMap = new Dictionary<string, TreasureFilter>
             {
                 {"5", new TreasureFilter(){ Priority=1, MaxKeys=1}},
                 {"4", new TreasureFilter(){ Priority=1, MaxKeys=1}},
@@ -105,7 +105,7 @@ namespace FFRK_LabMem.Machines
                 {"2", new TreasureFilter(){ Priority=0, MaxKeys=0}},
                 {"1", new TreasureFilter(){ Priority=0, MaxKeys=0}}
             };
-            this.EnemyPriorityList = new List<EnemyPriority>
+            EnemyPriorityList = new List<EnemyPriority>
             {
                 new EnemyPriority(){Name="Alexander", Enabled=false},
                 new EnemyPriority(){Name="Atomos" ,Enabled=false},

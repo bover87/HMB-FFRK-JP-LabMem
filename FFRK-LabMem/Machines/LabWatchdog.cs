@@ -186,7 +186,7 @@ namespace FFRK_LabMem.Machines
 
         private async void WatchdogCrashTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            string ffrkPID = await Lab.Adb.GetProcessID(Adb.FFRK_PACKAGE_NAME, System.Threading.CancellationToken.None);
+            string ffrkPID = await Lab.Adb.GetProcessID(Adb.FFRKPackageName, System.Threading.CancellationToken.None);
             bool state = ffrkPID != String.Empty
                          && ffrkPID != null;
 

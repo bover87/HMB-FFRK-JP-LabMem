@@ -531,7 +531,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             this.numericUpDownScreenBottom.Location = new System.Drawing.Point(149, 209);
             this.numericUpDownScreenBottom.Maximum = new decimal(new int[] {
-            500,
+            FFRK_Machines.Services.Adb.Adb.MaxOffset,
             0,
             0,
             0});
@@ -560,7 +560,7 @@ namespace FFRK_LabMem.Config.UI
             // 
             this.numericUpDownScreenTop.Location = new System.Drawing.Point(149, 182);
             this.numericUpDownScreenTop.Maximum = new decimal(new int[] {
-            500,
+            FFRK_Machines.Services.Adb.Adb.MaxOffset,
             0,
             0,
             0});

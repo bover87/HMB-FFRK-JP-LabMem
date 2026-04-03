@@ -30,7 +30,7 @@ namespace FFRK_LabMem
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             // Get Configuration
-            var configFile = (args.Length > 0) ? args[0] : null;
+            string configFile = (args.Length > 0) ? args[0] : null;
             var config = new ConfigHelper(configFile);
 
             // Console and Translation
@@ -50,8 +50,8 @@ namespace FFRK_LabMem
             }
 
             // Version check
-            var versionCode = Updates.GetVersionCode("jp");
-            var versionTitle = String.Format("{0} {1}", Updates.GetName(), versionCode);
+            string versionCode = Updates.GetVersionCode("jp");
+            string versionTitle = string.Format("{0} {1}", Updates.GetName(), versionCode);
             ColorConsole.WriteLine(versionTitle);
             Console.Title = versionTitle;
             if (config.GetBool("updates.checkForUpdates", false))
@@ -68,7 +68,7 @@ namespace FFRK_LabMem
                 controller = LabController.CreateAndStart(config).Result;
 
                 // Instructions for Japanese output (Windows 10 and earlier, translations disabled)
-                if (HyperV.GetHVStatus() != HyperV.RUNNING && ColorConsole.Translate == false)
+                if (HyperV.GetHVStatus() != HyperV.Running && !ColorConsole.Translate)
                 {
                     ColorConsole.WriteLine(ConsoleColor.DarkYellow, "Japanese output: click treasure chest in top left then Properties and change Font to MS Gothic");
                     ColorConsole.WriteLine(ConsoleColor.DarkYellow, "See Readme.md on GitHub for more information");
@@ -87,7 +87,7 @@ namespace FFRK_LabMem
 
                 while (true)
                 {
-                    var key = Console.ReadKey(true);
+                    ConsoleKeyInfo key = Console.ReadKey(true);
                     if (key.Key == ConsoleKey.X && key.Modifiers == ConsoleModifiers.Control) break;
                     if (key.Key == ConsoleKey.E) controller.Enable();
                     if (key.Key == ConsoleKey.D) controller.Disable();

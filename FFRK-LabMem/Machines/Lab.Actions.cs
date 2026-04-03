@@ -20,11 +20,11 @@ namespace FFRK_LabMem.Machines
     public partial class Lab : Machine<Lab.State, Lab.Trigger, LabConfiguration>
     {
 
-        private const string BUTTON_BLUE = "#2060ce";
-        private const string BUTTON_BROWN = "#6c3518";
-        private const string BUTTON_ORANGE = "#c54c06";
-        private const string BUTTON_GREY = "#282727";
-        private const string BUTTON_SKIP = "#d4d8f6";
+        private const string ButtonBlue = "#2060ce";
+        private const string ButtonBrown = "#6c3518";
+        private const string ButtonOrange = "#c54c06";
+        private const string ButtonGrey = "#282727";
+        private const string ButtonSkip = "#d4d8f6";
 
         private readonly Dictionary<string, string> Combatant_Color = new Dictionary<string, string> { 
             {"1","G" },
@@ -34,18 +34,18 @@ namespace FFRK_LabMem.Machines
  
         private async Task DelayedTapPct(string key, double X, double Y)
         {
-            await LabTimings.Delay(key, this.CancellationToken);
-            await this.Adb.TapPct(X, Y, this.CancellationToken);
+            await LabTimings.Delay(key, CancellationToken);
+            await this.Adb.TapPct(X, Y, CancellationToken);
         }
         
         private async Task<bool> DelayedTapButton(string key, string color, int threshold, double X, double Y1, double Y2, int retries, double precision = -1, int accuracy = -1)
         {
 
             // Initial delay
-            await LabTimings.Delay(key, this.CancellationToken);
+            await LabTimings.Delay(key, CancellationToken);
 
             // Find
-            var ret = await this.Adb.FindButtonAndTap(color, threshold, X, Y1, Y2, retries, this.CancellationToken, precision, accuracy);
+            var ret = await this.Adb.FindButtonAndTap(color, threshold, X, Y1, Y2, retries, CancellationToken, precision, accuracy);
 
             // Tuning
             LabTimings.TuneTiming(key, ret.tapped, ret.retries);
@@ -56,10 +56,10 @@ namespace FFRK_LabMem.Machines
         private async Task<Tuple<double,double>> DelayedFindButton(string key, string color, int threshold, double X, double Y1, double Y2, int retries, double precision = -1, int accuracy = -1)
         {
             // Initial delay
-            await LabTimings.Delay(key, this.CancellationToken);
+            await LabTimings.Delay(key, CancellationToken);
 
             // Find
-            var ret = await this.Adb.FindButton(color, threshold, X, Y1, Y2, retries, this.CancellationToken, precision, accuracy);
+            var ret = await this.Adb.FindButton(color, threshold, X, Y1, Y2, retries, CancellationToken, precision, accuracy);
 
             if (ret == null) return null;
             return ret.button;
@@ -76,7 +76,7 @@ namespace FFRK_LabMem.Machines
 
             try
             {
-                await LabTimings.Delay("Pre-AutoStart", this.CancellationToken);
+                await LabTimings.Delay("Pre-AutoStart", CancellationToken);
                 ColorConsole.WriteLine(ConsoleColor.DarkGray, "Trying to auto-start");
 
                 // Images to find
@@ -90,7 +90,7 @@ namespace FFRK_LabMem.Machines
                 if (Data == null) items.Add(new Adb.ImageDef() { Image = Properties.Resources.button_blue_enter, Simalarity = 0.95f });
 
                 // Find
-                var ret = await Adb.FindImages(items, 3, this.CancellationToken);
+                var ret = await Adb.FindImages(items, 3, CancellationToken);
                 if (ret != null)
                 {
                     // Tap it
@@ -99,9 +99,9 @@ namespace FFRK_LabMem.Machines
                     // Check inventory
                     if (ret.Equals(items[0]))
                     {
-                        await Adb.TapPct(ret.Location.Item1, ret.Location.Item2, this.CancellationToken);
-                        await LabTimings.Delay("Inter-AutoStart", this.CancellationToken);
-                        await Adb.NavigateBack(this.CancellationToken);
+                        await Adb.TapPct(ret.Location.Item1, ret.Location.Item2, CancellationToken);
+                        await LabTimings.Delay("Inter-AutoStart", CancellationToken);
+                        await Adb.NavigateBack(CancellationToken);
                     }
 
                     // Skip button
@@ -113,7 +113,7 @@ namespace FFRK_LabMem.Machines
                     // Lab segment
                     if (ret.Equals(items[2]))
                     {
-                        await Adb.TapPct(ret.Location.Item1, ret.Location.Item2, this.CancellationToken);
+                        await Adb.TapPct(ret.Location.Item1, ret.Location.Item2, CancellationToken);
                     }
 
                     // Lab enter
@@ -123,7 +123,7 @@ namespace FFRK_LabMem.Machines
                     }
 
                     ColorConsole.WriteLine(ConsoleColor.DarkGray, "Auto-start complete, Have fun!");
-                    await LabTimings.Delay("Post-AutoStart", this.CancellationToken);
+                    await LabTimings.Delay("Post-AutoStart", CancellationToken);
                     return;
                 }
 
@@ -220,8 +220,8 @@ namespace FFRK_LabMem.Machines
             if (Adb.Input == Adb.InputType.Minitouch)
             {
                 // Delay, then spam taps for duration
-                await LabTimings.Delay("Pre-SelectPainting", this.CancellationToken);
-                await Adb.TapPctSpam(target, 50, await LabTimings.GetTimeSpan("Inter-SelectPainting"), this.CancellationToken);
+                await LabTimings.Delay("Pre-SelectPainting", CancellationToken);
+                await Adb.TapPctSpam(target, 50, await LabTimings.GetTimeSpan("Inter-SelectPainting"), CancellationToken);
             } else
             {
                 // Delayed tap, then delayed tap again
@@ -239,7 +239,7 @@ namespace FFRK_LabMem.Machines
                 await this.StateMachine.FireAsync(Trigger.PickedPortal);
             }
 
-            await LabTimings.Delay("Post-SelectPainting", this.CancellationToken);
+            await LabTimings.Delay("Post-SelectPainting", CancellationToken);
 
         }
 
@@ -306,11 +306,11 @@ namespace FFRK_LabMem.Machines
                 {
                     ColorConsole.WriteLine(ConsoleColor.Magenta, "Using [Magic Key] x{0} of {1}", picked, CurrentKeys);
                     this.CurrentKeys -= picked;
-                    await DelayedTapButton("Inter-SelectTreasure", BUTTON_BROWN, 4000, 58, 40, 50, 10);
+                    await DelayedTapButton("Inter-SelectTreasure", ButtonBrown, 4000, 58, 40, 50, 10);
                 }
 
                 // Confirm
-                await DelayedTapButton("Inter-SelectTreasure", BUTTON_BLUE, 4000, 70, 60, 70, 10);
+                await DelayedTapButton("Inter-SelectTreasure", ButtonBlue, 4000, 70, 60, 70, 10);
                 await Counters.UsedKeys(picked);
                 await Counters.TreasureOpened();
 
@@ -320,39 +320,39 @@ namespace FFRK_LabMem.Machines
 
                 // Move On
                 ColorConsole.WriteLine("Moving On...");
-                if (await DelayedTapButton("Inter-SelectTreasure", BUTTON_BLUE, 4000, 40, 62, 80, 10))
+                if (await DelayedTapButton("Inter-SelectTreasure", ButtonBlue, 4000, 40, 62, 80, 10))
                 {
                     if (picked != 3)
                     {
-                        await DelayedTapButton("Inter-SelectTreasure", BUTTON_BLUE, 4000, 60, 58, 68, 10, -1, 1);
+                        await DelayedTapButton("Inter-SelectTreasure", ButtonBlue, 4000, 60, 58, 68, 10, -1, 1);
                     }
                     await this.StateMachine.FireAsync(Trigger.MoveOn);
                 }
 
             }
 
-            await LabTimings.Delay("Post-SelectTreasure", this.CancellationToken);
+            await LabTimings.Delay("Post-SelectTreasure", CancellationToken);
 
         }
 
         private async Task OpenSealedDoor()
         {
-            ColorConsole.WriteLine("{0} Door...", this.Config.OpenDoors ? "Opening" : "Leaving");
+            ColorConsole.WriteLine("{0} Door...", Config.OpenDoors ? "Opening" : "Leaving");
             bool foundButton;
-            if (this.Config.OpenDoors)
+            if (Config.OpenDoors)
             {
-                foundButton = await DelayedTapButton("Pre-Door", BUTTON_BLUE, 4000, 70, 66, 80, 10, -1, 1);
+                foundButton = await DelayedTapButton("Pre-Door", ButtonBlue, 4000, 70, 66, 80, 10, -1, 1);
             }
             else
             {
-                foundButton = await DelayedTapButton("Pre-Door", BUTTON_BROWN, 4000, 30, 66, 80, 10, -1, 1);
+                foundButton = await DelayedTapButton("Pre-Door", ButtonBrown, 4000, 30, 66, 80, 10, -1, 1);
             }
             if (!foundButton)
             {
                 ColorConsole.WriteLine(ConsoleColor.DarkRed, "Failed to find button");
                 await AutoStart();
             }
-            await LabTimings.Delay("Post-Door", this.CancellationToken);
+            await LabTimings.Delay("Post-Door", CancellationToken);
 
         }
 
@@ -362,20 +362,20 @@ namespace FFRK_LabMem.Machines
             await DataLogger.LogGotItem(this);
             ColorConsole.WriteLine("Moving On...");
 
-            if (await DelayedTapButton("Pre-MoveOn", BUTTON_BLUE, 2000, 42.7, 65, 81, 30, -1, 1))
+            if (await DelayedTapButton("Pre-MoveOn", ButtonBlue, 2000, 42.7, 65, 81, 30, -1, 1))
             {
-                await LabTimings.Delay("Post-MoveOn", this.CancellationToken);
-                await this.StateMachine.FireAsync(Trigger.MoveOn);
+                await LabTimings.Delay("Post-MoveOn", CancellationToken);
+                await StateMachine.FireAsync(Trigger.MoveOn);
             }
             else
             {
                 ColorConsole.WriteLine(ConsoleColor.DarkRed, "Failed to find button");
-                await this.StateMachine.FireAsync(Trigger.MissedButton);
+                await StateMachine.FireAsync(Trigger.MissedButton);
             }
 
             // We need an additional delay if we got the dreaded portal
             if (FromPortal)
-                await LabTimings.Delay("Post-MoveOn-Portal", this.CancellationToken);
+                await LabTimings.Delay("Post-MoveOn-Portal", CancellationToken);
 
         }
 
@@ -392,23 +392,23 @@ namespace FFRK_LabMem.Machines
             if (Config.PartyIndex == LabConfiguration.PartyIndexOption.InstaBattle && partyResult.CanInstaBattle)
             {
                 // Insta-battle
-                button = await DelayedTapButton("Pre-BattleInfo", BUTTON_ORANGE, 1250, 13.3, 77, 93, 25, -1, 1);
+                button = await DelayedTapButton("Pre-BattleInfo", ButtonOrange, 1250, 13.3, 77, 93, 25, -1, 1);
 
                 // Confirmation
-                await Adb.FindButtonAndTap(BUTTON_BLUE, 2050, 58.3, 57, 71.8, 5, this.CancellationToken, -1, 1);
+                await Adb.FindButtonAndTap(ButtonBlue, 2050, 58.3, 57, 71.8, 5, CancellationToken, -1, 1);
 
                 // Check for inventory full 
-                if (Config.UseTeleportStoneOnMasterPainting && this.CurrentFloor <= 1) await CheckInventoryFull();
+                if (Config.UseTeleportStoneOnMasterPainting && CurrentFloor <= 1) await CheckInventoryFull();
 
                 // Trigger EnterDungeon state
-                await this.StateMachine.FireAsync(Trigger.LoadBattle);
+                await StateMachine.FireAsync(Trigger.LoadBattle);
 
             } else
             {
                 // Informational message
                 if (Config.PartyIndex == LabConfiguration.PartyIndexOption.InstaBattle && FatigueInfo.Count == 0) ColorConsole.WriteLine(ConsoleColor.Yellow, "Unknown fatigue values, skipping insta-battle to download them now");
 
-                button = await DelayedTapButton("Pre-BattleInfo", BUTTON_BLUE, 2000, 59, 77, 93, 25, -1, 1);
+                button = await DelayedTapButton("Pre-BattleInfo", ButtonBlue, 2000, 59, 77, 93, 25, -1, 1);
                 if (button) await this.StateMachine.FireAsync(Trigger.EnterDungeon);
             }
 
@@ -423,10 +423,10 @@ namespace FFRK_LabMem.Machines
         private async Task StartBattle()
         {
             // Dungeon info
-            var dungeon = this.Data["labyrinth_dungeon_session"]["dungeon"];
+            JToken dungeon = Data["labyrinth_dungeon_session"]["dungeon"];
             if (dungeon != null)
             {
-                var title = Translation.TranslateEnemy(dungeon["captures"][0]["tip_battle"]["title"].ToString());
+                string title = Translation.TranslateEnemy(dungeon["captures"][0]["tip_battle"]["title"].ToString());
                 ColorConsole.Write("The enemy is upon you! ");
                 ColorConsole.WriteLine(ConsoleColor.Yellow, "{0}", title);
                 await Counters.EnemyIsUponYou();
@@ -438,26 +438,26 @@ namespace FFRK_LabMem.Machines
             }
 
             // Wait for button
-            var button = await DelayedFindButton("Pre-StartBattle", BUTTON_BLUE, 3000, 42.7, 85, 95, 30, -1, 1);
+            Tuple<double, double> button = await DelayedFindButton("Pre-StartBattle", ButtonBlue, 3000, 42.7, 85, 95, 30, -1, 1);
             if (button != null)
             {
                 // Check fatigue values and select party
-                var partyResult = await CheckParty(dungeon, true);
+                CheckPartyResult partyResult = await CheckParty(dungeon, true);
                 if (partyResult.NeedsTears)
                 {
                     if (!await UseLetheTears(partyResult)) return;
-                    await LabTimings.Delay("Inter-StartBattle", this.CancellationToken);
+                    await LabTimings.Delay("Inter-StartBattle", CancellationToken);
                 }
                 if (await SelectParty(partyResult.PartyIndex)) 
                 {
-                    await LabTimings.Delay("Inter-StartBattle", this.CancellationToken);
+                    await LabTimings.Delay("Inter-StartBattle", CancellationToken);
                 }
 
                 // Tap Enter
-                await Adb.TapPct(button.Item1, button.Item2, this.CancellationToken);
+                await Adb.TapPct(button.Item1, button.Item2, CancellationToken);
 
                 // Click-thru Fatigue warning
-                await DelayedTapButton("Inter-StartBattle", BUTTON_BLUE, 2000, 56, 55, 65, 5, -1, 1);
+                await DelayedTapButton("Inter-StartBattle", ButtonBlue, 2000, 56, 55, 65, 5, -1, 1);
 
                 // Change to LoadBattle State
                 await StateMachine.FireAsync(Trigger.LoadBattle);
@@ -469,9 +469,9 @@ namespace FFRK_LabMem.Machines
             }
 
             // Check for inventory full 
-            if (Config.UseTeleportStoneOnMasterPainting && this.CurrentFloor <= 1) await CheckInventoryFull();
+            if (Config.UseTeleportStoneOnMasterPainting && CurrentFloor <= 1) await CheckInventoryFull();
 
-            await LabTimings.Delay("Post-StartBattle", this.CancellationToken);
+            await LabTimings.Delay("Post-StartBattle", CancellationToken);
 
         }
 
@@ -503,15 +503,15 @@ namespace FFRK_LabMem.Machines
             var ret = new CheckPartyResult(this);
 
             // Do we need fatigue values to proceed?
-            var letheTearsEnabled = Config.UseLetheTears && (!Config.LetheTearsMasterOnly || (int)(this.CurrentPainting?["type"] ?? 0) == 2); // Using tears AND Not MasterOnly option or a master painting
-            var needsPartyIndex = Config.PartyIndex == LabConfiguration.PartyIndexOption.LowestFatigueAny || Config.PartyIndex == LabConfiguration.PartyIndexOption.LowestFatigue12;
+            bool letheTearsEnabled = Config.UseLetheTears && (!Config.LetheTearsMasterOnly || (int)(CurrentPainting?["type"] ?? 0) == 2); // Using tears AND Not MasterOnly option or a master painting
+            bool needsPartyIndex = Config.PartyIndex == LabConfiguration.PartyIndexOption.LowestFatigueAny || Config.PartyIndex == LabConfiguration.PartyIndexOption.LowestFatigue12;
             if (letheTearsEnabled || needsPartyIndex)
             {
                 // Wait for fatigue values downloaded on another thread
                 bool gotFatigueValues = true;
                 if (waitForFatigueEvent)
                 {
-                    gotFatigueValues = await FatigueInfo.Wait(await LabTimings.GetTimeSpan("Pre-StartBattle-Fatigue"), this.CancellationToken);
+                    gotFatigueValues = await FatigueInfo.Wait(await LabTimings.GetTimeSpan("Pre-StartBattle-Fatigue"), CancellationToken);
                 } else
                 {
                     FatigueInfo.Reset("READ");
@@ -553,7 +553,7 @@ namespace FFRK_LabMem.Machines
 
             // Delay then select
             await DelayedTapPct("Pre-SelectParty", 50, (index == 1) ? 50 : 66.7);
-            await LabTimings.Delay("Post-SelectParty", this.CancellationToken);
+            await LabTimings.Delay("Post-SelectParty", CancellationToken);
             return true;
         }
 
@@ -586,13 +586,13 @@ namespace FFRK_LabMem.Machines
         {
 
             // Wait for skip button
-            if (await DelayedTapButton("Post-Battle", BUTTON_SKIP, 3000, 85, 80, 90, 10, 0.2))
+            if (await DelayedTapButton("Post-Battle", ButtonSkip, 3000, 85, 80, 90, 10, 0.2))
             {
                  // Tappy taps
                 if (Adb.Input == Adb.InputType.Minitouch)
                 {
                     // Spam taps for duration
-                    await Adb.TapPctSpam(50, 85, await LabTimings.GetTimeSpan("Post-BattleButton"), this.CancellationToken);
+                    await Adb.TapPctSpam(50, 85, await LabTimings.GetTimeSpan("Post-BattleButton"), CancellationToken);
                 }
                 else
                 {
@@ -601,8 +601,8 @@ namespace FFRK_LabMem.Machines
                 }
 
                 // Check if we defeated the boss
-                if (this.Data != null && this.Data["result"] != null && this.Data["result"]["labyrinth_dungeon_result"] != null)
-                    await this.StateMachine.FireAsync(Trigger.FinishedLab);
+                if (Data != null && Data["result"] != null && Data["result"]["labyrinth_dungeon_result"] != null)
+                    await StateMachine.FireAsync(Trigger.FinishedLab);
             }
             else
             {
@@ -614,8 +614,8 @@ namespace FFRK_LabMem.Machines
         private async Task ConfirmPortal()
         {
 
-            await DelayedTapButton("Pre-ConfirmPortal", BUTTON_BLUE, 3000, 86, 58, 68, 10, -1, 1);
-            await LabTimings.Delay("Post-ConfirmPortal", this.CancellationToken);
+            await DelayedTapButton("Pre-ConfirmPortal", ButtonBlue, 3000, 86, 58, 68, 10, -1, 1);
+            await LabTimings.Delay("Post-ConfirmPortal", CancellationToken);
         }
 
         private async Task<bool> UseLetheTears(CheckPartyResult party)
@@ -635,7 +635,7 @@ namespace FFRK_LabMem.Machines
             await DelayedTapPct("Pre-LetheTears", 88.88, 17.18);
 
             // Each unit if selected
-            var partyY = 32.33333 + (16.66666 * party.PartyIndex);
+            double partyY = 32.33333 + (16.66666 * party.PartyIndex);
             for (int i = 0; i < 5; i++)
             {
                 if (party.NeedsTearsUnits.Contains(i))
@@ -645,29 +645,29 @@ namespace FFRK_LabMem.Machines
             }
 
             // Confirm button
-            if (await DelayedTapButton("Inter-LetheTears", BUTTON_BLUE, 3000, 60, 74, 87, 20))
+            if (await DelayedTapButton("Inter-LetheTears", ButtonBlue, 3000, 60, 74, 87, 20))
             {
                 //Use Lethe Tears brown button
-                if (await DelayedTapButton("Inter-LetheTears", BUTTON_BROWN, 2000, 50, 29, 42, 20, -1, 1))
+                if (await DelayedTapButton("Inter-LetheTears", ButtonBrown, 2000, 50, 29, 42, 20, -1, 1))
                 {
                     // Confirmation
-                    if (await DelayedTapButton("Inter-LetheTears", BUTTON_BLUE, 3000, 61, 57, 70, 5, -1, 1))
+                    if (await DelayedTapButton("Inter-LetheTears", ButtonBlue, 3000, 61, 57, 70, 5, -1, 1))
                     {
                         // OK
-                        if (await DelayedTapButton("Inter-LetheTears", BUTTON_BLUE, 3000, 38.8, 55, 70, 5, -1, 1))
+                        if (await DelayedTapButton("Inter-LetheTears", ButtonBlue, 3000, 38.8, 55, 70, 5, -1, 1))
                         {
                             // Update fatigue (set to 0)
                             FatigueInfo.UpdateTears(party.PartyIndex, party.NeedsTearsUnits);
 
                             // Update counters
-                            this.CurrentTears -= numberUsed;
+                            CurrentTears -= numberUsed;
                             await Counters.UsedTears(numberUsed);
 
                             // This might have taken a bit of time so kick watchdog
                             Watchdog.Kick();
 
                             // Post delay
-                            await LabTimings.Delay("Post-LetheTears", this.CancellationToken);
+                            await LabTimings.Delay("Post-LetheTears", CancellationToken);
                             return true;
                         } else
                         {
@@ -700,12 +700,12 @@ namespace FFRK_LabMem.Machines
             await DelayedTapPct("Pre-TeleportStone", 90.27, 4.68);
 
             // Use a stone brown button
-            if (await DelayedTapButton("Inter-TeleportStone", BUTTON_BROWN, 2000, 58, 23, 37.5, 20))
+            if (await DelayedTapButton("Inter-TeleportStone", ButtonBrown, 2000, 58, 23, 37.5, 20))
             {
                 // Confirmation
-                if (await DelayedTapButton("Inter-TeleportStone", BUTTON_BLUE, 3000, 61, 57, 70, 5))
+                if (await DelayedTapButton("Inter-TeleportStone", ButtonBlue, 3000, 61, 57, 70, 5))
                 {
-                    await LabTimings.Delay("Post-TeleportStone", this.CancellationToken);
+                    await LabTimings.Delay("Post-TeleportStone", CancellationToken);
                     await Counters.UsedTeleportStone();
                     return true;
                 }
@@ -759,7 +759,7 @@ namespace FFRK_LabMem.Machines
                 }
 
                 // Mission
-                var needsMission = Config.CompleteDailyMission == LabConfiguration.CompleteMissionOption.QuickExplore && !Counters.IsMissionCompleted();
+                bool needsMission = Config.CompleteDailyMission == LabConfiguration.CompleteMissionOption.QuickExplore && !Counters.IsMissionCompleted();
                 if (Config.UseTeleportStoneOnMasterPainting && needsMission)
                 {
                     await CompleteMissionByQE();
@@ -826,7 +826,7 @@ namespace FFRK_LabMem.Machines
             while (timer.Elapsed <= duration)
             {
                 // Every 500ms so we don't miss a second
-                await Task.Delay(500, this.CancellationToken);
+                await Task.Delay(500, CancellationToken);
                 int seconds = (int)Math.Floor(duration.TotalSeconds - timer.Elapsed.TotalSeconds);  // Whole-number of seconds remaining
                 var notify = notifies.Where(n => n == seconds).FirstOrDefault();                    // Does it exist in our notifiactions?
                 
@@ -857,7 +857,7 @@ namespace FFRK_LabMem.Machines
             {
                 // Schedule-based countdown
                 ColorConsole.WriteLine($"Waiting for enough stamina at {atTime.Value:G}");
-                var duration = atTime.Value - DateTime.Now;
+                TimeSpan duration = atTime.Value - DateTime.Now;
                 await RestartLabCountdown(duration);
 
             } 
@@ -873,18 +873,18 @@ namespace FFRK_LabMem.Machines
             }
 
             // Countdown complete, let us restart
-            this.CancellationToken.ThrowIfCancellationRequested();
+            CancellationToken.ThrowIfCancellationRequested();
             Watchdog.Kick(true);
             ColorConsole.WriteLine("Restarting Lab");
 
             // Dungeon Complete
-            if (this.Data != null)
+            if (Data != null)
             {
                 ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Dismissing dungeon complete dialog");
-                var closeButton = await DelayedFindButton("Inter-RestartLab", BUTTON_BROWN, 2000, 39, 81, 91, 5);
+                var closeButton = await DelayedFindButton("Inter-RestartLab", ButtonBrown, 2000, 39, 81, 91, 5);
                 if (closeButton != null)
                 {
-                    await Adb.TapPct(closeButton.Item1, closeButton.Item2, this.CancellationToken);
+                    await Adb.TapPct(closeButton.Item1, closeButton.Item2, CancellationToken);
                 }
                 else
                 {
@@ -895,34 +895,34 @@ namespace FFRK_LabMem.Machines
             // Mission Complete
             Watchdog.Kick(true);
             ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Checking for mission complete dialog");
-            await DelayedTapButton("Inter-RestartLab", BUTTON_BROWN, 2000, 39, 51, 86, 20);
+            await DelayedTapButton("Inter-RestartLab", ButtonBrown, 2000, 39, 51, 86, 20);
             
             // Enter button 1
             Watchdog.Kick(true);
             ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Checking for enter button 1");
-            if (await DelayedTapButton("Inter-RestartLab", BUTTON_BLUE, 2000, 39, 80, 94, 20))
+            if (await DelayedTapButton("Inter-RestartLab", ButtonBlue, 2000, 39, 80, 94, 20))
             {
 
                 // Enter button 2
                 Watchdog.Kick(true);
                 ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Checking for enter button 2");
-                if (await DelayedTapButton("Inter-RestartLab", BUTTON_BLUE, 2000, 43, 80, 90, 20, -1, 1))
+                if (await DelayedTapButton("Inter-RestartLab", ButtonBlue, 2000, 43, 80, 90, 20, -1, 1))
                 {
 
                     // Stamina dialog
                     Watchdog.Kick(true);
-                    var staminaResult = await CheckRestoreStamina();
+                    CheckRestoreStaminaResult staminaResult = await CheckRestoreStamina();
                     if (staminaResult.PotionUsed)
                     {
                         // Enter button 2 again
-                        await DelayedTapButton("Inter-RestartLab", BUTTON_BLUE, 2000, 43, 80, 90, 20); 
+                        await DelayedTapButton("Inter-RestartLab", ButtonBlue, 2000, 43, 80, 90, 20); 
                     }
                     else if (staminaResult.NeedsWait)
                     {
                         // We need to start over, navigate back twice and re-enter with scheduled time
-                        await Adb.NavigateBack(this.CancellationToken);
-                        await Task.Delay(500, this.CancellationToken);
-                        await Adb.NavigateBack(this.CancellationToken);
+                        await Adb.NavigateBack(CancellationToken);
+                        await Task.Delay(500, CancellationToken);
+                        await Adb.NavigateBack(CancellationToken);
                         await RestartLab(StaminaInfo.GetTargetTime());
                         return;
                     }
@@ -934,15 +934,15 @@ namespace FFRK_LabMem.Machines
                     // Confirm equipment box or stamina OK dialog
                     Watchdog.Kick(true);
                     ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Checking for confirm equipment box or stamina OK dialog");
-                    if (await DelayedTapButton("Inter-RestartLab", BUTTON_BLUE, 2000, 67.3, 57, 70, 20, -1, 1))
+                    if (await DelayedTapButton("Inter-RestartLab", ButtonBlue, 2000, 67.3, 57, 70, 20, -1, 1))
                     {
 
                         // Enter if equipment confirmed, otherwise should find nothing
                         ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Checking for stamina OK dialog");
-                        await DelayedTapButton("Inter-RestartLab", BUTTON_BLUE, 2000, 67.3, 57, 70, 5, -1, 1);
+                        await DelayedTapButton("Inter-RestartLab", ButtonBlue, 2000, 67.3, 57, 70, 5, -1, 1);
 
                         // Delay
-                        await LabTimings.Delay("Post-RestartLab", this.CancellationToken);
+                        await LabTimings.Delay("Post-RestartLab", CancellationToken);
 
                         // Reset state
                         await StateMachine.FireAsync(Trigger.ResetState);
@@ -980,7 +980,7 @@ namespace FFRK_LabMem.Machines
             var ret = new CheckRestoreStaminaResult();
 
             // Orange gems button present
-            if (await Adb.FindButton(BUTTON_ORANGE, 2000, 34.7, 44.0, 78.1, 10, this.CancellationToken) != null)
+            if (await Adb.FindButton(ButtonOrange, 2000, 34.7, 44.0, 78.1, 10, CancellationToken) != null)
             {
                 ret.StaminaDialogPresent = true;
 
@@ -990,13 +990,13 @@ namespace FFRK_LabMem.Machines
                     // Finds potion button
                     List<Adb.ImageDef> items = new List<Adb.ImageDef>();
                     items.Add(new Adb.ImageDef() { Image = Properties.Resources.button_brown_potion, Simalarity = 0.90f });
-                    var staminaButton = await Adb.FindImages(items, 3, this.CancellationToken);
+                    Adb.ImageDef staminaButton = await Adb.FindImages(items, 3, CancellationToken);
 
                     if (staminaButton != null)
                     {
                         // Tap potion button
                         ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Found area {0}", staminaButton);
-                        await Adb.TapPct(staminaButton.Location.Item1, staminaButton.Location.Item2, this.CancellationToken);
+                        await Adb.TapPct(staminaButton.Location.Item1, staminaButton.Location.Item2, CancellationToken);
 
                         // Use potion
                         ret.PotionUsed = await UseStaminaPotion();
@@ -1007,9 +1007,9 @@ namespace FFRK_LabMem.Machines
                         await Notify(Notifications.EventType.LAB_FAULT, "Out of stamina");
 
                         // Back out to main screen
-                        await Adb.NavigateBack(this.CancellationToken);
-                        await Task.Delay(500, this.CancellationToken);
-                        await Adb.NavigateBack(this.CancellationToken);
+                        await Adb.NavigateBack(CancellationToken);
+                        await Task.Delay(500, CancellationToken);
+                        await Adb.NavigateBack(CancellationToken);
                     }
                 }
                 else if (Config.WaitForStamina)
@@ -1024,9 +1024,9 @@ namespace FFRK_LabMem.Machines
                     await Notify(Notifications.EventType.LAB_FAULT, "Out of stamina");
 
                     // Back out to main screen
-                    await Adb.NavigateBack(this.CancellationToken);
-                    await Task.Delay(500, this.CancellationToken);
-                    await Adb.NavigateBack(this.CancellationToken);
+                    await Adb.NavigateBack(CancellationToken);
+                    await Task.Delay(500, CancellationToken);
+                    await Adb.NavigateBack(CancellationToken);
 
                     OnMachineFinished();
                 }
@@ -1041,8 +1041,8 @@ namespace FFRK_LabMem.Machines
 
             ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Checking for inventory full");
             if (
-                await Adb.FindButton(BUTTON_BROWN, 1500, 40.2, 88.3, 97.7, 3, this.CancellationToken) != null &&    // Brown button at bottom
-                await Adb.FindButton(BUTTON_BLUE, 2000, 59, 77, 93, 0, this.CancellationToken) == null              // No blue button
+                await Adb.FindButton(ButtonBrown, 1500, 40.2, 88.3, 97.7, 3, CancellationToken) != null &&    // Brown button at bottom
+                await Adb.FindButton(ButtonBlue, 2000, 59, 77, 93, 0, CancellationToken) == null              // No blue button
             )
             {
                 ColorConsole.WriteLine(ConsoleColor.Yellow, "Inventory full!");
@@ -1063,25 +1063,27 @@ namespace FFRK_LabMem.Machines
             ColorConsole.WriteLine(ConsoleColor.Magenta, "Using [Stamina Potion] x1");
 
             // Use potion
-            if (await DelayedTapButton("Pre-StaminaPotion", BUTTON_BLUE, 3000, 61, 60, 80, 5))
+            if (await DelayedTapButton("Pre-StaminaPotion", ButtonBlue, 3000, 61, 60, 80, 5))
             {
-                
-                // Confirm qty
-                if (await DelayedTapButton("Inter-StaminaPotion", BUTTON_BLUE, 3000, 61, 55, 75, 5)){
 
+                // Confirm qty
+                if (await DelayedTapButton("Inter-StaminaPotion", ButtonBlue, 3000, 61, 55, 75, 5))
+                {
                     await Counters.UsedStaminaPot();
 
                     // Potion used dialog
-                    if (await DelayedTapButton("Inter-StaminaPotion", BUTTON_BLUE, 3000, 47, 55, 70, 5))
+                    if (await DelayedTapButton("Inter-StaminaPotion", ButtonBlue, 3000, 47, 55, 70, 5))
                     {
-                        await LabTimings.Delay("Post-StaminaPotion", this.CancellationToken);
+                        await LabTimings.Delay("Post-StaminaPotion", CancellationToken);
                         return true;
-                    } else
+                    }
+                    else
                     {
                         ColorConsole.WriteLine(ConsoleColor.DarkRed, "Failed to find potion used dialog");
                     }
 
-                } else
+                }
+                else
                 {
                     ColorConsole.WriteLine(ConsoleColor.DarkRed, "Failed to find potion confirm qty dialog");
                 }
@@ -1105,20 +1107,20 @@ namespace FFRK_LabMem.Machines
             // Stop any running tasks
             ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Cancelling any running tasks");
             await InterruptTasks();
-            await LabTimings.Delay("Pre-RestartFFRK", this.CancellationToken);
+            await LabTimings.Delay("Pre-RestartFFRK", CancellationToken);
 
             // Kill FFRK
             ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Kill ffrk process...");
-            await this.Adb.StopPackage(Adb.FFRK_PACKAGE_NAME, this.CancellationToken);
-            await LabTimings.Delay("Inter-RestartFFRK", this.CancellationToken);
+            await this.Adb.StopPackage(Adb.FFRKPackageName, CancellationToken);
+            await LabTimings.Delay("Inter-RestartFFRK", CancellationToken);
 
             // Backspace to dismiss any Crash/ANR dialogs
-            await this.Adb.NavigateBack(this.CancellationToken);
-            await LabTimings.Delay("Inter-RestartFFRK", this.CancellationToken);
+            await this.Adb.NavigateBack(CancellationToken);
+            await LabTimings.Delay("Inter-RestartFFRK", CancellationToken);
 
             // Launch app
             ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Launching app");
-            await this.Adb.StartActivity(Adb.FFRK_PACKAGE_NAME, Adb.FFRK_ACTIVITY_NAME, this.CancellationToken);
+            await this.Adb.StartActivity(Adb.FFRKPackageName, Adb.FFRKActivityName, CancellationToken);
 
             // Reset state
             ConfigureStateMachine();
@@ -1144,17 +1146,17 @@ namespace FFRK_LabMem.Machines
             while (recoverStopwatch.Elapsed < loopTimeout && recoverStopwatch.IsRunning)
             {
                 // Find images in order, breaking on first match
-                var ret = await Adb.FindImages(items, 3, this.CancellationToken);
+                var ret = await Adb.FindImages(items, 3, CancellationToken);
                 if (ret != null)
                 {
                     // Tap it (Y axis is incremented using the bottom offset)
                     Adb.Size ScreenSize = await ScreenSizeTask;
                     double OffsetPct = this.Adb.BottomOffset / ScreenSize.Height * 100;
                     ColorConsole.Debug(ColorConsole.DebugCategory.Adb, "Offset Percentage: " + OffsetPct.ToString() + "%");
-                    await Adb.TapPct(ret.Location.Item1, ret.Location.Item2 + OffsetPct, this.CancellationToken);
+                    await Adb.TapPct(ret.Location.Item1, ret.Location.Item2 + OffsetPct, CancellationToken);
                 }
                 // Delay between finds
-                await Task.Delay(Adb.CaptureRate, this.CancellationToken);
+                await Task.Delay(Adb.CaptureRate, CancellationToken);
             }
 
             // Loop finshed, check state
@@ -1174,7 +1176,7 @@ namespace FFRK_LabMem.Machines
                 ColorConsole.WriteLine(ConsoleColor.DarkRed, "FFRK restarted!");
                 await Counters.FFRKRestarted();
             }
-            await LabTimings.Delay("Post-RestartFFRK", this.CancellationToken);
+            await LabTimings.Delay("Post-RestartFFRK", CancellationToken);
             return true;
 
         }
@@ -1182,7 +1184,7 @@ namespace FFRK_LabMem.Machines
         private async Task RestartBattle()
         {
             ColorConsole.Write(ConsoleColor.DarkRed, "Battle failed! ");
-            if (this.Config.RestartFailedBattle)
+            if (Config.RestartFailedBattle)
             {
                 if (Watchdog.BattleFailed())
                 {
@@ -1198,7 +1200,7 @@ namespace FFRK_LabMem.Machines
                 await Notify(Notifications.EventType.LAB_FAULT, "Battle failed");
                 Watchdog.Kick(false);
             }
-            await LabTimings.Delay("Post-RestartBattle", this.CancellationToken);
+            await LabTimings.Delay("Post-RestartBattle", CancellationToken);
 
         }
 
@@ -1207,10 +1209,10 @@ namespace FFRK_LabMem.Machines
            
             // Dungeon Complete
             ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Dismissing complete dialog");
-            var closeButton = await DelayedFindButton("Pre-QuickExplore", BUTTON_BROWN, 2000, 39, 81, 91, 3);
+            Tuple<double, double> closeButton = await DelayedFindButton("Pre-QuickExplore", ButtonBrown, 2000, 39, 81, 91, 3);
             if (closeButton != null)
             {
-                await Adb.TapPct(closeButton.Item1, closeButton.Item2, this.CancellationToken);
+                await Adb.TapPct(closeButton.Item1, closeButton.Item2, CancellationToken);
             }
             else
             {
@@ -1219,7 +1221,7 @@ namespace FFRK_LabMem.Machines
 
             // Quick Explore Button
             ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Choosing quick explore");
-            var quickExploreButton = await DelayedFindButton("Inter-QuickExplore", BUTTON_BROWN, 2000, 82.6, 83.2, 93.7, 10);
+            Tuple<double, double> quickExploreButton = await DelayedFindButton("Inter-QuickExplore", ButtonBrown, 2000, 82.6, 83.2, 93.7, 10);
             if (quickExploreButton != null)
             {
                 // Tap It
@@ -1227,23 +1229,23 @@ namespace FFRK_LabMem.Machines
 
                 // Use a record marker button
                 ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Choosing use a record marker");
-                var useRecordMarkerButton = await DelayedFindButton("Inter-QuickExplore", BUTTON_BROWN, 2000, 50, 25.7, 36.3, 2);
+                Tuple<double, double> useRecordMarkerButton = await DelayedFindButton("Inter-QuickExplore", ButtonBrown, 2000, 50, 25.7, 36.3, 2);
                 
                 // If record marker button not present then stamina too low
                 if (useRecordMarkerButton == null)
                 {
 
                     // Stamina Check
-                    await LabTimings.Delay("Inter-QuickExplore", this.CancellationToken);
-                    var staminaResult = await CheckRestoreStamina();
+                    await LabTimings.Delay("Inter-QuickExplore", CancellationToken);
+                    CheckRestoreStaminaResult staminaResult = await CheckRestoreStamina();
                     if (staminaResult.PotionUsed)
                     {
                         // Quick Explore Button Again
                         await DelayedTapPct("Inter-QuickExplore", quickExploreButton.Item1, quickExploreButton.Item2);
 
                         // Look for the record marker button again
-                        ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Choosing use a record marker");
-                        useRecordMarkerButton = await DelayedFindButton("Inter-QuickExplore", BUTTON_BROWN, 2000, 50, 25.7, 39, 2);
+                        ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Choosing to use a record marker");
+                        useRecordMarkerButton = await DelayedFindButton("Inter-QuickExplore", ButtonBrown, 2000, 50, 25.7, 39, 2);
                     }
                     else
                     {
@@ -1263,17 +1265,17 @@ namespace FFRK_LabMem.Machines
 
                     // Record marker will be used - OK
                     ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Choosing use record marker OK button");
-                    if (await DelayedTapButton("Inter-QuickExplore", BUTTON_BLUE, 2000, 64, 54.6, 70.3, 5))
+                    if (await DelayedTapButton("Inter-QuickExplore", ButtonBlue, 2000, 64, 54.6, 70.3, 5))
                     {
 
                         // Stamina Cost
                         ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Choosing stamina cost OK button");
-                        if (await DelayedTapButton("Inter-QuickExplore", BUTTON_BLUE, 2000, 64, 54, 70.3, 5))
+                        if (await DelayedTapButton("Inter-QuickExplore", ButtonBlue, 2000, 64, 54, 70.3, 5))
                         {
 
                             // Wait for results
-                            if (await AutoResetEventQuickExplore.WaitAsync(await LabTimings.GetTimeSpan("Inter-QuickExplore-Timeout"), this.CancellationToken)){
-                                await LabTimings.Delay("Post-QuickExplore", this.CancellationToken);
+                            if (await AutoResetEventQuickExplore.WaitAsync(await LabTimings.GetTimeSpan("Inter-QuickExplore-Timeout"), CancellationToken)){
+                                await LabTimings.Delay("Post-QuickExplore", CancellationToken);
                                 return true;
                             } else
                             {
@@ -1310,7 +1312,7 @@ namespace FFRK_LabMem.Machines
         private async Task CheckAutoBattle()
         {
 
-            await LabTimings.Delay("Pre-CheckAutoBattle", this.CancellationToken);
+            await LabTimings.Delay("Pre-CheckAutoBattle", CancellationToken);
 
             ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Checking for auto-battle");
             List<Adb.ImageDef> items = new List<Adb.ImageDef>
@@ -1320,7 +1322,7 @@ namespace FFRK_LabMem.Machines
 
             for (int i = 0; i < 9; i++)
             {
-                var ret = await Adb.FindImages(items, 3, this.CancellationToken);
+                Adb.ImageDef ret = await Adb.FindImages(items, 3, CancellationToken);
                 if (ret != null)
                 {
                     // Tap it
@@ -1331,7 +1333,7 @@ namespace FFRK_LabMem.Machines
                 {
                     ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Did not find disabled auto-battle state");
                 }
-                await Task.Delay(Adb.CaptureRate, this.CancellationToken);
+                await Task.Delay(Adb.CaptureRate, CancellationToken);
             }
 
             ColorConsole.Debug(ColorConsole.DebugCategory.Lab, "Checking for abilities and soul breaks enabled");
@@ -1343,15 +1345,15 @@ namespace FFRK_LabMem.Machines
 
             for (int i = 0; i < 8; i++)
             {
-                var ret = await Adb.FindImages(items, 2, this.CancellationToken);
+                var ret = await Adb.FindImages(items, 2, CancellationToken);
                 if (ret != null)
                 {
                     await Adb.TapPct(ret.Location.Item1, ret.Location.Item2, CancellationToken);
                 }
-                await Task.Delay(Adb.CaptureRate, this.CancellationToken);
+                await Task.Delay(Adb.CaptureRate, CancellationToken);
             }
 
-            await LabTimings.Delay("Post-CheckAutoBattle", this.CancellationToken);
+            await LabTimings.Delay("Post-CheckAutoBattle", CancellationToken);
 
         }
 
@@ -1383,7 +1385,7 @@ namespace FFRK_LabMem.Machines
         public async Task HandleError()
         {
             ColorConsole.WriteLine(ConsoleColor.Yellow, "Connection error, retrying....");
-            await DelayedTapButton("Pre-HandleError", BUTTON_BLUE, 2000, 39.5, 54, 67.5, 10, -1, 1);
+            await DelayedTapButton("Pre-HandleError", ButtonBlue, 2000, 39.5, 54, 67.5, 10, -1, 1);
         }
 
     }
