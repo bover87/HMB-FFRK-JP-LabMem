@@ -387,6 +387,7 @@ namespace FFRK_LabMem.Services
             { "ジョシュア", "Joshua" },
             { "シドルファス", "Cidolfus" },
             { "トルガル", "Torgal" },
+            { "ディオン", "Dion" },
             { "ラムザ", "Ramza" },
             { "アグリアス", "Agrias" },
             { "オヴェリア", "Ovelia" },
@@ -425,6 +426,7 @@ namespace FFRK_LabMem.Services
             { "エナ・クロ", "Enna Kros" },
             { "セラフィ", "Serafie" },
             { "レイン", "Rain" },
+            { "ラスウェル", "Lasswell" },
             { "フィーナ", "Fina" },
             { "デシ", "Tyro" },
             { "ウララ", "Elarra" },
@@ -1282,6 +1284,7 @@ namespace FFRK_LabMem.Services
             { "目玉の回廊", "Corridor of the Eye-Catcher" },
             { "守護の回廊", "Corridor of the Sacred Guardian" },
             { "魔道の回廊", "Corridor of Magic" },
+            { "水晶の回廊", "Corridor of the Crystal" }
         };
     }
 }
